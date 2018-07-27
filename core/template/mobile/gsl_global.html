@@ -1,0 +1,62 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
+<style>
+  .leaflet-marker-icon{
+  border-radius: 50%;
+}
+  </style>
+<div class="eqLogic-widget eqLogic allowResize" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" >
+      <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center><br />
+    <div class="row">
+
+	<div class="col-sm-12">
+	<center>
+    <div id="map"></div>
+         </center>
+	</div>
+	</div>
+</div>
+    <script>
+    $( document ).ready(function(){
+    var map = L.map('map', {
+    // Set latitude and longitude of the map center (required)
+    center: [51.5, -0.09],
+    // Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
+    zoom: 15
+});
+  // create the tile layer with correct attribution
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib}).addTo(map);
+
+var fg = L.featureGroup()
+  // And lets add it to our map.
+  fg.addTo(map);
+
+var greenIcon = L.icon({
+    iconUrl: 'https://lh4.googleusercontent.com/-4xac7SzjYSY/AAAAAAAAAAI/AAAAAAAB9Cc/xOIYBSkUbk4/photo.jpg',
+    shadowUrl: 'https://maps.gstatic.com/mapfiles/locationsharing/avatar-pin-2x.png',
+
+    iconSize:     [36, 36], // size of the icon
+    shadowSize:   [50, 55], // size of the shadow
+    iconAnchor:   [18, 47], // point of the icon which will correspond to marker's location
+    shadowAnchor: [25, 55],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+L.marker([51.5, -0.09], {icon: greenIcon}).addTo(fg);
+
+var greenIcon = L.icon({
+    iconUrl: 'https://lh4.googleusercontent.com/-4xac7SzjYSY/AAAAAAAAAAI/AAAAAAAB9Cc/xOIYBSkUbk4/photo.jpg',
+    shadowUrl: 'https://maps.gstatic.com/mapfiles/locationsharing/avatar-pin-2x.png',
+
+    iconSize:     [36, 36], // size of the icon
+    shadowSize:   [50, 55], // size of the shadow
+    iconAnchor:   [18, 47], // point of the icon which will correspond to marker's location
+    shadowAnchor: [25, 55],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+L.marker([46.5, -1.09], {icon: greenIcon}).addTo(fg);
+
+map.fitBounds(fg.getBounds());
+  });
+    </script>

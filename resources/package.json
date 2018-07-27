@@ -1,0 +1,10 @@
+{
+  "name": "Jeedom Google Shared Locations",
+  "version": "0.0.1",
+  "description": "Node to get Google shared locations to Jeedom",
+  "license": "GPL-3.0",
+  "repository": "npm/npm",
+  "dependencies": {
+    "request": "latest"
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"id" : "gsl",
+	"name" : "Google shared locations",
+	"description" : "Plugin template pour la création de plugin",
+	"licence" : "AGPL",
+	"author" : "yoan",
+	"require" : "3.2",
+	"category" : "organization",
+	"hasDependency" : true,
+	"hasOwnDeamon" : false,
+	"maxDependancyInstallTime" : 0,
+	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
+	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
+	"language" : ["fr_FR","en_US"],
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
+}
