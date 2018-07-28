@@ -32,7 +32,7 @@ foreach ($eqLogics as $eqLogic) {
     <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676">{{Configuration}}</span>
   </div>
   </div>
-  <legend><i class="fa fa-table"></i> {{Mes positions}}</legend>
+  <legend><i class="fa fa-table"></i> {{Mes contacts}}</legend>
 <div class="eqLogicThumbnailContainer">
     <?php
 foreach ($eqLogics as $eqLogic) {
@@ -101,16 +101,16 @@ foreach (object::all() as $object) {
 		</div>
 	</div>
     <div class="form-group" id="cmdgeoloc">
-                        <label class="col-sm-2 control-label">{{Commande}}</label>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdgeoloc">
-                                <span class="input-group-btn">
-                                    <a class="btn btn-default cursor listEquipementAction" data-input="cmdgeoloc"><i class="fa fa-list-alt "></i></a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+		<label class="col-sm-2 control-label">{{Commande}}</label>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdgeoloc">
+				<span class="input-group-btn">
+					<a class="btn btn-default cursor listEquipementAction" data-input="cmdgeoloc"><i class="fa fa-list-alt "></i></a>
+				</span>
+			</div>
+		</div>
+	</div>
       
 </fieldset>
 </form>

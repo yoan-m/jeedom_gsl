@@ -1,16 +1,16 @@
 {
 	"id" : "gsl",
 	"name" : "Google shared locations",
-	"description" : "Plugin template pour la création de plugin",
+	"description" : "Plugin qui récupère les geolocalisations partagées avec Google.<br />L'affichage est parametrable au sein du plugin.<br />Les coordonnées peuvent être envoyées à d'atures plugins Geoloc, Geotrav, Jeeloc, etc...",
 	"licence" : "AGPL",
-	"author" : "yoan",
+	"author" : "kaktusatomik",
 	"require" : "3.2",
 	"category" : "organization",
 	"hasDependency" : true,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
-	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
-	"language" : ["fr_FR","en_US"],
+	"changelog" : "https://yoan-m.github.io/jeedom_gsl/#language#/changelog",
+	"documentation" : "https://yoan-m.github.io/jeedom_gsl/#language#/",
+	"language" : ["fr_FR"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"]
 }

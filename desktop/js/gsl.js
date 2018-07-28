@@ -16,22 +16,17 @@
 if (maps == undefined) {
 	var maps = {};
 }
- $('#cmdgeoloc').on('click', function () {
-    jeedom.cmd.getSelectModal({cmd: {type: 'info', subType: 'string'}}, function (result) {
-        $('.eqLogicAttr[data-l2key=cmdgeoloc]').value(result.human);
-    });
-});
-$("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
-
-function createMap(_mapId){
+function createMap(_mapId, _logicalId){
+	//debugger;
 	$.ajax({
 		type: 'POST',
 		url: 'plugins/gsl/core/ajax/gsl.ajax.php',
 		global:false,
 		data: {
-			action: 'getAllLocations',
+			action: 'getLocations',
 			id: _mapId,
+			logicalId: _logicalId
 		},
 		dataType: 'json',
 		error: function (request, status, error) {
@@ -42,7 +37,7 @@ function createMap(_mapId){
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
-			var map = L.map('map', {
+			var map = L.map('map_'+_mapId, {
 				// Set latitude and longitude of the map center (required)
 				center: [51.5, -0.09],
 				// Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
@@ -62,13 +57,15 @@ function createMap(_mapId){
 			 for (var i = 0; i < data.result.length; i++) {
 				 updateMarker(_mapId, data.result[i]);
 			 }
-		});
+			 map.fitBounds(fg.getBounds(), {padding:[30,30]});
+		}
+	});
 }
 
 function updateMarker(_mapId, loc){
 	var icon = L.icon({
 		iconUrl: loc.image,
-		shadowUrl: '../../3rdparty/images/avatar-pin-2x.png',
+		shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
 
 		iconSize:     [36, 36], // size of the icon
 		shadowSize:   [50, 55], // size of the shadow
@@ -77,6 +74,10 @@ function updateMarker(_mapId, loc){
 		popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 	});
 	L.marker(loc.coordonnees.split(','), {icon: icon}).addTo(maps[_mapId].fg);
+	$('.nom_'+loc.id).html(loc.nom);
+	$('.adresse_'+loc.id).html(loc.adresse);
+	$('.horodatage_'+loc.id).html(loc.horodatage);
+	$('.image_'+loc.id).attr('src',loc.image);
 }
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
@@ -113,8 +114,32 @@ function addCmdToTable(_cmd) {
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
 
-$('#bt_cronGenerator').on('click',function(){
-    jeedom.getCronSelectModal({},function (result) {
-        $('.eqLogicAttr[data-l1key=configuration][data-l2key=refreshCron]').value(result.value);
-    });
+function printEqLogic(_eqLogic){
+	if (!isset(_eqLogic)) {
+		var _eqLogic = {configuration: {}};
+	}
+	if (!isset(_eqLogic.configuration)) {
+	   _eqLogic.configuration = {};
+	}
+
+		
+	if (_eqLogic.logicalId == 'global') {
+		$('#cmdgeoloc').hide();
+	}else {
+		$('#cmdgeoloc').show();
+	}
+}
+$('#bt_createGlobalEqLogic').on('click',function(){
+    $.ajax({
+		type: 'POST',
+		url: 'plugins/gsl/core/ajax/gsl.ajax.php',
+		global:false,
+		data: {
+			action: 'createGlobalEqLogic'
+		},
+		dataType: 'json',
+		success: function(){
+			$('#bt_createGlobalEqLogic').hide();
+		}
+	});
 });

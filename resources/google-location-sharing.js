@@ -83,8 +83,6 @@ function emitUsers(users, callback) {
   for (var j=0; j < users.length; j++) {
     var u = users[j];
     ret[u.id] = u;
-    var userline = [u.unix_time_now, u.id, u.lat, u.long, u.name, u.photoURL].join(' , ')
-    //emitOutput(userline);
   }
   emitOutput(ret);
 console.log(JSON.stringify(result));
@@ -482,7 +480,8 @@ function extractUserLocationData(userdata, callback) {
     "name"          : userdata[0][3],
     "lat"           : userdata[1][1][2],
     "long"          : userdata[1][1][1],
-    "address"          : userdata[1][4]
+    "address"       : userdata[1][4],
+    "timestamp"       : userdata[1][2]
   };
 
   if (callback) callback(false, userdataobj);
