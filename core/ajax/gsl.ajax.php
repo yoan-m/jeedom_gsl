@@ -23,59 +23,59 @@ try {
     if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
-    
+
     ajax::init();
 
-	if (init('action') == 'getLocations') {
-		if(init('logicalId') == 'global'){
-			$equipements = eqLogic::byType('gsl', true);
-		}else{
-			$equipements = [];
-			array_push($equipements, eqLogic::byLogicalId(init('logicalId'), 'gsl'));
-		}
-		if(count($equipements) === 0){
-			ajax::error('Aucun equipement', 0);
-		}
-		$return = array();
-		foreach ($equipements as $eq) {
+    if (init('action') == 'getLocations') {
+        if (init('logicalId') == 'global') {
+            $equipements = eqLogic::byType('gsl', true);
+        } else {
+            $equipements = [];
+            array_push($equipements, eqLogic::byLogicalId(init('logicalId'), 'gsl'));
+        }
+        if (count($equipements) === 0) {
+            ajax::error('Aucun equipement', 0);
+        }
+        $return = array();
+        foreach ($equipements as $eq) {
 
-			if($eq->getLogicalId() == 'global'){
-				continue;
-			}
-			if(!$eq->getIsVisible()){
-				continue;
-			}
-			$loc = array();
-			$cmds = $eq->getCmd();
-			foreach ($cmds as $cmd) {
-				if ($cmd->getConfiguration('type') == "command") {
-					continue;
-				}
-				$loc[$cmd->getName()] = $cmd->execCmd();	
-				if($cmd->getName() == 'timestamp'){
-					$now = time();
-					$timestamp = $cmd->execCmd();
-					if($timestamp){
-						$timestamp = $timestamp/1000;
-						$timestamp  = ($now - $timestamp);
-						if($timestamp <=60){
-							$loc['horodatage'] = 'à l\'instant';
-						}else if($timestamp <3600){
-							$loc['horodatage'] = 'il y a '.intval(($timestamp)/60).' minutes';
-						}else{
-							$loc['horodatage'] = 'il y a '.intval((($timestamp)/60)/60).' heures';
-						}
-					}
-				}						
-			}
-			$loc['id'] = $eq->getLogicalId();		
-			array_push($return,$loc);
-		}
-		ajax::success($return);		
-	}else if (init('action') == 'createGlobalEqLogic') {
-		gsl::createGlobalEqLogic();
-		ajax::success();	
-	}	
+            if ($eq->getLogicalId() == 'global') {
+                continue;
+            }
+            if (!$eq->getIsVisible()) {
+                continue;
+            }
+            $loc = array();
+            $cmds = $eq->getCmd();
+            foreach ($cmds as $cmd) {
+                if ($cmd->getConfiguration('type') == "command") {
+                    continue;
+                }
+                $loc[$cmd->getName()] = $cmd->execCmd();
+                if ($cmd->getName() == 'timestamp') {
+                    $now = time();
+                    $timestamp = $cmd->execCmd();
+                    if ($timestamp) {
+                        $timestamp = $timestamp / 1000;
+                        $timestamp = ($now - $timestamp);
+                        if ($timestamp <= 60) {
+                            $loc['horodatage'] = 'à l\'instant';
+                        } else if ($timestamp < 3600) {
+                            $loc['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
+                        } else {
+                            $loc['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
+                        }
+                    }
+                }
+            }
+            $loc['id'] = $eq->getLogicalId();
+            array_push($return, $loc);
+        }
+        ajax::success($return);
+    } else if (init('action') == 'createGlobalEqLogic') {
+        gsl::createGlobalEqLogic();
+        ajax::success();
+    }
 
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */

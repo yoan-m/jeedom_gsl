@@ -27,35 +27,46 @@ if (!isConnect()) {
         <div class="form-group">
             <label class="col-lg-4 control-label">{{Adresse Gmail}}</label>
             <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_user" />
+                <input class="configKey form-control" data-l1key="google_user"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-lg-4 control-label">{{Mot de passe}}</label>
             <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_password" type="password" />
+                <input class="configKey form-control" data-l1key="google_password" type="password"/>
             </div>
         </div>
-		<div class="form-group">
-			<label class="col-lg-4 control-label">{{Fréquence de rafraichissement}}</label>
-			<div class="col-lg-4">
-				<select class="configKey form-control"  data-l1key="refreshCron">
-				  <option value="cron" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron' ? 'selected="selected"' : ''; ?>>{{1 minute}}</option> 
-				  <option value="cron5" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron5' ? 'selected="selected"' : ''; ?>>{{5 minutes}}</option>
-				  <option value="cron15" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron15' ? 'selected="selected"' : ''; ?>>{{15 minutes}}</option>
-				  <option value="cron30" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron30' ? 'selected="selected"' : ''; ?>>{{30 minutes}}</option>
-				  <option value="cronHourly" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cronHourly' ? 'selected="selected"' : ''; ?>>{{1 heure}}</option>
-				</select>
-			</div>
-      </div>
-		<?php if(!is_object(eqLogic::byLogicalId('global','gsl'))){ ?>
-		<div class="form-group">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				<a class="btn btn-default" id="bt_createGlobalEqLogic"><i class="fa fa-cogs"></i> {{Créer l'équipement global}}</a>
-			</div>
-		</div>
-		<?php } ?>
-  </fieldset>
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Fréquence de rafraichissement}}</label>
+            <div class="col-lg-4">
+                <select class="configKey form-control" data-l1key="refreshCron">
+                    <option value="cron" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron' ? 'selected="selected"' : ''; ?>>
+                        {{1 minute}}
+                    </option>
+                    <option value="cron5" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron5' ? 'selected="selected"' : ''; ?>>
+                        {{5 minutes}}
+                    </option>
+                    <option value="cron15" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron15' ? 'selected="selected"' : ''; ?>>
+                        {{15 minutes}}
+                    </option>
+                    <option value="cron30" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cron30' ? 'selected="selected"' : ''; ?>>
+                        {{30 minutes}}
+                    </option>
+                    <option value="cronHourly" <?php echo config::byKey('refreshCron', 'gsl', 'cron5') === 'cronHourly' ? 'selected="selected"' : ''; ?>>
+                        {{1 heure}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <?php if (!is_object(eqLogic::byLogicalId('global', 'gsl'))) { ?>
+            <div class="form-group">
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4">
+                    <a class="btn btn-default" id="bt_createGlobalEqLogic"><i class="fa fa-cogs"></i> {{Créer
+                        l'équipement global}}</a>
+                </div>
+            </div>
+        <?php } ?>
+    </fieldset>
 </form>
-<?php include_file('desktop', 'gsl', 'js', 'gsl');?>
+<?php include_file('desktop', 'gsl', 'js', 'gsl'); ?>

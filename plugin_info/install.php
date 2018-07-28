@@ -18,15 +18,18 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function gsl_install() {
-	gsl::createGlobalEqLogic();
+function gsl_install()
+{
+    gsl::createGlobalEqLogic();
 }
 
-function gsl_update() {
+function gsl_update()
+{
 }
 
 
-function gsl_remove() {
+function gsl_remove()
+{
 }
 
 ?>
