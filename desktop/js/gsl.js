@@ -96,8 +96,9 @@ function addCmdToTable(_cmd) {
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
     tr += '</td>';
     tr += '<td>';
-    tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
-    tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
+    tr += '<span class="cmdAttr" data-l1key="type"></span>';
+    tr += '<br/>';
+    tr += '<span class="cmdAttr" data-l1key="subType"></span>';
     tr += '</td>';
     tr += '<td>';
     if (is_numeric(_cmd.id)) {
