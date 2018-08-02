@@ -36,7 +36,7 @@
             panel(li);
         }
     });
-    displaySonos(_object_id);
+    displayGsl(_object_id);
 
     $(window).on("orientationchange", function (event) {
         setTileSize('.eqLogic');
@@ -44,13 +44,13 @@
     });
 }
 
-function displaySonos(_object_id) {
+function displayGsl(_object_id) {
     $.showLoading();
     $.ajax({
         type: 'POST',
         url: 'plugins/gsl/core/ajax/gsl.ajax.php',
         data: {
-            action: 'getSonos',
+            action: 'getGsl',
             object_id: _object_id,
             version: 'mview'
         },
