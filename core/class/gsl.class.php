@@ -183,20 +183,20 @@ class gsl extends eqLogic {
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$replace['#adresses#'] .= '<img class="pull-right" style="margin-top:5px;with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
-				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
-			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 60 : $replace['#height#'] / 2;
+			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 60 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl_global', 'gsl')));
 		} else {
 			$data = array($this->getId() => $this->buildLocation());
 			$replace['#adresses#'] .= '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
-			$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$this->getId()]['horodatage'] . '</span>';
+			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
-			$replace['#height-map#'] = $replace['#height#'] - 100;
+			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));
 		}
 	}
