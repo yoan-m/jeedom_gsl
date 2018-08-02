@@ -58,8 +58,13 @@ class gsl extends eqLogic {
 				$eqLogic->setEqType_name('gsl');
 				$eqLogic->setIsVisible(1);
 				$eqLogic->setIsEnable(1);
+				if($location['id'] !== 'global'){
+					$eqLogic->setConfiguration('isVisibleGlobal',1);
+				}
+				$eqLogic->setConfiguration('isVisiblePanel',1);
 				$eqLogic->save();
 			}
+			$changed = false;
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
 			$value = $location['lat'] . ',' . $location['long'];
 			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $value) || $changed;
@@ -192,6 +197,9 @@ class gsl extends eqLogic {
 			$eqLogics = self::byType('gsl', true);
 			foreach ($eqLogics as $eqLogic) {
 				if ($eqLogic->getLogicalId() == 'global') {
+					continue;
+				}
+				if(!$eqLogic->getConfiguration('isVisibleGlobal',0)) {
 					continue;
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
