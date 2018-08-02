@@ -1,5 +1,5 @@
 {
-  "name": "Jeedom Google Shared Locations",
+  "name": "JeedomGoogleSharedLocations",
   "version": "0.0.1",
   "description": "Node to get Google shared locations to Jeedom",
   "license": "GPL-3.0",

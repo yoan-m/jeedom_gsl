@@ -13,12 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-if (maps == undefined) {
+ if (maps == undefined) {
     var maps = {};
 }
 
 function createMap(_mapId, _logicalId) {
-    //debugger;
     $.ajax({
         type: 'POST',
         url: 'plugins/gsl/core/ajax/gsl.ajax.php',
@@ -83,7 +82,7 @@ function updateMarker(_mapId, loc) {
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
-function addCmdToTable(_cmd) {
+ function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
     }

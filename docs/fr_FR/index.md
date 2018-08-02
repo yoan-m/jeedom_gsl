@@ -10,7 +10,12 @@ Configuration
 
 La configuration du plugin nécessite une adresse gmail et son mot de passe. 
 Je vous conseille de créer un compte gmail dédié. 
-!IMPORTANT : La double authentification ne doit pas être activée.
+
+> **IMPORTANT**
+>
+> La double authentification ne doit pas être activée.
+
+
 Partager votre position depuis l'application Gmaps de votre smartphone avec le compte que vous venez de paramétrer.
 
 Choisissez la fréquence de rafraichissement des données (toutes les 5 minutes par défaut). 
