@@ -30,7 +30,7 @@ try {
 		if (init('logicalId') == 'global') {
 			$eqLogics = eqLogic::byType('gsl', true);
 		} else {
-			$eqLogics = eqLogic::byLogicalId(init('logicalId'), 'gsl');
+			$eqLogics = array(eqLogic::byLogicalId(init('logicalId'), 'gsl'));
 		}
 		if (count($eqLogics) === 0) {
 			throw new Exception(__('Aucun equipement', __FILE__));
