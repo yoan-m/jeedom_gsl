@@ -93,6 +93,19 @@ class gsl extends eqLogic {
 		}
 	}
 
+	public static function createGlobalEqLogic() {
+		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
+		if (!is_object($eqLogic)) {
+			$eqLogic = new eqLogic();
+			$eqLogic->setName('Global');
+			$eqLogic->setLogicalId('global');
+			$eqLogic->setEqType_name('gsl');
+			$eqLogic->setIsVisible(1);
+			$eqLogic->setIsEnable(1);
+			$eqLogic->save();
+		}
+	}
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	public function preSave() {
@@ -108,55 +121,55 @@ class gsl extends eqLogic {
 		if ($this->getLogicalId() == 'global') {
 			return;
 		}
-		$cmd = $eqLogic->getCmd(null, 'name');
+		$cmd = $this->getCmd(null, 'name');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('nom');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('name');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'coordinated');
+		$cmd = $this->getCmd(null, 'coordinated');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('coordonnees');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('coordinated');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'image');
+		$cmd = $this->getCmd(null, 'image');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('image');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('image');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'timestamp');
+		$cmd = $this->getCmd(null, 'timestamp');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('timestamp');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('timestamp');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'address');
+		$cmd = $this->getCmd(null, 'address');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('adresse');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('address');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
@@ -172,49 +185,62 @@ class gsl extends eqLogic {
 		$version = jeedom::versionAlias($_version);
 		$replace['#text_color#'] = $this->getConfiguration('text_color');
 		$replace['#version#'] = $_version;
-		$logicalId = $this->getLogicalId();
-
-		$replace['#logicalId#'] = $logicalId;
-		$replace['#script#'] = '<script src="/plugins/gsl/desktop/js/gsl.js"></script><script>createMap(' . $this->getId() . ', "' . $logicalId . '"); </script>';
-
-		if ($logicalId == 'global') {
-			$html = '';
-			$equipements = $this::byType('gsl', true);
-			foreach ($equipements as $eq) {
-				if ($eq->getLogicalId() == 'global') {
+		$replace['#logicalId#'] = $this->getLogicalId();
+		if ($this->getLogicalId() == 'global') {
+			$replace['#adresses#'] = '';
+			$data = array();
+			$eqLogics = self::byType('gsl', true);
+			foreach ($eqLogics as $eqLogic) {
+				if ($eqLogic->getLogicalId() == 'global') {
 					continue;
 				}
-				$html .= ('<img style="with:50px; height:50px;border-radius: 50%;" class="image_' . $eq->getLogicalId() . '"/>');
-				$html .= ('<span class="nom_' . $eq->getLogicalId() . '"></span>');
-				$html .= ('<div class="adresse_' . $eq->getLogicalId() . '"></div>');
-				$html .= ('<div class="horodatage_' . $eq->getLogicalId() . '"></div>');
-				$html .= ('<hr/>');
+				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
+				$replace['#adresses#'] .= '<img class="pull-right" style="margin-top:5px;with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
+				$replace['#adresses#'] .= '<hr/>';
 			}
-			$replace['#adresses#'] = $html;
-			if ($version == 'dashboard') {
-				$replace['#height-map#'] = $replace['#height#'] - 60;
-			} else {
-
-				$replace['#height-map#'] = $replace['#height#'] / 2;
-			}
+			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
+			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 60 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl_global', 'gsl')));
 		} else {
-			$replace['#height-map#'] = $replace['#height#'] - 100;
+			$data = array($this->getId() => $this->buildLocation());
+			$replace['#adresses#'] .= '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
+			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
+			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
+			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));
 		}
 	}
 
-	public static function createGlobalEqLogic() {
-		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
-		if (!is_object($eqLogic)) {
-			$eqLogic = new eqLogic();
-			$eqLogic->setName('Global');
-			$eqLogic->setLogicalId('global');
-			$eqLogic->setEqType_name('gsl');
-			$eqLogic->setIsVisible(1);
-			$eqLogic->setIsEnable(1);
-			$eqLogic->save();
+	public function buildLocation() {
+		if ($this->getLogicalId() == 'global') {
+			return;
 		}
+		$return = array(
+			'id' => $this->getLogicalId(),
+		);
+		$cmds = $this->getCmd();
+		foreach ($cmds as $cmd) {
+			$return[$cmd->getLogicalId()] = $cmd->execCmd();
+			if ($cmd->getName() != 'timestamp') {
+				continue;
+			}
+			$timestamp = $return[$cmd->getLogicalId()];
+			if (!$timestamp) {
+				continue;
+			}
+			$timestamp = (time() - ($timestamp / 1000));
+			if ($timestamp <= 60) {
+				$return['horodatage'] = 'à l\'instant';
+			} else if ($timestamp < 3600) {
+				$return['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
+			} else {
+				$return['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
+			}
+		}
+		return $return;
 	}
 
 	/*     * **********************Getteur Setteur*************************** */

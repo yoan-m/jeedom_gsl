@@ -13,75 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
- if (maps == undefined) {
-    var maps = {};
-}
-
-function createMap(_mapId, _logicalId) {
-    $.ajax({
-        type: 'POST',
-        url: 'plugins/gsl/core/ajax/gsl.ajax.php',
-        global: false,
-        data: {
-            action: 'getLocations',
-            id: _mapId,
-            logicalId: _logicalId
-        },
-        dataType: 'json',
-        error: function (request, status, error) {
-            handleAjaxError(request, status, error);
-        },
-        success: function (data) {
-            if (data.state != 'ok') {
-                $('#div_alert').showAlert({message: data.result, level: 'danger'});
-                return;
-            }
-            var map = L.map('map_' + _mapId, {
-                // Set latitude and longitude of the map center (required)
-                center: [51.5, -0.09],
-                // Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
-                zoom: 15
-            });
-            // create the tile layer with correct attribution
-            var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-            var osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-            var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib}).addTo(map);
-
-            var fg = L.featureGroup();
-            // And lets add it to our map.
-            fg.addTo(map);
-            maps[_mapId] = {};
-            maps[_mapId].map = map;
-            maps[_mapId].fg = fg;
-            for (var i = 0; i < data.result.length; i++) {
-                updateMarker(_mapId, data.result[i]);
-            }
-            map.fitBounds(fg.getBounds(), {padding: [30, 30]});
-        }
-    });
-}
-
-function updateMarker(_mapId, loc) {
-    var icon = L.icon({
-        iconUrl: loc.image,
-        shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
-
-        iconSize: [36, 36], // size of the icon
-        shadowSize: [50, 55], // size of the shadow
-        iconAnchor: [18, 47], // point of the icon which will correspond to marker's location
-        shadowAnchor: [25, 55],  // the same for the shadow
-        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-    L.marker(loc.coordonnees.split(','), {icon: icon}).addTo(maps[_mapId].fg);
-    $('.nom_' + loc.id).html(loc.nom);
-    $('.adresse_' + loc.id).html(loc.adresse);
-    $('.horodatage_' + loc.id).html(loc.horodatage);
-    $('.image_' + loc.id).attr('src', loc.image);
-}
-
-/*
- * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
- */
+ 
  function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
@@ -122,26 +54,9 @@ function printEqLogic(_eqLogic) {
     if (!isset(_eqLogic.configuration)) {
         _eqLogic.configuration = {};
     }
-
-
     if (_eqLogic.logicalId == 'global') {
         $('#cmdgeoloc').hide();
     } else {
         $('#cmdgeoloc').show();
     }
 }
-
-$('#bt_createGlobalEqLogic').on('click', function () {
-    $.ajax({
-        type: 'POST',
-        url: 'plugins/gsl/core/ajax/gsl.ajax.php',
-        global: false,
-        data: {
-            action: 'createGlobalEqLogic'
-        },
-        dataType: 'json',
-        success: function () {
-            $('#bt_createGlobalEqLogic').hide();
-        }
-    });
-});

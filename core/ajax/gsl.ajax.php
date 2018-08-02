@@ -20,60 +20,24 @@ try {
 	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 	include_file('core', 'authentification', 'php');
 
-	if (!isConnect('admin')) {
+	if (!isConnect()) {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}
 
 	ajax::init();
 
-	if (init('action') == 'getLocations') {
-		if (init('logicalId') == 'global') {
-			$eqLogics = eqLogic::byType('gsl', true);
-		} else {
-			$eqLogics = eqLogic::byLogicalId(init('logicalId'), 'gsl');
-		}
-		if (count($eqLogics) === 0) {
-			throw new Exception(__('Aucun equipement', __FILE__));
-		}
+	if (init('action') == 'getGsl') {
 		$return = array();
-		foreach ($eqLogics as $eqLogic) {
-			if ($eqLogic->getLogicalId() == 'global') {
+		$return['eqLogics'] = array();
+		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
+		$return['eqLogics'][] = $eqLogic->toHtml(init('version'));
+		foreach (gsl::byType('gsl', true) as $gsl) {
+			if ($gsl->getLogicalId() == 'global') {
 				continue;
 			}
-			if (!$eqLogic->getIsVisible()) {
-				continue;
-			}
-			$loc = array();
-			$cmds = $eqLogic->getCmd();
-			foreach ($cmds as $cmd) {
-				if ($cmd->getConfiguration('type') == 'command') {
-					continue;
-				}
-				$loc[$cmd->getName()] = $cmd->execCmd();
-				if ($cmd->getName() == 'timestamp') {
-					$timestamp = $cmd->execCmd();
-					if (!$timestamp) {
-						continue;
-					}
-					$timestamp = (time() - ($timestamp / 1000));
-					if ($timestamp <= 60) {
-						$loc['horodatage'] = 'à l\'instant';
-					} else if ($timestamp < 3600) {
-						$loc['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
-					} else {
-						$loc['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
-					}
-				}
-			}
-			$loc['id'] = $eqLogic->getLogicalId();
-			$return[] = $loc;
+			$return['eqLogics'][] = $gsl->toHtml(init('version'));
 		}
 		ajax::success($return);
-	}
-
-	if (init('action') == 'createGlobalEqLogic') {
-		gsl::createGlobalEqLogic();
-		ajax::success();
 	}
 
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
