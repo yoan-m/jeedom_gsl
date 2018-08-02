@@ -93,6 +93,19 @@ class gsl extends eqLogic {
 		}
 	}
 
+	public static function createGlobalEqLogic() {
+		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
+		if (!is_object($eqLogic)) {
+			$eqLogic = new eqLogic();
+			$eqLogic->setName('Global');
+			$eqLogic->setLogicalId('global');
+			$eqLogic->setEqType_name('gsl');
+			$eqLogic->setIsVisible(1);
+			$eqLogic->setIsEnable(1);
+			$eqLogic->save();
+		}
+	}
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	public function preSave() {
@@ -228,19 +241,6 @@ class gsl extends eqLogic {
 			}
 		}
 		return $return;
-	}
-
-	public static function createGlobalEqLogic() {
-		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
-		if (!is_object($eqLogic)) {
-			$eqLogic = new eqLogic();
-			$eqLogic->setName('Global');
-			$eqLogic->setLogicalId('global');
-			$eqLogic->setEqType_name('gsl');
-			$eqLogic->setIsVisible(1);
-			$eqLogic->setIsEnable(1);
-			$eqLogic->save();
-		}
 	}
 
 	/*     * **********************Getteur Setteur*************************** */
