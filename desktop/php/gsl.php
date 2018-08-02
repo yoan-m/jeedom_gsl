@@ -100,7 +100,7 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                 </div>
             </div>
             <div class="form-group" id="cmdgeoloc">
-                <label class="col-sm-2 control-label">{{Commande}}</label>
+                <label class="col-sm-3 control-label">{{Commande}}</label>
                 <div class="col-sm-3">
                     <div class="input-group">
                         <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdgeoloc">
