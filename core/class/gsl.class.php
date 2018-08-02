@@ -232,14 +232,7 @@ class gsl extends eqLogic {
 			if (!$timestamp) {
 				continue;
 			}
-			$timestamp = (time() - ($timestamp / 1000));
-			if ($timestamp <= 60) {
-				$return['horodatage'] = 'à l\'instant';
-			} else if ($timestamp < 3600) {
-				$return['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
-			} else {
-				$return['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
-			}
+			$return['horodatage'] = "le " . date("d/m/Y à H:i",$timestamp / 1000);
 		}
 		return $return;
 	}
