@@ -42,15 +42,6 @@ if (!isConnect()) {
                 <input class="configKey form-control" data-l1key="refresh::frequency" />
             </div>
         </div>
-        <?php if (!is_object(eqLogic::byLogicalId('global', 'gsl'))) {?>
-            <div class="form-group">
-                <div class="col-lg-4"></div>
-                <div class="col-lg-4">
-                    <a class="btn btn-default" id="bt_createGlobalEqLogic"><i class="fa fa-cogs"></i> {{Créer
-                        l'équipement global}}</a>
-                </div>
-            </div>
-        <?php }?>
     </fieldset>
 </form>
 <?php include_file('desktop', 'gsl', 'js', 'gsl');?>

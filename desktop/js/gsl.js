@@ -60,18 +60,3 @@ function printEqLogic(_eqLogic) {
         $('#cmdgeoloc').show();
     }
 }
-
-$('#bt_createGlobalEqLogic').on('click', function () {
-    $.ajax({
-        type: 'POST',
-        url: 'plugins/gsl/core/ajax/gsl.ajax.php',
-        global: false,
-        data: {
-            action: 'createGlobalEqLogic'
-        },
-        dataType: 'json',
-        success: function () {
-            $('#bt_createGlobalEqLogic').hide();
-        }
-    });
-});
