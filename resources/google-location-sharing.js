@@ -28,11 +28,13 @@ arg2_pass = process.argv[3];
 
 if (isUndefined(arg1_user)) {
     emitVerbose('error', "Error, missing user argument (Google e-mail account).\n" + "Usage: " + node_binary + " " + this_script + " user pass");
-    process.exit(5);
+	console.log(JSON.stringify(result));
+    process.exit(0);
 }
 if (isUndefined(arg2_pass)) {
     emitVerbose('error', "Error, missing pass argument.\n" + "Usage: " + node_binary + " " + this_script + " user pass");
-    process.exit(5);
+	console.log(JSON.stringify(result));
+    process.exit(0);
 }
 
 // Parameters
@@ -75,12 +77,6 @@ function isUndefined(arg) {
 
 function emitVerbose(type, arg) {
     result.log.push({'type': type, 'value': arg});
-    //console.error(arg); // console.trace();
-}
-
-function emitOutput(arg) {
-    result.result = arg;
-    //console.log(arg);
 }
 
 function emitUsers(users, callback) {
@@ -91,7 +87,7 @@ function emitUsers(users, callback) {
 			var u = users[j];
 			ret[u.id] = u;
 		}
-		emitOutput(ret);
+		result.result = ret;
 	}else{
 		emitVerbose('error', 'No locations shared');
 	}
@@ -106,7 +102,7 @@ function main() {
         if (err) {
             emitVerbose('error', "Error");
 			console.log(JSON.stringify(result));
-            process.exit(1);
+            process.exit(0);
         } else {
             /* Optionally logout from Google */
             emitVerbose('debug', "Done");
@@ -117,7 +113,9 @@ function main() {
 
     // Kill myself if we could not find the locations before a timeout
     setInterval(function () {
-        process.exit(2);
+		emitVerbose('error', 'Timeout');
+		console.log(JSON.stringify(result));
+        process.exit(0);
     }, Number(timeout_sec) * 1000);
 }
 
