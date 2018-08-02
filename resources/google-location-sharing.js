@@ -196,6 +196,7 @@ function connectFirstStage(callback) {
 
             if (response.statusCode !== 200) {
                 emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
@@ -258,6 +259,7 @@ function connectSecondStage(callback) {
 
             if (response.statusCode !== 200) {
                 emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
@@ -377,6 +379,7 @@ function connectFourthStage(callback) {
                 if (response.statusCode !== 302) {
                     emitVerbose('error', 'Removed cookies.');
                     emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+					emitVerbose('debug', response.body);
                     if (callback) callback(true);
                 } else {
                     // Save cookies etc.
