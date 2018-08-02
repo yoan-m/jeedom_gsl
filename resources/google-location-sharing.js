@@ -86,12 +86,15 @@ function emitOutput(arg) {
 function emitUsers(users, callback) {
     // Go through all users
     var ret = {};
-    for (var j = 0; j < users.length; j++) {
-        var u = users[j];
-        ret[u.id] = u;
-    }
-    emitOutput(ret);
-    console.log(JSON.stringify(result));
+	if(users !== undefined && users.length>0){
+		for (var j = 0; j < users.length; j++) {
+			var u = users[j];
+			ret[u.id] = u;
+		}
+		emitOutput(ret);
+	}else{
+		emitVerbose('error', 'No locations shared');
+	}
     callback(false); // No error
 }
 
@@ -102,10 +105,12 @@ function main() {
     querySharedLocations(function (err) {
         if (err) {
             emitVerbose('error', "Error");
+			console.log(JSON.stringify(result));
             process.exit(1);
         } else {
             /* Optionally logout from Google */
             emitVerbose('debug', "Done");
+			console.log(JSON.stringify(result));
             process.exit(0);
         }
     });
