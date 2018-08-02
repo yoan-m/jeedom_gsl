@@ -108,55 +108,55 @@ class gsl extends eqLogic {
 		if ($this->getLogicalId() == 'global') {
 			return;
 		}
-		$cmd = $eqLogic->getCmd(null, 'name');
+		$cmd = $this->getCmd(null, 'name');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('nom');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('name');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'coordinated');
+		$cmd = $this->getCmd(null, 'coordinated');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('coordonnees');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('coordinated');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'image');
+		$cmd = $this->getCmd(null, 'image');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('image');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('image');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'timestamp');
+		$cmd = $this->getCmd(null, 'timestamp');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('timestamp');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('timestamp');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
 
-		$cmd = $eqLogic->getCmd(null, 'address');
+		$cmd = $this->getCmd(null, 'address');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
 			$cmd->setName('adresse');
-			$cmd->setEqLogic_id($eqLogic->getId());
+			$cmd->setEqLogic_id($this->getId());
 			$cmd->setLogicalId('address');
 			$cmd->setType('info');
 			$cmd->setSubType('string');
