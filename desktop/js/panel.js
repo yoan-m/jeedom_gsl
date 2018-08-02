@@ -15,27 +15,35 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+ $('body').on('eqLogic::update',function(){
+  autosizeGslWidget()
+  setTimeout(function(){ autosizeGslWidget(); }, 100);
+  setTimeout(function(){ autosizeGslWidget(); }, 500);
+  setTimeout(function(){ autosizeGslWidget(); }, 750);
+  setTimeout(function(){ autosizeGslWidget(); }, 1000);
+});
+
  function autosizeGslWidget(){
-    var nbGslByLine = (nbGslWidget == 3) ? 2 : 3;
-    var totalWidth = $('#div_displayObject').width() + 20;
-    var totalHeight = $(window).outerHeight() - $('header').outerHeight() - $('#div_alert').outerHeight() - 20;
-    var gslWidth = (totalWidth / nbGslByLine) - (6 * nbGslByLine);
-    var gslHeight = (totalHeight / 2) - (2 * 2);
-    $('#div_displayObject .eqLogic-widget').each(function(){
-        if($(this).hasClass('gslGlobal')){
-            $(this).width(totalWidth - 23);
-            $(this).height(totalHeight / 2);
-            $(this).find('.leaflet-container').height( $(this).height() - 40)
-        }else{
-          $(this).width(gslWidth);
-          $(this).height(gslHeight);
-          $(this).find('.leaflet-container').height( $(this).height() - 80)
-      }
-      $(this).css('margin',widget_margin+'px');
+  var nbGslByLine = (nbGslWidget == 3) ? 2 : 3;
+  var totalWidth = $('#div_displayObject').width() + 20;
+  var totalHeight = $(window).outerHeight() - $('header').outerHeight() - $('#div_alert').outerHeight() - 20;
+  var gslWidth = (totalWidth / nbGslByLine) - (6 * nbGslByLine);
+  var gslHeight = (totalHeight / 2) - (2 * 2);
+  $('#div_displayObject .eqLogic-widget').each(function(){
+    if($(this).hasClass('gslGlobal')){
+      $(this).width(totalWidth - 23);
+      $(this).height(totalHeight / 2);
+      $(this).find('.leaflet-container').height( $(this).height() - 40)
+    }else{
+      $(this).width(gslWidth);
+      $(this).height(gslHeight);
+      $(this).find('.leaflet-container').height( $(this).height() - 80)
+    }
+    $(this).css('margin',widget_margin+'px');
   });
-    $('#div_displayObject').each(function(){
-        $(this).packery();
-    });
+  $('#div_displayObject').each(function(){
+    $(this).packery();
+  });
 }
 
 autosizeGslWidget();
