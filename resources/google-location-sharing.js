@@ -332,6 +332,7 @@ function connectThirdStage(callback) {
             if (response.statusCode !== 302) {
                 emitVerbose('error', 'Redirector http code 302 expected, but ' + response.statusCode + ' received.');
                 emitVerbose('error', 'Redirector expected, but not received!!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
