@@ -182,7 +182,7 @@ class gsl extends eqLogic {
 					continue;
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
-				$replace['#adresses#'] .= '<img style="with:50px; height:50px;border-radius: 50%;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$replace['#adresses#'] .= '<img class="pull-right" style="with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['name'] . '</span>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
