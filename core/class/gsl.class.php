@@ -260,7 +260,7 @@ class gsl extends eqLogic {
 		foreach (self::google_locationData() as $location) {
 			$eqLogic = eqLogic::byLogicalId($location['id'], 'gsl');
 			if (!is_object($eqLogic)) {
-				$eqLogic = new eqLogic();
+				$eqLogic = new gsl();
 				$eqLogic->setName($location['name']);
 				$eqLogic->setLogicalId($location['id']);
 				$eqLogic->setEqType_name('gsl');
@@ -301,7 +301,7 @@ class gsl extends eqLogic {
 	public static function createGlobalEqLogic() {
 		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 		if (!is_object($eqLogic)) {
-			$eqLogic = new eqLogic();
+			$eqLogic = new gsl();
 			$eqLogic->setName('Global');
 			$eqLogic->setLogicalId('global');
 			$eqLogic->setEqType_name('gsl');
