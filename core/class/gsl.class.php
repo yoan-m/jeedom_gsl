@@ -45,13 +45,14 @@ class gsl extends eqLogic {
 		curl_setopt($ch, CURLOPT_COOKIEFILE, jeedom::getTmpFolder('gsl') . '/cookies.txt');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 1);
 		$response = curl_exec($ch);
 		$info = curl_getinfo($ch);
 		curl_close($ch);
+		$headers = self::get_headers_from_curl_response($response);
 		log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) . $info['http_code']);
 		if (empty($info['http_code']) || $info['http_code'] != 200) {
-			throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code']);
+			throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
 		}
 		$result = substr($response, 4);
 		if (!is_json($result)) {
@@ -100,7 +101,6 @@ class gsl extends eqLogic {
 		curl_setopt($ch, CURLOPT_COOKIEFILE, jeedom::getTmpFolder('gsl') . '/cookies.txt');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		$response = curl_exec($ch);
 		$info = curl_getinfo($ch);
@@ -131,7 +131,6 @@ class gsl extends eqLogic {
 		curl_setopt($ch, CURLOPT_COOKIEFILE, jeedom::getTmpFolder('gsl') . '/cookies.txt');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Cookie' => 'GAPS=' . $data['cookie']['google.com']['GAPS']));
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -186,7 +185,6 @@ class gsl extends eqLogic {
 		curl_setopt($ch, CURLOPT_COOKIEFILE, jeedom::getTmpFolder('gsl') . '/cookies.txt');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_VERBOSE, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 			'Cookie' => 'GAPS=' . $data['cookie']['google.com']['GAPS'] . ';GALX=' . $data['cookie']['google.com']['GALX'],
@@ -291,7 +289,7 @@ class gsl extends eqLogic {
 				$eqLogic->refreshWidget();
 			}
 		}
-		if ($gChange) {
+		if ($gChange || true) {
 			$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 			if (is_object($eqLogic)) {
 				$eqLogic->updateDistance();
@@ -318,6 +316,11 @@ class gsl extends eqLogic {
 	public function preInsert() {
 		$this->setConfiguration('isVisiblePanel', 1);
 		$this->setConfiguration('isVisibleGlobal', 1);
+		if ($this->getLogicalId() == '') {
+			$this->setConfiguration('type', 'fix');
+			$this->setConfiguration('isVisiblePanel', 0);
+			$this->setConfiguration('isVisibleGlobal', 0);
+		}
 	}
 
 	public function preSave() {
@@ -341,17 +344,8 @@ class gsl extends eqLogic {
 		$refresh->setSubType('other');
 		$refresh->save();
 		if ($this->getLogicalId() == 'global') {
+			$this->buildDistanceCmd();
 			return;
-		}
-		$cmd = $this->getCmd(null, 'name');
-		if (!is_object($cmd)) {
-			$cmd = new cmd();
-			$cmd->setName('nom');
-			$cmd->setEqLogic_id($this->getId());
-			$cmd->setLogicalId('name');
-			$cmd->setType('info');
-			$cmd->setSubType('string');
-			$cmd->save();
 		}
 
 		$cmd = $this->getCmd(null, 'coordinated');
@@ -364,27 +358,40 @@ class gsl extends eqLogic {
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
-
-		$cmd = $this->getCmd(null, 'image');
-		if (!is_object($cmd)) {
-			$cmd = new cmd();
-			$cmd->setName('image');
-			$cmd->setEqLogic_id($this->getId());
-			$cmd->setLogicalId('image');
-			$cmd->setType('info');
-			$cmd->setSubType('string');
-			$cmd->save();
-		}
-
-		$cmd = $this->getCmd(null, 'address');
-		if (!is_object($cmd)) {
-			$cmd = new cmd();
-			$cmd->setName('adresse');
-			$cmd->setEqLogic_id($this->getId());
-			$cmd->setLogicalId('address');
-			$cmd->setType('info');
-			$cmd->setSubType('string');
-			$cmd->save();
+		if ($this->getConfiguration('type') == 'fix') {
+			$cmd = $this->getCmd(null, 'coordinated');
+			$cmd->event($this->getConfiguration('coordinated'));
+		} else {
+			$cmd = $this->getCmd(null, 'image');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('image');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('image');
+				$cmd->setType('info');
+				$cmd->setSubType('string');
+				$cmd->save();
+			}
+			$cmd = $this->getCmd(null, 'address');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('adresse');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('address');
+				$cmd->setType('info');
+				$cmd->setSubType('string');
+				$cmd->save();
+			}
+			$cmd = $this->getCmd(null, 'name');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('nom');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('name');
+				$cmd->setType('info');
+				$cmd->setSubType('string');
+				$cmd->save();
+			}
 		}
 	}
 
@@ -400,7 +407,7 @@ class gsl extends eqLogic {
 					if ($eqLogic2->getLogicalId() == 'global') {
 						continue;
 					}
-					if ($eqLogic1->getId() == $eqLogic2->get()) {
+					if ($eqLogic1->getId() == $eqLogic2->getId()) {
 						continue;
 					}
 					if (isset($distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()]) || isset($distances[$eqLogic2->getId() . '-' . $eqLogic1->getId()])) {
@@ -410,22 +417,22 @@ class gsl extends eqLogic {
 				}
 			}
 			foreach ($distances as $value) {
-				$cmd = $this->getCmd(null, $eqLogic1->getId() . '-' . $eqLogic2->getId());
+				$cmd = $this->getCmd(null, $value['eq1']->getId() . '-' . $value['eq2']->getId());
 				if (!is_object($cmd)) {
-					$cmd = $this->getCmd(null, $eqLogic2->getId() . '-' . $eqLogic1->getId());
+					$cmd = $this->getCmd(null, $value['eq2']->getId() . '-' . $value['eq1']->getId());
 				}
 				if (!is_object($cmd)) {
 					$cmd = new cmd();
-					$cmd->setName('Distance ' . $eqLogic1->getName() . ' ' . $eqLogic2->getName());
 					$cmd->setEqLogic_id($this->getId());
-					$cmd->setLogicalId($eqLogic1->getId() . '-' . $eqLogic2->getId());
+					$cmd->setLogicalId($value['eq1']->getId() . '-' . $value['eq2']->getId());
 					$cmd->setType('info');
 					$cmd->setSubType('numeric');
-					$cmd->setConfiguration('coordinated1', $eqLogic1->getCmd(null, 'coordinated')->getId());
-					$cmd->setConfiguration('coordinated2', $eqLogic2->getCmd(null, 'coordinated')->getId());
 					$cmd->setConfiguration('type', 'distances');
-					$cmd->save();
 				}
+				$cmd->setConfiguration('coordinated1', $value['eq1']->getCmd(null, 'coordinated')->getId());
+				$cmd->setConfiguration('coordinated2', $value['eq2']->getCmd(null, 'coordinated')->getId());
+				$cmd->setName('Distance ' . $value['eq1']->getName() . ' ' . $value['eq2']->getName());
+				$cmd->save();
 			}
 		}
 	}
@@ -439,16 +446,19 @@ class gsl extends eqLogic {
 			if ($cmd->getConfiguration('type') != 'distances') {
 				continue;
 			}
-			if (!isset($coordinated[$cmd->setConfiguration('coordinated1')])) {
-				$coordinated[$cmd->setConfiguration('coordinated1')] = cmd::cmdToValue('#' . $cmd->setConfiguration('coordinated1') . '#');
+			if (!isset($coordinated[$cmd->getConfiguration('coordinated1')])) {
+				$coordinated[$cmd->getConfiguration('coordinated1')] = cmd::cmdToValue('#' . $cmd->getConfiguration('coordinated1') . '#');
 			}
-			if (!isset($coordinated[$cmd->setConfiguration('coordinated2')])) {
-				$coordinated[$cmd->setConfiguration('coordinated2')] = cmd::cmdToValue('#' . $cmd->setConfiguration('coordinated2') . '#');
+			if (!isset($coordinated[$cmd->getConfiguration('coordinated2')])) {
+				$coordinated[$cmd->getConfiguration('coordinated2')] = cmd::cmdToValue('#' . $cmd->getConfiguration('coordinated2') . '#');
 			}
-			if (strpos($coordinated[$cmd->setConfiguration('coordinated1')], '#') !== false || strpos($coordinated[$cmd->setConfiguration('coordinated2')], '#') !== false) {
+			if (strpos($coordinated[$cmd->getConfiguration('coordinated1')], '#') !== false || strpos($coordinated[$cmd->getConfiguration('coordinated2')], '#') !== false) {
 				continue;
 			}
-			$cmd->event(self::distance($coordinated[$cmd->setConfiguration('coordinated1')], $coordinated[$cmd->setConfiguration('coordinated2')]));
+			if ($coordinated[$cmd->getConfiguration('coordinated1')] == '' || $coordinated[$cmd->getConfiguration('coordinated2')] == '') {
+				continue;
+			}
+			$cmd->event(self::distance($coordinated[$cmd->getConfiguration('coordinated1')], $coordinated[$cmd->getConfiguration('coordinated2')]));
 		}
 	}
 
