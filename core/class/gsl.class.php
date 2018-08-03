@@ -513,7 +513,7 @@ class gsl extends eqLogic {
 		$return = array(
 			'id' => $this->getLogicalId(),
 		);
-		$cmds = $this->getCmd();
+		$cmds = $this->getCmd('info');
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
 			if ($cmd->getLogicalId() != 'address') {
