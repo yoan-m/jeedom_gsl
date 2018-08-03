@@ -299,6 +299,11 @@ class gsl extends eqLogic {
 
 	/*     * *********************Méthodes d'instance************************* */
 
+	public function preInsert() {
+		$this->setConfiguration('isVisiblePanel', 1);
+		$this->setConfiguration('isVisibleGlobal', 1);
+	}
+
 	public function preSave() {
 		if ($this->getDisplay('height') == 'auto') {
 			$this->setDisplay('height', '270px');
