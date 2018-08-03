@@ -275,8 +275,9 @@ class gsl extends eqLogic {
 				$eqLogic->save();
 			}
 			$changed = false;
+			$timestamp = date("Y-m-d H:i:s", $location['timestamp'] / 1000);
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $location['timestamp']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
@@ -284,7 +285,7 @@ class gsl extends eqLogic {
 				$cmdUpdate->getEqLogic()->refreshWidget();
 			}
 			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $location['timestamp']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			if ($changed) {
 				$gChange = true;
 				$eqLogic->refreshWidget();
@@ -447,7 +448,7 @@ class gsl extends eqLogic {
 			if (!$timestamp) {
 				continue;
 			}
-			$return['horodatage'] = "le " . date("d/m/Y à H:i", $timestamp / 1000);
+			$return['horodatage'] = "le " . date("d/m/Y à H:i", strtotime($timestamp));
 		}
 		return $return;
 	}
