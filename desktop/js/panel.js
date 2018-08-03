@@ -35,12 +35,16 @@
       $(this).height(totalHeight / 2);
       $(this).find('.leaflet-container').height( $(this).height() - 40)
     }else{
-      $(this).width(gslWidth);
       $(this).height(gslHeight);
-      $(this).find('.leaflet-container').height( $(this).height() - 80)
-    }
-    $(this).css('margin',widget_margin+'px');
-  });
+      if(nbGslByLine == 1){
+        $(this).width(gslWidth - 17);
+     }else{
+       $(this).width(gslWidth);
+     }
+     $(this).find('.leaflet-container').height($(this).height() - 80)
+   }
+   $(this).css('margin',widget_margin+'px');
+ });
   $('#div_displayObject').each(function(){
     $(this).packery();
   });
