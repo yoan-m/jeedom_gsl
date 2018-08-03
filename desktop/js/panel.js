@@ -32,14 +32,18 @@ var widget_margin = 10;
   $('#div_displayObject .eqLogic-widget').each(function(){
     if($(this).hasClass('gslGlobal')){
       $(this).width(totalWidth - 23);
-      $(this).height(totalHeight / 2);
+      if(nbGslByLine>0) {
+          $(this).height(totalHeight / 2);
+      }else{
+          $(this).height(totalHeight);
+      }
       $(this).find('.leaflet-container').height( $(this).height() - 40)
     }else{
       $(this).height(gslHeight);
       if(nbGslByLine == 1){
         $(this).width(gslWidth - 17);
      }else{
-       $(this).width(gslWidth);
+       $(this).width(gslWidth - 10);
      }
      $(this).find('.leaflet-container').height($(this).height() - 80)
    }
