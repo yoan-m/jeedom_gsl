@@ -51,3 +51,7 @@ setTimeout(function(){ autosizeGslWidget(); }, 100);
 setTimeout(function(){ autosizeGslWidget(); }, 500);
 setTimeout(function(){ autosizeGslWidget(); }, 750);
 setTimeout(function(){ autosizeGslWidget(); }, 1000);
+
+$(window).resize(function() {
+  autosizeGslWidget();
+});
