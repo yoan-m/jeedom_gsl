@@ -54,7 +54,7 @@ class gsl extends eqLogic {
 		if (empty($info['http_code']) || $info['http_code'] != 200) {
 			throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
 		}
-		$result = substr($response, 4);
+		$result = substr($response, $info['header_size'] + 4);
 		if (!is_json($result)) {
 			throw new Exception(__('Erreur données de localisation n\'est pas un json valide : ', __FILE__) . $result);
 		}
