@@ -335,7 +335,7 @@ class gsl extends eqLogic {
 	public function postSave() {
 		$refresh = $this->getCmd(null, 'refresh');
 		if (!is_object($refresh)) {
-			$refresh = new weatherCmd();
+			$refresh = new gslCmd();
 			$refresh->setName(__('Rafraichir', __FILE__));
 		}
 		$refresh->setEqLogic_id($this->getId());
