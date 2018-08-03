@@ -9,9 +9,11 @@ sendVarToJs('jeedomBackgroundImg', 'plugins/gsl/core/img/panel.jpg');
         <br/>
 		<?php
 		echo '<div class="div_displayEquipement" style="width: 100%;">';
+		$count = 0;
 		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 		if($eqLogic->getConfiguration('isVisiblePanel',0)) {
 			echo $eqLogic->toHtml('dview');
+			$count++;
 		}
 		$gsls = gsl::byType('gsl', true);
 		foreach ($gsls as $gsl) {
@@ -20,10 +22,11 @@ sendVarToJs('jeedomBackgroundImg', 'plugins/gsl/core/img/panel.jpg');
 			}
 			if($gsl->getConfiguration('isVisiblePanel',0)) {
 				echo $gsl->toHtml('dview');
+				$count++;
 			}
 		}
 		echo '</div>';
-		sendVarToJs('nbGslWidget', count($gsls));
+		sendVarToJs('nbGslWidget', $count);
 		?>
     </div>
     </div>
