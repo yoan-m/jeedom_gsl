@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
-
+var widget_margin = 10;
  $('body').on('eqLogic::update',function(){
   autosizeGslWidget()
   setTimeout(function(){ autosizeGslWidget(); }, 100);
