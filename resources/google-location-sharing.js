@@ -28,11 +28,13 @@ arg2_pass = process.argv[3];
 
 if (isUndefined(arg1_user)) {
     emitVerbose('error', "Error, missing user argument (Google e-mail account).\n" + "Usage: " + node_binary + " " + this_script + " user pass");
-    process.exit(5);
+	console.log(JSON.stringify(result));
+    process.exit(0);
 }
 if (isUndefined(arg2_pass)) {
     emitVerbose('error', "Error, missing pass argument.\n" + "Usage: " + node_binary + " " + this_script + " user pass");
-    process.exit(5);
+	console.log(JSON.stringify(result));
+    process.exit(0);
 }
 
 // Parameters
@@ -75,23 +77,20 @@ function isUndefined(arg) {
 
 function emitVerbose(type, arg) {
     result.log.push({'type': type, 'value': arg});
-    //console.error(arg); // console.trace();
-}
-
-function emitOutput(arg) {
-    result.result = arg;
-    //console.log(arg);
 }
 
 function emitUsers(users, callback) {
     // Go through all users
     var ret = {};
-    for (var j = 0; j < users.length; j++) {
-        var u = users[j];
-        ret[u.id] = u;
-    }
-    emitOutput(ret);
-    console.log(JSON.stringify(result));
+	if(users !== undefined && users.length>0){
+		for (var j = 0; j < users.length; j++) {
+			var u = users[j];
+			ret[u.id] = u;
+		}
+		result.result = ret;
+	}else{
+		emitVerbose('error', 'No locations shared');
+	}
     callback(false); // No error
 }
 
@@ -102,17 +101,21 @@ function main() {
     querySharedLocations(function (err) {
         if (err) {
             emitVerbose('error', "Error");
-            process.exit(1);
+			console.log(JSON.stringify(result));
+            process.exit(0);
         } else {
             /* Optionally logout from Google */
             emitVerbose('debug', "Done");
+			console.log(JSON.stringify(result));
             process.exit(0);
         }
     });
 
     // Kill myself if we could not find the locations before a timeout
     setInterval(function () {
-        process.exit(2);
+		emitVerbose('error', 'Timeout');
+		console.log(JSON.stringify(result));
+        process.exit(0);
     }, Number(timeout_sec) * 1000);
 }
 
@@ -193,6 +196,7 @@ function connectFirstStage(callback) {
 
             if (response.statusCode !== 200) {
                 emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
@@ -255,6 +259,7 @@ function connectSecondStage(callback) {
 
             if (response.statusCode !== 200) {
                 emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
@@ -327,6 +332,7 @@ function connectThirdStage(callback) {
             if (response.statusCode !== 302) {
                 emitVerbose('error', 'Redirector http code 302 expected, but ' + response.statusCode + ' received.');
                 emitVerbose('error', 'Redirector expected, but not received!!');
+                emitVerbose('debug', response.body);
                 if (callback) callback(true);
             } else {
                 // Save cookies etc.
@@ -373,6 +379,7 @@ function connectFourthStage(callback) {
                 if (response.statusCode !== 302) {
                     emitVerbose('error', 'Removed cookies.');
                     emitVerbose('error', 'Connection works, but authorization failure (wrong password?)!');
+					emitVerbose('debug', response.body);
                     if (callback) callback(true);
                 } else {
                     // Save cookies etc.

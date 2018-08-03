@@ -1,43 +1,40 @@
 <div class="eqLogic-widget eqLogic allowResize gslGlobal" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
-  <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
-  <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center>
-  <div class="row" style="margin-right:0px;margin-left:0px">
-    <div class="col-sm-8">
-      <div id="map_#id#"></div>
+    <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
+    <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center>
+    <div class="row" style="margin-right:0px;margin-left:0px">
+        <div class="col-sm-8">
+            <div id="map_#id#"></div>
+        </div>
+        <div class="col-sm-4">#adresses#</div>
     </div>
-    <div class="col-sm-4">#adresses#</div>
-  </div>
-  <style>
-  #map_#id# {
+
+<style>
+#map_#id# {
     width: 100%;
     height: #height-map#px;
-  }
-  .leaflet-marker-icon {
+}
+#map_#id# .leaflet-marker-icon {
     border-radius: 50% !important;
-  }
+}
 </style>
 <script src="/plugins/gsl/3rparty/leaflet.js"></script>
 <script type="text/javascript">
-  var maps#id# = {};
-  var data#id#=JSON.parse('#json#')
-  var map#id# = L.map('map_#id#', {center: [51.5, -0.09],zoom: 15});
-  new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
-  var fg#id# = L.featureGroup();
-  fg#id#.addTo(map#id#);
-  maps#id#[#id#] = {};
-  maps#id#[#id#].map = map#id#;
-  maps#id#[#id#].fg = fg#id#;
-  for (var i in data#id#) {
+   var data#id#=JSON.parse('#json#')
+   var map#id# = L.map('map_' + #id#, {center: [51.5, -0.09],zoom: 15});
+   new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
+   var fg#id# = L.featureGroup();
+   fg#id#.addTo(map#id#);
+   for (var i in data#id#) {
     L.marker(data#id#[i].coordinated.split(','), {icon:  L.icon({
-      iconUrl: data#id#[i].image,
-      shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
-      iconSize: [36, 36],
-      shadowSize: [50, 55], 
-      iconAnchor: [18, 47], 
-      shadowAnchor: [25, 55],  
-      popupAnchor: [-3, -76]
-    })}).addTo(maps#id#[#id#].fg);
-  }
-  map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
+        iconUrl: data#id#[i].image,
+        shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
+        iconSize: [36, 36],
+        shadowSize: [50, 55], 
+        iconAnchor: [18, 47], 
+        shadowAnchor: [25, 55],  
+        popupAnchor: [-3, -76]
+    })}).addTo(fg#id#);
+}
+map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
 </script>
 </div>

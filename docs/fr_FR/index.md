@@ -2,8 +2,8 @@ Description
 ===
 
 Plugin qui récupère les geolocalisations partagées avec Google.
-L'affichage est parametrable au sein du plugin.
-Les coordonnées peuvent être envoyées à d'atures plugins Geoloc, Geotrav, Jeeloc, etc...
+L'affichage est paramétrable au sein du plugin.
+Les coordonnées peuvent être envoyées à d'autres plugins Geoloc, Geotrav, Jeeloc, etc...
 
 Configuration
 ===
@@ -14,6 +14,8 @@ Je vous conseille de créer un compte gmail dédié.
 > **IMPORTANT**
 >
 > La double authentification ne doit pas être activée.
+>
+> Avant de pouvoir utiliser le plugin il faut s'être authentifié au moins une fois depuis votre adresse IP au compte Google configuré.
 
 
 Partager votre position depuis l'application Gmaps de votre smartphone avec le compte que vous venez de paramétrer.

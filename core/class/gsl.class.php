@@ -58,8 +58,13 @@ class gsl extends eqLogic {
 				$eqLogic->setEqType_name('gsl');
 				$eqLogic->setIsVisible(1);
 				$eqLogic->setIsEnable(1);
+				if($location['id'] !== 'global'){
+					$eqLogic->setConfiguration('isVisibleGlobal',1);
+				}
+				$eqLogic->setConfiguration('isVisiblePanel',1);
 				$eqLogic->save();
 			}
+			$changed = false;
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
 			$value = $location['lat'] . ',' . $location['long'];
 			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $value) || $changed;
@@ -194,6 +199,9 @@ class gsl extends eqLogic {
 				if ($eqLogic->getLogicalId() == 'global') {
 					continue;
 				}
+				if(!$eqLogic->getConfiguration('isVisibleGlobal',0)) {
+					continue;
+				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$replace['#adresses#'] .= '<img class="pull-right" style="margin-top:5px;with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
@@ -214,6 +222,7 @@ class gsl extends eqLogic {
 		}
 	}
 
+
 	public function buildLocation() {
 		if ($this->getLogicalId() == 'global') {
 			return;
@@ -231,14 +240,7 @@ class gsl extends eqLogic {
 			if (!$timestamp) {
 				continue;
 			}
-			$timestamp = (time() - ($timestamp / 1000));
-			if ($timestamp <= 60) {
-				$return['horodatage'] = 'à l\'instant';
-			} else if ($timestamp < 3600) {
-				$return['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
-			} else {
-				$return['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
-			}
+			$return['horodatage'] = "le " . date("d/m/Y à H:i",$timestamp / 1000);
 		}
 		return $return;
 	}
