@@ -24,7 +24,7 @@
 });
 
  function autosizeGslWidget(){
-  var nbGslByLine = (nbGslWidget == 3) ? 2 : 3;
+  var nbGslByLine = (nbGslWidget > 3) ? 3 : nbGslWidget - 1;
   var totalWidth = $('#div_displayObject').width() + 20;
   var totalHeight = $(window).outerHeight() - $('header').outerHeight() - $('#div_alert').outerHeight() - 20;
   var gslWidth = (totalWidth / nbGslByLine) - (6 * nbGslByLine);
@@ -47,3 +47,7 @@
 }
 
 autosizeGslWidget();
+setTimeout(function(){ autosizeGslWidget(); }, 100);
+setTimeout(function(){ autosizeGslWidget(); }, 500);
+setTimeout(function(){ autosizeGslWidget(); }, 750);
+setTimeout(function(){ autosizeGslWidget(); }, 1000);

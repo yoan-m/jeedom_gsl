@@ -6,7 +6,6 @@
 	"author" : "kaktusatomik",
 	"require" : "3.2",
 	"category" : "organization",
-	"hasDependency" : true,
 	"display" : "panel",
 	"mobile" : "panel",
 	"maxDependancyInstallTime" : 0,
