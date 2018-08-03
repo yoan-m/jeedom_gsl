@@ -1,24 +1,3 @@
-/**
- * Obtain shared locations from your Google contacts.
- * (To obtain your location, you may have to create a dummy Google account and share your location with it)
- *
- * Adapted by Mark Ruvald Pedersen from [1] to stand-alone usage without ioBroker.
- * ioBroker seems like a cool IoT home-automation project, but I don't happen to use it (yet).
- * Obtaining shared Google locations has many potential uses, enough to want it as a primitive operation.
- *
- * Potential uses include:
- *  - Controlling heating with geo-fence around your house (ioBroker probably does this already).
- *  - Logging / spying.
- *  - Logging without extra 3rd party android app (built into Android/GAPPS).
- *  - Create many geo-fences on your Raspberry Pi having complex rules (sequence points, time windows).
- *  - Validating the reported Android Debug mock/fake GPS location.
- *  - Integration with WiGLE WiFi database.
- *
- * TODO:
- *  - Let password be read from a file. NOTE: Passing your password on the command line makes it visible to all users on your system!
- *
- * [1] https://github.com/t4qjXH8N/ioBroker.google-sharedlocations
- */
 const request = require('request');
 var result = {log: [], result: {}};
 node_binary = process.argv[0];
