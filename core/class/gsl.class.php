@@ -413,6 +413,9 @@ class gsl extends eqLogic {
 					if (isset($distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()]) || isset($distances[$eqLogic2->getId() . '-' . $eqLogic1->getId()])) {
 						continue;
 					}
+					if (!is_object($eqLogic1->getCmd(null, 'coordinated')) || !is_object($eqLogic2->getCmd(null, 'coordinated'))) {
+						continue;
+					}
 					$distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()] = array('eq1' => $eqLogic1, 'eq2' => $eqLogic2);
 				}
 			}
