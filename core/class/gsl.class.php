@@ -278,8 +278,9 @@ class gsl extends eqLogic {
 
 	public static function cron() {
 		$dateRun = new DateTime();
-		$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '* * * * *'), new Cron\FieldFactory);
+		$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '*/5 * * * *'), new Cron\FieldFactory);
 		if ($c->isDue($dateRun)) {
+			sleep(rand(0, 90));
 			self::pull();
 		}
 	}
