@@ -276,14 +276,14 @@ class gsl extends eqLogic {
 			$timestamp = date("Y-m-d H:i:s", $location['timestamp'] / 1000);
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
 				$cmdUpdate->event($location['coordinated']);
 				$cmdUpdate->getEqLogic()->refreshWidget();
 			}
-			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			if ($changed) {
 				$gChange = true;
 				$eqLogic->refreshWidget();
