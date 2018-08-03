@@ -234,7 +234,15 @@ class gsl extends eqLogic {
 		return $headers;
 	}
 
-	public static function pull() {
+	public static function pull($_force = false) {
+		if (!$_force) {
+			$dateRun = new DateTime();
+			$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '*/5 * * * *'), new Cron\FieldFactory);
+			if (!$c->isDue($dateRun)) {
+				return;
+			}
+			sleep(rand(0, 90));
+		}
 		$gChange = false;
 		foreach (self::google_locationData() as $location) {
 			$eqLogic = eqLogic::byLogicalId($location['id'], 'gsl');
@@ -273,15 +281,6 @@ class gsl extends eqLogic {
 			if (is_object($eqLogic)) {
 				$eqLogic->refreshWidget();
 			}
-		}
-	}
-
-	public static function cron() {
-		$dateRun = new DateTime();
-		$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '*/5 * * * *'), new Cron\FieldFactory);
-		if ($c->isDue($dateRun)) {
-			sleep(rand(0, 90));
-			self::pull();
 		}
 	}
 
