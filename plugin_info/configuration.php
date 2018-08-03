@@ -42,6 +42,33 @@ if (!isConnect()) {
                 <input class="configKey form-control" data-l1key="refresh::frequency" />
             </div>
         </div>
-    </fieldset>
+        <div class="form-group">
+           <label class="col-lg-4 control-label">{{Forcer déconnexion}}</label>
+           <div class="col-lg-2">
+              <a class="btn btn-default" id="bt_logoutGsl"><i class='fa fa-sign-out'></i> {{Déconnexion}}</a>
+          </div>
+      </div>
+  </fieldset>
 </form>
-<?php include_file('desktop', 'gsl', 'js', 'gsl');?>
+<script>
+    $('#bt_logoutGsl').on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "plugins/gsl/core/ajax/gsl.ajax.php",
+            data: {
+                action: "logout",
+            },
+            dataType: 'json',
+            error: function (request, status, error) {
+                handleAjaxError(request, status, error);
+            },
+            success: function (data) {
+                if (data.state != 'ok') {
+                    $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                    return;
+                }
+                $('#div_alert').showAlert({message: '{{Déconnexion réussie}}', level: 'success'});
+            }
+        });
+    });
+</script>
