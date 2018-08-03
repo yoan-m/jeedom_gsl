@@ -486,6 +486,9 @@ class gsl extends eqLogic {
 				if (!$eqLogic->getConfiguration('isVisibleGlobal', 0)) {
 					continue;
 				}
+				if($eqLogic->getConfiguration('type') == 'fix'){
+					continue;
+				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$replace['#adresses#'] .= '<img class="pull-right" style="margin-top:5px;with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
