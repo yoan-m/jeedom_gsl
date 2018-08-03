@@ -58,24 +58,3 @@ echo "********************************************************"
 echo "*             Installation terminée                    *"
 echo "********************************************************"
 rm ${PROGRESS_FILE}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-sh dependencies.sh ${1} ${2}
-
-rm ${PROGRESS_FILE}
-
-echo "Fin de l'installation"
