@@ -294,6 +294,7 @@ class gsl extends eqLogic {
 		if ($gChange) {
 			$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 			if (is_object($eqLogic)) {
+				$eqLogic->updateDistance();
 				$eqLogic->refreshWidget();
 			}
 		}
@@ -384,6 +385,70 @@ class gsl extends eqLogic {
 			$cmd->setType('info');
 			$cmd->setSubType('string');
 			$cmd->save();
+		}
+	}
+
+	public function buildDistanceCmd() {
+		$distances = array();
+		$eqLogics = self::byType('gsl');
+		if (count($eqLogics) > 2) {
+			foreach ($eqLogics as $eqLogic1) {
+				if ($eqLogic1->getLogicalId() == 'global') {
+					continue;
+				}
+				foreach ($eqLogics as $eqLogic2) {
+					if ($eqLogic2->getLogicalId() == 'global') {
+						continue;
+					}
+					if ($eqLogic1->getId() == $eqLogic2->get()) {
+						continue;
+					}
+					if (isset($distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()]) || isset($distances[$eqLogic2->getId() . '-' . $eqLogic1->getId()])) {
+						continue;
+					}
+					$distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()] = array('eq1' => $eqLogic1, 'eq2' => $eqLogic2);
+				}
+			}
+			foreach ($distances as $value) {
+				$cmd = $this->getCmd(null, $eqLogic1->getId() . '-' . $eqLogic2->getId());
+				if (!is_object($cmd)) {
+					$cmd = $this->getCmd(null, $eqLogic2->getId() . '-' . $eqLogic1->getId());
+				}
+				if (!is_object($cmd)) {
+					$cmd = new cmd();
+					$cmd->setName('Distance ' . $eqLogic1->getName() . ' ' . $eqLogic2->getName());
+					$cmd->setEqLogic_id($this->getId());
+					$cmd->setLogicalId($eqLogic1->getId() . '-' . $eqLogic2->getId());
+					$cmd->setType('info');
+					$cmd->setSubType('numeric');
+					$cmd->setConfiguration('coordinated1', $eqLogic1->getCmd(null, 'coordinated')->getId());
+					$cmd->setConfiguration('coordinated2', $eqLogic2->getCmd(null, 'coordinated')->getId());
+					$cmd->setConfiguration('type', 'distances');
+					$cmd->save();
+				}
+			}
+		}
+	}
+
+	public function updateDistance() {
+		if ($this->getLogicalId() != 'global') {
+			return;
+		}
+		$coordinated = array();
+		foreach ($this->getCmd('info') as $cmd) {
+			if ($cmd->getConfiguration('type') != 'distances') {
+				continue;
+			}
+			if (!isset($coordinated[$cmd->setConfiguration('coordinated1')])) {
+				$coordinated[$cmd->setConfiguration('coordinated1')] = cmd::cmdToValue('#' . $cmd->setConfiguration('coordinated1') . '#');
+			}
+			if (!isset($coordinated[$cmd->setConfiguration('coordinated2')])) {
+				$coordinated[$cmd->setConfiguration('coordinated2')] = cmd::cmdToValue('#' . $cmd->setConfiguration('coordinated2') . '#');
+			}
+			if (strpos($coordinated[$cmd->setConfiguration('coordinated1')], '#') !== false || strpos($coordinated[$cmd->setConfiguration('coordinated2')], '#') !== false) {
+				continue;
+			}
+			$cmd->event(self::distance($coordinated[$cmd->setConfiguration('coordinated1')], $coordinated[$cmd->setConfiguration('coordinated2')]));
 		}
 	}
 
