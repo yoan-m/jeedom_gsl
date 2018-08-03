@@ -289,7 +289,7 @@ class gsl extends eqLogic {
 				$eqLogic->refreshWidget();
 			}
 		}
-		if ($gChange || true) {
+		if ($gChange) {
 			$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 			if (is_object($eqLogic)) {
 				$eqLogic->updateDistance();
