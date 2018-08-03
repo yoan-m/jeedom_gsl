@@ -1,4 +1,11 @@
 <div class="eqLogic-widget eqLogic allowResize" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
+  <span class="pull-left" style="margin-top: 2px;margin-left: 2px;" title="#alert_name#">
+    <i class='#alert_icon#'></i>
+  </span>
+  <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" style="margin-top: 2px;margin-right: 2px;">
+    <i class='fa fa-refresh'></i>
+  </span>
+  <span class="statusCmd pull-left" style="margin-top: 2px;margin-right: 2px;width:30px;"></span>
   <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
   <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center>
   <div class="row" style="margin-right:0px;margin-left:0px">
@@ -13,8 +20,8 @@
 </div>
 <style>
 #map_#id# {
-    width: 100%;
-    height: #height-map#px;
+  width: 100%;
+  height: #height-map#px;
 }
 #map_#id# .leaflet-marker-icon {
   border-radius: 50% !important;
@@ -22,6 +29,13 @@
 </style>
 <script src="/plugins/gsl/3rparty/leaflet.js"></script>
 <script type="text/javascript">
+  if ('#refresh_id#' != ''){
+      $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
+        jeedom.cmd.execute({id: '#refresh_id#'});
+      });
+    }else{
+      $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
+    }
   setTimeout(function(){
    var maps#id# = {};
    var data#id#=JSON.parse('#json#')

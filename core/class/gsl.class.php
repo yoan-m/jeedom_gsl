@@ -261,7 +261,7 @@ class gsl extends eqLogic {
 			}
 			$changed = false;
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $location['timestamp']) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
@@ -269,8 +269,7 @@ class gsl extends eqLogic {
 				$cmdUpdate->getEqLogic()->refreshWidget();
 			}
 			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('timestamp', $location['timestamp']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $location['timestamp']) || $changed;
 			if ($changed) {
 				$gChange = true;
 				$eqLogic->refreshWidget();
@@ -314,6 +313,16 @@ class gsl extends eqLogic {
 	}
 
 	public function postSave() {
+		$refresh = $this->getCmd(null, 'refresh');
+		if (!is_object($refresh)) {
+			$refresh = new weatherCmd();
+			$refresh->setName(__('Rafraichir', __FILE__));
+		}
+		$refresh->setEqLogic_id($this->getId());
+		$refresh->setLogicalId('refresh');
+		$refresh->setType('action');
+		$refresh->setSubType('other');
+		$refresh->save();
 		if ($this->getLogicalId() == 'global') {
 			return;
 		}
@@ -350,17 +359,6 @@ class gsl extends eqLogic {
 			$cmd->save();
 		}
 
-		$cmd = $this->getCmd(null, 'timestamp');
-		if (!is_object($cmd)) {
-			$cmd = new cmd();
-			$cmd->setName('timestamp');
-			$cmd->setEqLogic_id($this->getId());
-			$cmd->setLogicalId('timestamp');
-			$cmd->setType('info');
-			$cmd->setSubType('string');
-			$cmd->save();
-		}
-
 		$cmd = $this->getCmd(null, 'address');
 		if (!is_object($cmd)) {
 			$cmd = new cmd();
@@ -382,6 +380,10 @@ class gsl extends eqLogic {
 		$replace['#text_color#'] = $this->getConfiguration('text_color');
 		$replace['#version#'] = $_version;
 		$replace['#logicalId#'] = $this->getLogicalId();
+		$refresh = $this->getCmd(null, 'refresh');
+		if (is_object($refresh)) {
+			$replace['#refresh_id#'] = $refresh->getId();
+		}
 		if ($this->getLogicalId() == 'global') {
 			$replace['#adresses#'] = '';
 			$data = array();
@@ -423,10 +425,10 @@ class gsl extends eqLogic {
 		$cmds = $this->getCmd();
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
-			if ($cmd->getName() != 'timestamp') {
+			if ($cmd->getLogicalId() != 'address') {
 				continue;
 			}
-			$timestamp = $return[$cmd->getLogicalId()];
+			$timestamp = $cmd->getCollectDate();
 			if (!$timestamp) {
 				continue;
 			}
@@ -446,7 +448,9 @@ class gslCmd extends cmd {
 	/*     * *********************Methode d'instance************************* */
 
 	public function execute($_options = array()) {
-
+		if ($this->getLogicalId() == 'refresh') {
+			gsl::pull(true);
+		}
 	}
 
 	/*     * **********************Getteur Setteur*************************** */
