@@ -358,6 +358,12 @@ class gsl extends eqLogic {
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
+		$cmdgeoloc = $this->getConfiguration('cmdgeoloc', null);
+		if ($cmdgeoloc !== null) {
+			$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
+			$cmdUpdate->event($cmd->execCmd());
+			$cmdUpdate->getEqLogic()->refreshWidget();
+		}
 		if ($this->getConfiguration('type') == 'fix') {
 			$cmd = $this->getCmd(null, 'coordinated');
 			$cmd->event($this->getConfiguration('coordinated'));
