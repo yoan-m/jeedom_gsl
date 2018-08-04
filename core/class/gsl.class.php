@@ -66,6 +66,9 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_locationData() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			self::google_connect();
+		}
 		try {
 			$result = self::google_callLocationUrl();
 		} catch (Exception $e) {
@@ -93,6 +96,7 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_connect() {
+		self::google_logout();
 		$data = array();
 		/*************************STAGE 1*******************************/
 		log::add('gsl', 'debug', __('Stage 1 : Connection à google', __FILE__));
