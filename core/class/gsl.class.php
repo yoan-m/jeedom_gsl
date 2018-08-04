@@ -54,7 +54,7 @@ class gsl extends eqLogic {
 		if (empty($info['http_code']) || $info['http_code'] != 200) {
 			throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
 		}
-		$result = substr($response, 4);
+		$result = substr($response, $info['header_size'] + 4);
 		if (!is_json($result)) {
 			throw new Exception(__('Erreur données de localisation n\'est pas un json valide : ', __FILE__) . $result);
 		}
@@ -260,7 +260,7 @@ class gsl extends eqLogic {
 		foreach (self::google_locationData() as $location) {
 			$eqLogic = eqLogic::byLogicalId($location['id'], 'gsl');
 			if (!is_object($eqLogic)) {
-				$eqLogic = new eqLogic();
+				$eqLogic = new gsl();
 				$eqLogic->setName($location['name']);
 				$eqLogic->setLogicalId($location['id']);
 				$eqLogic->setEqType_name('gsl');
@@ -276,20 +276,20 @@ class gsl extends eqLogic {
 			$timestamp = date("Y-m-d H:i:s", $location['timestamp'] / 1000);
 			$changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
 				$cmdUpdate->event($location['coordinated']);
 				$cmdUpdate->getEqLogic()->refreshWidget();
 			}
-			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			if ($changed) {
 				$gChange = true;
 				$eqLogic->refreshWidget();
 			}
 		}
-		if ($gChange || true) {
+		if ($gChange) {
 			$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 			if (is_object($eqLogic)) {
 				$eqLogic->updateDistance();
@@ -301,7 +301,7 @@ class gsl extends eqLogic {
 	public static function createGlobalEqLogic() {
 		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 		if (!is_object($eqLogic)) {
-			$eqLogic = new eqLogic();
+			$eqLogic = new gsl();
 			$eqLogic->setName('Global');
 			$eqLogic->setLogicalId('global');
 			$eqLogic->setEqType_name('gsl');
@@ -335,7 +335,7 @@ class gsl extends eqLogic {
 	public function postSave() {
 		$refresh = $this->getCmd(null, 'refresh');
 		if (!is_object($refresh)) {
-			$refresh = new weatherCmd();
+			$refresh = new gslCmd();
 			$refresh->setName(__('Rafraichir', __FILE__));
 		}
 		$refresh->setEqLogic_id($this->getId());
@@ -413,6 +413,9 @@ class gsl extends eqLogic {
 					if (isset($distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()]) || isset($distances[$eqLogic2->getId() . '-' . $eqLogic1->getId()])) {
 						continue;
 					}
+					if (!is_object($eqLogic1->getCmd(null, 'coordinated')) || !is_object($eqLogic2->getCmd(null, 'coordinated'))) {
+						continue;
+					}
 					$distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()] = array('eq1' => $eqLogic1, 'eq2' => $eqLogic2);
 				}
 			}
@@ -484,6 +487,9 @@ class gsl extends eqLogic {
 					continue;
 				}
 				if (!$eqLogic->getConfiguration('isVisibleGlobal', 0)) {
+					continue;
+				}
+				if ($eqLogic->getConfiguration('type') == 'fix') {
 					continue;
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
