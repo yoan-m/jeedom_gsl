@@ -72,7 +72,6 @@ class gsl extends eqLogic {
 		try {
 			$result = self::google_callLocationUrl();
 		} catch (Exception $e) {
-			self::google_logout();
 			self::google_connect();
 			$result = self::google_callLocationUrl();
 		}
@@ -92,6 +91,9 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_logout() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			return;
+		}
 		unlink(jeedom::getTmpFolder('gsl') . '/cookies.txt');
 	}
 
