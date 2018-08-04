@@ -35,6 +35,9 @@ try {
 			if ($gsl->getLogicalId() == 'global') {
 				continue;
 			}
+			if ($gsl->getConfiguration('isVisiblePanel', 0) == 0) {
+				continue;
+			}
 			$return['eqLogics'][] = $gsl->toHtml(init('version'));
 		}
 		ajax::success($return);

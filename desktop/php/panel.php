@@ -20,10 +20,11 @@ foreach ($gsls as $gsl) {
 	if ($gsl->getLogicalId() == 'global') {
 		continue;
 	}
-	if ($gsl->getConfiguration('isVisiblePanel', 0)) {
-		echo $gsl->toHtml('dview');
-		$count++;
+	if ($gsl->getConfiguration('isVisiblePanel', 0) == 0) {
+		continue;
 	}
+	echo $gsl->toHtml('dview');
+	$count++;
 }
 echo '</div>';
 sendVarToJs('nbGslWidget', $count);
