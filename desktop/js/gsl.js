@@ -64,7 +64,10 @@ function printEqLogic(_eqLogic) {
  if(isset(_eqLogic.configuration.type) && _eqLogic.configuration.type == 'fix'){
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+  $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').hide();
+  $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').hide();
 }else{
-   $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();      
+   $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+   $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').show();
 }
 }
