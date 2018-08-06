@@ -4,9 +4,7 @@ if (!isConnect()) {
 }
 sendVarToJs('jeedomBackgroundImg', 'plugins/gsl/core/img/panel.jpg');
 ?>
-    <br/>
     <div class="col-lg-12 col-md-12 col-sm-12" id="div_displayObject">
-        <br/>
 		<?php
 echo '<div class="div_displayEquipement" style="width: 100%;">';
 $count = 0;

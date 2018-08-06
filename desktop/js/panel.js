@@ -26,7 +26,7 @@ var widget_margin = 10;
  function autosizeGslWidget(){
   var nbGslByLine = (nbGslWidget > 3) ? 3 : nbGslWidget - 1;
   var totalWidth = $('#div_displayObject').width() + 20;
-  var totalHeight = $(window).outerHeight() - $('header').outerHeight() - $('#div_alert').outerHeight() - 20;
+  var totalHeight = $(window).outerHeight() - $('header').outerHeight() - $('#div_alert').outerHeight() - 30;
   var gslWidth = (totalWidth / nbGslByLine) - (6 * nbGslByLine);
   var gslHeight = (totalHeight / 2) - (2 * 2);
   $('#div_displayObject .eqLogic-widget').each(function(){
