@@ -489,6 +489,7 @@ class gsl extends eqLogic {
 			$data = array();
 			$eqLogics = self::byType('gsl', true);
 			foreach ($eqLogics as $eqLogic) {
+				$color = '#ffffff';
 				if ($eqLogic->getLogicalId() == 'global') {
 					continue;
 				}
@@ -496,13 +497,14 @@ class gsl extends eqLogic {
 					continue;
 				}
 				if($eqLogic->getConfiguration('type') == 'fix'){
-					continue;
+					$color = $eqLogic->getConfiguration('color');
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
-				$replace['#adresses#'] .= '<img class="pull-right" style="margin-top:5px;with:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$data[$eqLogic->getId()]['color'] = $color;
+				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-'.$this->getLogicalId().'-'.$eqLogic->getId().'"><img class="pull-right" style="background-color:'.$color.';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span></div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
@@ -524,8 +526,11 @@ class gsl extends eqLogic {
 		}
 		$return = array(
 			'id' => $this->getLogicalId(),
+			'image' => 'plugins/gsl/3rparty/images/avatar.png',
+			'name' => $this->getName()
 		);
 		$cmds = $this->getCmd('info');
+
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
 			if ($cmd->getLogicalId() != 'address') {

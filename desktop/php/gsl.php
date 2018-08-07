@@ -138,6 +138,12 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                     <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{Couleur}}</label>
+                <div class="col-sm-3">
+                    <input type="color" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="color">
+                </div>
+            </div>
         </fieldset>
     </form>
 </div>
