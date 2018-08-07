@@ -501,7 +501,7 @@ class gsl extends eqLogic {
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$data[$eqLogic->getId()]['color'] = $color;
-				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-'.$this->getLogicalId().'-'.$eqLogic->getId().'"><img class="pull-right" style="background-color:'.$color.';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-'.$this->getLogicalId().'-'.$eqLogic->getId().'"><img class="pull-right" style="border: 2px solid white; background-color:'.$color.';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span></div>';

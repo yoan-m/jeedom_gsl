@@ -52,7 +52,7 @@
       shadowAnchor: [25, 55],  
       popupAnchor: [-3, -76]
     })}).addTo(fg#id#);
-    marker._icon.style['background-color'] =  data#id#[i].color
+    marker._icon.style['background-color'] =  data#id#[i].color;
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
   $('body').on('eqLogic::update',function(){
