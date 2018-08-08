@@ -14,14 +14,14 @@
        #adresses#
      </center>
    </div>
-   <div class="col-sm-12" style="height: 100%;">
+   <div class="col-sm-12">
     <div id="map_#id#"></div>
   </div>
 </div>
 <style>
 #map_#id# {
   width: 100%;
-  height: 100%;/*#height-map#px;*/
+  height: #height-map#px;
 }
 #map_#id# .leaflet-marker-icon {
   border-radius: 50% !important;
@@ -54,6 +54,10 @@
     })}).addTo(fg#id#);
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
+  $('body').on('eqLogic::update',function(){
+      map#id#.invalidateSize();
+      map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
+  });
 }, 1);
 </script>
 </div>
