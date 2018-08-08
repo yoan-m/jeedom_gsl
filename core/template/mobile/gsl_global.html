@@ -52,6 +52,7 @@
     })}).addTo(fg#id#);
     marker._icon.style['background-color'] =  data#id#[i].color;
   }
+  map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
   $('body').on('eqLogic::update',function(){
       map#id#.invalidateSize();
       map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
