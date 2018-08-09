@@ -36,7 +36,7 @@
 		var fg#id# = L.featureGroup();
 		fg#id#.addTo(map#id#);
 		for (var i in data#id#) {
-			L.marker(data#id#[i].coordinated.split(','), {icon:  L.icon({
+			var marker = L.marker(data#id#[i].coordinated.split(','), {icon:  L.icon({
 				iconUrl: data#id#[i].image,
 				shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
 				iconSize: [36, 36],
@@ -45,6 +45,7 @@
 				shadowAnchor: [25, 55],  
 				popupAnchor: [-3, -76]
 			})}).addTo(fg#id#);
+			marker._icon.style['background-color'] =  data#id#[i].color;
 		}
 		map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
 	}, 1);
