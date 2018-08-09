@@ -43,7 +43,7 @@ foreach ($eqLogics as $eqLogic) {
 	$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
 	echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="text-align: center; background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
 	$imageCmd = $eqLogic->getCmd(null, 'image');
-	if (is_object($imageCmd)) {
+	if(is_object($imageCmd)){
 		$image = $imageCmd->execCmd();
 		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px; height: 65px;left: 47px; top: 20px;" />';
 	}
@@ -136,6 +136,12 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                 <label class="col-sm-3 control-label">{{Coordonnées fixe}}</label>
                 <div class="col-sm-3">
                     <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{Couleur}}</label>
+                <div class="col-sm-3">
+                    <input type="color" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="color">
                 </div>
             </div>
         </fieldset>
