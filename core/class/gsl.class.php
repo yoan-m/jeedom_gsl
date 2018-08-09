@@ -496,12 +496,12 @@ class gsl extends eqLogic {
 				if (!$eqLogic->getConfiguration('isVisibleGlobal', 0)) {
 					continue;
 				}
-				if($eqLogic->getConfiguration('type') == 'fix'){
+				if ($eqLogic->getConfiguration('type') == 'fix') {
 					$color = $eqLogic->getConfiguration('color');
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$data[$eqLogic->getId()]['color'] = $color;
-				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-'.$this->getLogicalId().'-'.$eqLogic->getId().'"><img class="pull-right" style="border: 2px solid white; background-color:'.$color.';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '"><img class="pull-right" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span></div>';
@@ -511,7 +511,12 @@ class gsl extends eqLogic {
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 60 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl_global', 'gsl')));
 		} else {
+			$color = '#ffffff';
+			if ($this->getConfiguration('type') == 'fix') {
+				$color = $this->getConfiguration('color');
+			}
 			$data = array($this->getId() => $this->buildLocation());
+			$data[$this->getId()]['color'] = $color;
 			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
 			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
@@ -527,7 +532,7 @@ class gsl extends eqLogic {
 		$return = array(
 			'id' => $this->getLogicalId(),
 			'image' => 'plugins/gsl/3rparty/images/avatar.png',
-			'name' => $this->getName()
+			'name' => $this->getName(),
 		);
 		$cmds = $this->getCmd('info');
 
