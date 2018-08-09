@@ -65,13 +65,14 @@ function printEqLogic(_eqLogic) {
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').show();
-  $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').hide();
+  $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').hide();
 }else{
    $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
    $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').show();
    $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').hide();
 }
 }
+
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').next().on('click', function () {
     jeedom.cmd.getSelectModal({cmd: {type: 'info', subType: 'string'}}, function (result) {
         $('.eqLogicAttr[data-l2key=cmdgeoloc]').value(result.human);

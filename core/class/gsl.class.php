@@ -66,10 +66,12 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_locationData() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			self::google_connect();
+		}
 		try {
 			$result = self::google_callLocationUrl();
 		} catch (Exception $e) {
-			self::google_logout();
 			self::google_connect();
 			$result = self::google_callLocationUrl();
 		}
@@ -89,10 +91,14 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_logout() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			return;
+		}
 		unlink(jeedom::getTmpFolder('gsl') . '/cookies.txt');
 	}
 
 	public static function google_connect() {
+		self::google_logout();
 		$data = array();
 		/*************************STAGE 1*******************************/
 		log::add('gsl', 'debug', __('Stage 1 : Connection à google', __FILE__));
@@ -358,12 +364,7 @@ class gsl extends eqLogic {
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
-		$cmdgeoloc = $this->getConfiguration('cmdgeoloc', null);
-		if ($cmdgeoloc !== null) {
-			$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
-			$cmdUpdate->event($cmd->execCmd());
-			$cmdUpdate->getEqLogic()->refreshWidget();
-		}
+
 		if ($this->getConfiguration('type') == 'fix') {
 			$cmd = $this->getCmd(null, 'coordinated');
 			$cmd->event($this->getConfiguration('coordinated'));
@@ -530,7 +531,6 @@ class gsl extends eqLogic {
 			'name' => $this->getName()
 		);
 		$cmds = $this->getCmd('info');
-
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
 			if ($cmd->getLogicalId() != 'address') {
