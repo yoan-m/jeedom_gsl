@@ -17,69 +17,42 @@
  */
 
 try {
-    require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-    include_file('core', 'authentification', 'php');
+	require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+	include_file('core', 'authentification', 'php');
 
-    if (!isConnect('admin')) {
-        throw new Exception(__('401 - Accès non autorisé', __FILE__));
-    }
+	if (!isConnect()) {
+		throw new Exception(__('401 - Accès non autorisé', __FILE__));
+	}
 
-    ajax::init();
+	ajax::init();
 
-    if (init('action') == 'getLocations') {
-        if (init('logicalId') == 'global') {
-            $equipements = eqLogic::byType('gsl', true);
-        } else {
-            $equipements = [];
-            array_push($equipements, eqLogic::byLogicalId(init('logicalId'), 'gsl'));
-        }
-        if (count($equipements) === 0) {
-            ajax::error('Aucun equipement', 0);
-        }
-        $return = array();
-        foreach ($equipements as $eq) {
+	if (init('action') == 'getGsl') {
+		$return = array();
+		$return['eqLogics'] = array();
+		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
+		$return['eqLogics'][] = $eqLogic->toHtml(init('version'));
+		foreach (gsl::byType('gsl', true) as $gsl) {
+			if ($gsl->getLogicalId() == 'global') {
+				continue;
+			}
+			if ($gsl->getConfiguration('isVisiblePanel', 0) == 0) {
+				continue;
+			}
+			$return['eqLogics'][] = $gsl->toHtml(init('version'));
+		}
+		ajax::success($return);
+	}
 
-            if ($eq->getLogicalId() == 'global') {
-                continue;
-            }
-            if (!$eq->getIsVisible()) {
-                continue;
-            }
-            $loc = array();
-            $cmds = $eq->getCmd();
-            foreach ($cmds as $cmd) {
-                if ($cmd->getConfiguration('type') == "command") {
-                    continue;
-                }
-                $loc[$cmd->getName()] = $cmd->execCmd();
-                if ($cmd->getName() == 'timestamp') {
-                    $now = time();
-                    $timestamp = $cmd->execCmd();
-                    if ($timestamp) {
-                        $timestamp = $timestamp / 1000;
-                        $timestamp = ($now - $timestamp);
-                        if ($timestamp <= 60) {
-                            $loc['horodatage'] = 'à l\'instant';
-                        } else if ($timestamp < 3600) {
-                            $loc['horodatage'] = 'il y a ' . intval(($timestamp) / 60) . ' minutes';
-                        } else {
-                            $loc['horodatage'] = 'il y a ' . intval((($timestamp) / 60) / 60) . ' heures';
-                        }
-                    }
-                }
-            }
-            $loc['id'] = $eq->getLogicalId();
-            array_push($return, $loc);
-        }
-        ajax::success($return);
-    } else if (init('action') == 'createGlobalEqLogic') {
-        gsl::createGlobalEqLogic();
-        ajax::success();
-    }
+	if (init('action') == 'logout') {
+		if (!isConnect('admin')) {
+			throw new Exception(__('401 - Accès non autorisé', __FILE__));
+		}
+		gsl::google_logout();
+		ajax::success();
+	}
 
-    throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
-    /*     * *********Catch exeption*************** */
+	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {
-    ajax::error(displayExeption($e), $e->getCode());
+	ajax::error(displayExeption($e), $e->getCode());
 }
-

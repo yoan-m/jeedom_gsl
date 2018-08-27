@@ -1,31 +1,53 @@
-<div class="eqLogic-widget eqLogic allowResize"
-     style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#"
-     data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
-
-
-    <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
-    <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center>
-    <br/>
-    <div class="row">
-        <div class="col-sm-12">
-            <center>
-                <div class="adresse_#logicalId#"></div>
-                <div class="horodatage_#logicalId#"></div>
-            </center>
-        </div>
-    </div>
-    <div class="col-sm-12">
-        <div id="map_#id#">#script#</div>
-    </div>
-</div>
-<style>
-    #map_#id# {
-        width: 100%; /*#width-map#px;*/
-        height: #height-map#px;
-    }
-
-    .leaflet-marker-icon {
-        border-radius: 50%;
-    }
+<div class="eqLogic-widget eqLogic allowResize" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
+	<span class="pull-left" style="margin-top: 3px;margin-left: 3px;" title="#alert_name#">
+		<i class='#alert_icon#'></i>
+	</span>
+	<span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" style="margin-top: 3px;margin-right: 3px;">
+		<i class='fa fa-refresh'></i>
+	</span>
+	
+	<link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
+	<center style="#hideEqLogicName#">#name_display# <span style="font-size: 0.85em;">#object_name#</span></center>
+	<div id="map_#id#"></div>
+	<div style="margin-left: 5px;margin-right: 5px;">#adresses#</div>
+	<span class="statusCmd pull-right" style="margin-top: -15px;margin-right:3px;"></span>
+	<style>
+	#map_#id# {
+		width: 100%; 
+		height: #height-map#px;
+	}
+	#map_#id# .leaflet-marker-icon {
+		border-radius: 50% !important;
+	}
 </style>
 <script src="/plugins/gsl/3rparty/leaflet.js"></script>
+<script type="text/javascript">
+	if ('#refresh_id#' != ''){
+		$('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
+			jeedom.cmd.execute({id: '#refresh_id#'});
+		});
+	}else{
+		$('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
+	}
+	setTimeout(function(){
+		var data#id#=JSON.parse('#json#')
+		var map#id# = L.map('map_#id#', {center: [51.5, -0.09],zoom: 15});
+		new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
+		var fg#id# = L.featureGroup();
+		fg#id#.addTo(map#id#);
+		for (var i in data#id#) {
+			var marker = L.marker(data#id#[i].coordinated.split(','), {icon:  L.icon({
+				iconUrl: data#id#[i].image,
+				shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
+				iconSize: [36, 36],
+				shadowSize: [50, 55], 
+				iconAnchor: [18, 47], 
+				shadowAnchor: [25, 55],  
+				popupAnchor: [-3, -76]
+			})}).addTo(fg#id#);
+			marker._icon.style['background-color'] =  data#id#[i].color;
+		}
+		map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
+	}, 1);
+</script>
+</div>

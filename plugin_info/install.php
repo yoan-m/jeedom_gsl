@@ -18,18 +18,39 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function gsl_install()
-{
-    gsl::createGlobalEqLogic();
+function gsl_install() {
+	gsl::createGlobalEqLogic();
+	$cron = cron::byClassAndFunction('gsl', 'pull');
+	if (!is_object($cron)) {
+		$cron = new cron();
+		$cron->setClass('gsl');
+		$cron->setFunction('pull');
+		$cron->setEnable(1);
+		$cron->setSchedule('* * * * *');
+		$cron->setTimeout(240);
+		$cron->save();
+	}
 }
 
-function gsl_update()
-{
+function gsl_update() {
+	gsl::createGlobalEqLogic();
+	$cron = cron::byClassAndFunction('gsl', 'pull');
+	if (!is_object($cron)) {
+		$cron = new cron();
+		$cron->setClass('gsl');
+		$cron->setFunction('pull');
+		$cron->setEnable(1);
+		$cron->setSchedule('* * * * *');
+		$cron->setTimeout(240);
+		$cron->save();
+	}
 }
 
-
-function gsl_remove()
-{
+function gsl_remove() {
+	$cron = cron::byClassAndFunction('gsl', 'pull');
+	if (is_object($cron)) {
+		$cron->remove();
+	}
 }
 
 ?>
