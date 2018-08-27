@@ -256,7 +256,7 @@ class gsl extends eqLogic {
 	public static function pull($_force = false) {
 		if (!$_force) {
 			$dateRun = new DateTime();
-			$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '*/5 * * * *'), new Cron\FieldFactory);
+			$c = new Cron\CronExpression(config::byKey('refresh::frequency', 'gsl', '*/10 * * * *'), new Cron\FieldFactory);
 			if (!$c->isDue($dateRun)) {
 				return;
 			}
