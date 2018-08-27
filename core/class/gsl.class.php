@@ -83,6 +83,7 @@ class gsl extends eqLogic {
 				'address' => $user[1][4],
 				'timestamp' => $user[1][2],
 				'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
+				'battery' => $user[13][1]
 			);
 		}
 		return $return;
@@ -278,6 +279,7 @@ class gsl extends eqLogic {
 			$changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
@@ -398,6 +400,16 @@ class gsl extends eqLogic {
 				$cmd->setSubType('string');
 				$cmd->save();
 			}
+			$cmd = $this->getCmd(null, 'battery');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('batterie');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('battery');
+				$cmd->setType('info');
+				$cmd->setSubType('string');
+				$cmd->save();
+			}
 		}
 	}
 
@@ -504,7 +516,7 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '"><img class="pull-right" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span></div>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . ' | <i class="fa fa-battery-full"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span></div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
