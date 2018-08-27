@@ -516,7 +516,11 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '"><img class="pull-right" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . ' | <i class="fa fa-battery-full"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span></div>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
+				if(isset($data[$eqLogic->getId()]['battery'])) {
+					$replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
+				}
+				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
@@ -550,6 +554,20 @@ class gsl extends eqLogic {
 
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
+			if ($cmd->getLogicalId() == 'battery') {
+				$icon = 'fa-battery-0';
+				$battery = $return[$cmd->getLogicalId()]['battery'];
+				if($battery > 80){
+					$icon = 'fa-battery-4';
+				}else if($battery > 60){
+					$icon = 'fa-battery-3';
+				}else if($battery > 40){
+					$icon = 'fa-battery-2';
+				}else if($battery > 20){
+					$icon = 'fa-battery-1';
+				}
+				$return['battery_icon'] = $icon;
+			}
 			if ($cmd->getLogicalId() != 'address') {
 				continue;
 			}
