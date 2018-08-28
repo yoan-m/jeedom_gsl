@@ -66,10 +66,12 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_locationData() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			self::google_connect();
+		}
 		try {
 			$result = self::google_callLocationUrl();
 		} catch (Exception $e) {
-			self::google_logout();
 			self::google_connect();
 			$result = self::google_callLocationUrl();
 		}
@@ -90,10 +92,14 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_logout() {
+		if (!file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt')) {
+			return;
+		}
 		unlink(jeedom::getTmpFolder('gsl') . '/cookies.txt');
 	}
 
 	public static function google_connect() {
+		self::google_logout();
 		$data = array();
 		/*************************STAGE 1*******************************/
 		log::add('gsl', 'debug', __('Stage 1 : Connection à google', __FILE__));
@@ -367,12 +373,7 @@ class gsl extends eqLogic {
 			$cmd->setSubType('string');
 			$cmd->save();
 		}
-		$cmdgeoloc = $this->getConfiguration('cmdgeoloc', null);
-		if ($cmdgeoloc !== null) {
-			$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
-			$cmdUpdate->event($cmd->execCmd());
-			$cmdUpdate->getEqLogic()->refreshWidget();
-		}
+
 		if ($this->getConfiguration('type') == 'fix') {
 			$cmd = $this->getCmd(null, 'coordinated');
 			$cmd->event($this->getConfiguration('coordinated'));
@@ -522,10 +523,10 @@ class gsl extends eqLogic {
 				$data[$eqLogic->getId()]['color'] = $color;
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
-                if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
-                    $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
-                }
-                $replace['#adresses#'] .= '</span>';
+        if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
+            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
+        }
+        $replace['#adresses#'] .= '</span>';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
@@ -563,7 +564,6 @@ class gsl extends eqLogic {
 			'name' => $this->getName(),
 		);
 		$cmds = $this->getCmd('info');
-
 		foreach ($cmds as $cmd) {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
 			if ($cmd->getLogicalId() == 'battery') {

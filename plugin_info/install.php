@@ -48,6 +48,10 @@ function gsl_update() {
 }
 
 function gsl_remove() {
+	$cron = cron::byClassAndFunction('gsl', 'pull');
+	if (is_object($cron)) {
+		$cron->remove();
+	}
 }
 
 ?>
