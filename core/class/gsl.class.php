@@ -529,9 +529,6 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
-                if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
-                    $replace['#adresses#'] .= '<span class="pull-right" style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
-                }
 				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
