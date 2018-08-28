@@ -313,6 +313,13 @@ class gsl extends eqLogic {
 		}
 	}
 
+	public static function saveEqLogicsAfterUpdate() {
+	    $eqLogics = self::byType('gsl');
+	    foreach ($eqLogics as $eqLogic) {
+            $eqLogic->save();
+        }
+    }
+
 	/*     * *********************Méthodes d'instance************************* */
 
 	public function preInsert() {
@@ -513,11 +520,16 @@ class gsl extends eqLogic {
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$data[$eqLogic->getId()]['color'] = $color;
-				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '"><img class="pull-right" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
+				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+                if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
+                    $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
+                }
+                $replace['#adresses#'] .= '</span>';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
-                if(isset($data[$eqLogic->getId()]['battery']) && $data[$this->getId()]['battery'] != '') {
+                if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
                     $replace['#adresses#'] .= '<span class="pull-right" style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
                 }
 				$replace['#adresses#'] .= '</div>';
