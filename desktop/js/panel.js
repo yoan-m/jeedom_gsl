@@ -56,7 +56,3 @@ function doAutosize(){
 }
 doAutosize();
 $(window).resize(autosizeGslWidget());
-
-$(window).on('hashchange', function(e){
-    $('body').off('eqLogic::update',doAutosize());
-});
