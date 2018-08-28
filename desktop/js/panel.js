@@ -15,13 +15,7 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 var widget_margin = 10;
- $('body').on('eqLogic::update',function(){
-  autosizeGslWidget()
-  setTimeout(function(){ autosizeGslWidget(); }, 100);
-  setTimeout(function(){ autosizeGslWidget(); }, 500);
-  setTimeout(function(){ autosizeGslWidget(); }, 750);
-  setTimeout(function(){ autosizeGslWidget(); }, 1000);
-});
+ $('body').on('eqLogic::update',doAutosize());
 
  function autosizeGslWidget(){
   var nbGslByLine = (nbGslWidget > 3) ? 3 : nbGslWidget - 1;
@@ -38,7 +32,7 @@ var widget_margin = 10;
           $(this).height(totalHeight);
       }
       $(this).find('.leaflet-container').height( $(this).height() - 40)
-    }else{
+    }else if($(this).hasClass('gslWidget')){
       $(this).height(gslHeight);
       if(nbGslByLine == 1){
         $(this).width(gslWidth - 17);
@@ -53,13 +47,16 @@ var widget_margin = 10;
     $(this).packery();
   });
 }
-
-autosizeGslWidget();
-setTimeout(function(){ autosizeGslWidget(); }, 100);
-setTimeout(function(){ autosizeGslWidget(); }, 500);
-setTimeout(function(){ autosizeGslWidget(); }, 750);
-setTimeout(function(){ autosizeGslWidget(); }, 1000);
-
-$(window).resize(function() {
+function doAutosize(){
   autosizeGslWidget();
+  setTimeout(function(){ autosizeGslWidget(); }, 100);
+  setTimeout(function(){ autosizeGslWidget(); }, 500);
+  setTimeout(function(){ autosizeGslWidget(); }, 750);
+  setTimeout(function(){ autosizeGslWidget(); }, 1000);
+}
+doAutosize();
+$(window).resize(autosizeGslWidget());
+
+$(window).on('hashchange', function(e){
+    $('body').off('eqLogic::update',doAutosize());
 });
