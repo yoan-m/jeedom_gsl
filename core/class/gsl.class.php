@@ -543,10 +543,10 @@ class gsl extends eqLogic {
 			$data = array($this->getId() => $this->buildLocation());
 			$data[$this->getId()]['color'] = $color;
 			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
-			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
 			if(isset($data[$this->getId()]['battery']) && $data[$this->getId()]['battery'] != '') {
-                $replace['#adresses#'] .= ' - <span style="font-size:0.7em;"><i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span>';
+                $replace['#adresses#'] .= '<span style="font-size:0.7em;"><i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span> - ';
             }
+			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));
