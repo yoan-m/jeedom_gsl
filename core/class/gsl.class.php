@@ -21,7 +21,7 @@ require_once __DIR__ . '/../../../../core/php/core.inc.php';
 
 class gsl extends eqLogic {
 	/*     * *************************Attributs****************************** */
-
+	public static $_widgetPossibility = array('custom' => true);
 	/*     * ***********************Methode static*************************** */
 
 	public static function distance($_a, $_b) {
