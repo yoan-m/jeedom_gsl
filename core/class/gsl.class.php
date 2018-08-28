@@ -535,6 +535,9 @@ class gsl extends eqLogic {
 			$data[$this->getId()]['color'] = $color;
 			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
 			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
+			if(isset($data[$eqLogic->getId()]['battery'])) {
+                $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span>';
+            }
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));
@@ -556,7 +559,7 @@ class gsl extends eqLogic {
 			$return[$cmd->getLogicalId()] = $cmd->execCmd();
 			if ($cmd->getLogicalId() == 'battery') {
 				$icon = 'fa-battery-0';
-				$battery = $return[$cmd->getLogicalId()]['battery'];
+				$battery = $return[$cmd->getLogicalId()];
 				if($battery > 80){
 					$icon = 'fa-battery-4';
 				}else if($battery > 60){
