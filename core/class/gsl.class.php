@@ -535,7 +535,7 @@ class gsl extends eqLogic {
 			$data[$this->getId()]['color'] = $color;
 			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
 			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
-			if(isset($data[$eqLogic->getId()]['battery'])) {
+			if(isset($data[$this->getId()]['battery'])) {
                 $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span>';
             }
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
