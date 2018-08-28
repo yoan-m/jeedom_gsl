@@ -44,6 +44,7 @@ function gsl_update() {
 		$cron->setTimeout(240);
 		$cron->save();
 	}
+	gsl::saveEqLogicsAfterUpdate();
 }
 
 function gsl_remove() {
