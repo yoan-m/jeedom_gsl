@@ -19,6 +19,8 @@ Je vous conseille de créer un compte gmail dédié.
 >
 >Vérifiez que Google ne vous demande pas de confirmation (mail ou sms) de connection
 >
+>Activer l'option suivante dans votre compte Google : Connexion et sécurité / Autoriser les applications moins sécurisées
+>
 >Il n'est pas recommandé de descendre la fréquence de rafraichissement (10 minutes par défaut) car cela augmente le risque de détection d'une utilisation via automate de votre compte par Google.
 >Il s'est avéré qu'à la suite d'une détection, ce dernier met en place un captcha impossible a résoudre via Jeedom.
 Le plugin devient donc inutilisable pendant plusieurs heures. 
