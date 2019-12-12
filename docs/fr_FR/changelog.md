@@ -1,3 +1,6 @@
+#12/12/2019
+- Possibilité de connexion avec un cookie
+
 #31/08/2018
 
 - Ajout du niveau de batterie

@@ -45,12 +45,52 @@ if (!isConnect()) {
         <div class="form-group">
            <label class="col-lg-4 control-label">{{Forcer déconnexion}}</label>
            <div class="col-lg-2">
-              <a class="btn btn-default" id="bt_logoutGsl"><i class='fa fa-sign-out'></i> {{Déconnexion}}</a>
+              <a class="btn btn-danger" id="bt_logoutGsl"><i class='fas fa-sign-out-alt icon-white'></i> {{Déconnexion}}</a>
           </div>
       </div>
+  
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Cookie}}</label>
+            <div class="col-lg-2">
+  				<input type="file" name="file_cookieGsl" id="file_cookieGsl">
+            </div>
+  			<div class="col-lg-2">
+                <a class="btn btn-success" id="bt_saveCookieGsl"><i class='far fa-check-circle icon-white'></i> {{Enregistrer}}</a>
+            </div>
+        </div>
   </fieldset>
 </form>
 <script>
+    $('#bt_saveCookieGsl').on('click', function () {
+      var file = document.getElementById('file_cookieGsl').files[0];
+        if (file) {
+            // create reader
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function(e) {
+               $.ajax({
+                type: "POST",
+                url: "plugins/gsl/core/ajax/gsl.ajax.php",
+                data: {
+                    action: "cookie",
+                  cookie: e.target.result
+                },
+                dataType: 'json',
+                error: function (request, status, error) {
+                    handleAjaxError(request, status, error);
+                },
+                success: function (data) {
+                    if (data.state != 'ok') {
+                        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                        return;
+                    }
+                    $('#div_alert').showAlert({message: '{{Enregistement réussi}}', level: 'success'});
+                }
+            });
+            };
+        }
+       
+    });
     $('#bt_logoutGsl').on('click', function () {
         $.ajax({
             type: "POST",

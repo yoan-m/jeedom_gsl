@@ -40,6 +40,8 @@ class gsl extends eqLogic {
 	}
 
 	public static function google_callLocationUrl() {
+		log::add('gsl', 'debug', __('google_callLocationUrl ', __FILE__));
+      $path = '/var/www/html/tmp/jeedom/';
 		$ch = curl_init('https://www.google.com/maps/preview/locationsharing/read?authuser=0&pb=');
 		curl_setopt($ch, CURLOPT_COOKIEJAR, jeedom::getTmpFolder('gsl') . '/cookies.txt');
 		curl_setopt($ch, CURLOPT_COOKIEFILE, jeedom::getTmpFolder('gsl') . '/cookies.txt');
@@ -59,6 +61,8 @@ class gsl extends eqLogic {
 			throw new Exception(__('Erreur données de localisation n\'est pas un json valide : ', __FILE__) . $result);
 		}
 		$result = json_decode($result, true);
+      log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) .json_encode($result));
+		
 		if (!isset($result[0])) {
 			throw new Exception(__('Erreur données de localisation invalide ou vide : ', __FILE__) . json_encode($result));
 		}
@@ -72,7 +76,7 @@ class gsl extends eqLogic {
 		try {
 			$result = self::google_callLocationUrl();
 		} catch (Exception $e) {
-			self::google_connect();
+			//self::google_connect();
 			$result = self::google_callLocationUrl();
 		}
 		$result = $result[0];
@@ -85,7 +89,9 @@ class gsl extends eqLogic {
 				'address' => $user[1][4],
 				'timestamp' => $user[1][2],
 				'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
-				'battery' => $user[13][1]
+				'battery' => $user[13][1],
+				'charging' => $user[13][0],
+              	'accuracy' => $user[1][3]
 			);
 		}
 		return $return;
@@ -253,6 +259,13 @@ class gsl extends eqLogic {
 		}
 		return $headers;
 	}
+  
+  public static function google_saveCookie($_cookie){
+    $path = jeedom::getTmpFolder('gsl') . '/cookies.txt';
+		$fp = fopen($path, 'w');
+		fwrite($fp, $_cookie);
+		fclose($fp);
+  }
 
 	public static function pull($_force = false) {
 		if (!$_force) {
@@ -286,6 +299,8 @@ class gsl extends eqLogic {
 			$changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
 			$changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('charging', $location['charging'], $timestamp) || $changed;
+			$changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
 			$cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
@@ -307,6 +322,7 @@ class gsl extends eqLogic {
 	}
 
 	public static function createGlobalEqLogic() {
+      	log::add('gsl', 'error','createGlobalEqLogic');
 		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 		if (!is_object($eqLogic)) {
 			$eqLogic = new gsl();
@@ -418,6 +434,26 @@ class gsl extends eqLogic {
 				$cmd->setSubType('string');
 				$cmd->save();
 			}
+			$cmd = $this->getCmd(null, 'charging');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('charge');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('charging');
+				$cmd->setType('info');
+				$cmd->setSubType('binary');
+				$cmd->save();
+			}
+			$cmd = $this->getCmd(null, 'accuracy');
+			if (!is_object($cmd)) {
+				$cmd = new cmd();
+				$cmd->setName('precision');
+				$cmd->setEqLogic_id($this->getId());
+				$cmd->setLogicalId('accuracy');
+				$cmd->setType('info');
+				$cmd->setSubType('string');
+				$cmd->save();
+			}
 		}
 	}
 
@@ -524,12 +560,13 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
         if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
-            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;"><i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
+            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;">'.($data[$eqLogic->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
         }
         $replace['#adresses#'] .= '</span>';
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$eqLogic->getId()]['accuracy'] . 'm</span>';
 				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
@@ -545,9 +582,10 @@ class gsl extends eqLogic {
 			$data[$this->getId()]['color'] = $color;
 			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
 			if(isset($data[$this->getId()]['battery']) && $data[$this->getId()]['battery'] != '') {
-                $replace['#adresses#'] .= '<span style="font-size:0.7em;"><i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span> - ';
+                $replace['#adresses#'] .= '<span style="font-size:0.7em;">'.($data[$this->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span> - ';
             }
-			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span>';
+			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$this->getId()]['accuracy'] . 'm</span>';
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));

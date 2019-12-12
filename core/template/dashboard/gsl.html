@@ -1,13 +1,14 @@
 <div class="eqLogic-widget eqLogic allowResize gslWidget" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
-  <span class="pull-left" style="margin-top: 2px;margin-left: 2px;" title="#alert_name#">
-    <i class='#alert_icon#'></i>
-  </span>
-  <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" style="margin-top: 2px;margin-right: 2px;">
-    <i class='fa fa-refresh'></i>
-  </span>
-  <span class="statusCmd pull-left" style="margin-top: 2px;margin-right: 2px;width:30px;"></span>
-  <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
-  <center><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a></strong></center>
+  <center class="widget-name">
+    <span class="warning" title="#alert_name#">
+      <i class='#alert_icon#'></i>
+    </span>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+      <i class="fas fa-sync"></i>
+    </span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </center>
   <div class="row" style="margin-right:0px;margin-left:0px">
     <div class="col-sm-12">
       <center>
@@ -52,6 +53,7 @@
       shadowAnchor: [25, 55],  
       popupAnchor: [-3, -76]
     })}).addTo(fg#id#);
+    L.circle(data#id#[i].coordinated.split(','), {radius: data#id#[i].accuracy}).addTo(fg#id#);
     marker._icon.style['background-color'] =  data#id#[i].color;
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
