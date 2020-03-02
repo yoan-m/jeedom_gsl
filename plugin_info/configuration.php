@@ -25,18 +25,6 @@ if (!isConnect()) {
 <form class="form-horizontal">
     <fieldset>
         <div class="form-group">
-            <label class="col-lg-4 control-label">{{Adresse Gmail}}</label>
-            <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_user"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{Mot de passe}}</label>
-            <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_password" type="password"/>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-lg-4 control-label">{{Fréquence de rafraichissement}}</label>
             <div class="col-lg-4">
                 <input class="configKey form-control" data-l1key="refresh::frequency" />
