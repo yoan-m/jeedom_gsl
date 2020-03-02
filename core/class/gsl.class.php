@@ -322,7 +322,6 @@ class gsl extends eqLogic {
 	}
 
 	public static function createGlobalEqLogic() {
-      	log::add('gsl', 'error','createGlobalEqLogic');
 		$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 		if (!is_object($eqLogic)) {
 			$eqLogic = new gsl();
