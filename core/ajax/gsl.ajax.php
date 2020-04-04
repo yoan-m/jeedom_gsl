@@ -51,6 +51,14 @@ try {
 		ajax::success();
 	}
 
+  if (init('action') == 'cookie') {
+		if (!isConnect('admin')) {
+			throw new Exception(__('401 - Accès non autorisé', __FILE__));
+		}
+		gsl::google_saveCookie(init('cookie'));
+		ajax::success();
+	}
+
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {

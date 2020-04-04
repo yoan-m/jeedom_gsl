@@ -25,18 +25,6 @@ if (!isConnect()) {
 <form class="form-horizontal">
     <fieldset>
         <div class="form-group">
-            <label class="col-lg-4 control-label">{{Adresse Gmail}}</label>
-            <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_user"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">{{Mot de passe}}</label>
-            <div class="col-lg-4">
-                <input class="configKey form-control" data-l1key="google_password" type="password"/>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="col-lg-4 control-label">{{Fréquence de rafraichissement}}</label>
             <div class="col-lg-4">
                 <input class="configKey form-control" data-l1key="refresh::frequency" />
@@ -45,9 +33,19 @@ if (!isConnect()) {
         <div class="form-group">
            <label class="col-lg-4 control-label">{{Forcer déconnexion}}</label>
            <div class="col-lg-2">
-              <a class="btn btn-default" id="bt_logoutGsl"><i class='fa fa-sign-out'></i> {{Déconnexion}}</a>
+              <a class="btn btn-danger" id="bt_logoutGsl"><i class='fas fa-sign-out-alt icon-white'></i> {{Déconnexion}}</a>
           </div>
       </div>
+
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Cookie}}</label>
+            <div class="col-lg-2">
+  				<input type="file" name="file_cookieGsl" id="file_cookieGsl">
+            </div>
+  			<div class="col-lg-2">
+                <a class="btn btn-success" id="bt_saveCookieGsl"><i class='far fa-check-circle icon-white'></i> {{Enregistrer}}</a>
+            </div>
+        </div>
   </fieldset>
 </form>
 <script>
