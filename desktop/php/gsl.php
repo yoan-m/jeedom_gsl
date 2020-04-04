@@ -45,7 +45,7 @@ foreach ($eqLogics as $eqLogic) {
 	$imageCmd = $eqLogic->getCmd(null, 'image');
 	if(is_object($imageCmd)){
 		$image = $imageCmd->execCmd();
-		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px; height: 65px;left: 47px; top: 20px;" />';
+		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 55px !important; height: 55px !important;left: 45px; top: 20px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
 	}
 	echo '<img src="' . $plugin->getPathImgIcon() . '"  height="105" width="95" />';
 	echo "<br>";
