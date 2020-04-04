@@ -39,7 +39,7 @@ if (!isConnect()) {
 
         <div class="form-group">
             <label class="col-lg-4 control-label">{{Cookie}}</label>
-            <div class="col-lg-2">
+            <div class="col-lg-6">
   				<input type="file" name="file_cookieGsl" id="file_cookieGsl">
             </div>
   			<div class="col-lg-2">
@@ -49,6 +49,36 @@ if (!isConnect()) {
   </fieldset>
 </form>
 <script>
+    $('#bt_saveCookieGsl').on('click', function () {
+      var file = document.getElementById('file_cookieGsl').files[0];
+        if (file) {
+            // create reader
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function(e) {
+               $.ajax({
+                type: "POST",
+                url: "plugins/gsl/core/ajax/gsl.ajax.php",
+                data: {
+                    action: "cookie",
+                  cookie: e.target.result
+                },
+                dataType: 'json',
+                error: function (request, status, error) {
+                    handleAjaxError(request, status, error);
+                },
+                success: function (data) {
+                    if (data.state != 'ok') {
+                        $('#div_alert').showAlert({message: data.result, level: 'danger'});
+                        return;
+                    }
+                    $('#div_alert').showAlert({message: '{{Enregistement réussi}}', level: 'success'});
+                }
+            });
+            };
+        }
+
+    });
     $('#bt_logoutGsl').on('click', function () {
         $.ajax({
             type: "POST",
