@@ -1,3 +1,9 @@
+#17/04/2020
+- La connexion se fait exclusivement avec un cookie
+
+#12/12/2019
+- Possibilité de connexion avec un cookie
+
 #31/08/2018
 
 - Ajout du niveau de batterie

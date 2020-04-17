@@ -1,19 +1,14 @@
 <div class="eqLogic-widget eqLogic allowResize gslGlobal" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
-  <div class="row" style="margin-right:0px;margin-left:0px">
-    <div class="col-sm-1" style="padding-left:0px;">
-      <span class="pull-left" style="margin-top: 2px;margin-left: 2px;" title="#alert_name#">
-        <i class='#alert_icon#'></i>
-      </span>
-      <span class="statusCmd pull-left" style="margin-top: 2px;margin-right: 2px;width:30px;"></span>
-    </div>
-    <div class="col-sm-10" style="min-height: 15px; text-align:  center;"><a href="#eqLink#" style="font-size : 1.5em;#hideEqLogicName#">#name_display#</a>
-    </div>
-    <div class="col-sm-1" style="padding-right:0px;">
-      <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" style="margin-top: 2px;margin-right: 2px;">
-        <i class='fa fa-refresh'></i>
-      </span>
-    </div>
-  </div>
+  <center class="widget-name">
+    <span class="warning" title="#alert_name#">
+      <i class='#alert_icon#'></i>
+    </span>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+      <i class="fas fa-sync"></i>
+    </span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </center>
   <link rel="stylesheet" href="plugins/gsl/3rparty/leaflet.css"/>
   <div class="row" style="margin-right:0px;margin-left:0px">
     <div class="col-sm-8">
@@ -43,6 +38,7 @@
   var map#id#, fg#id#,  data#id#;
   setTimeout(function(){
    data#id#=JSON.parse('#json#')
+   //debugger;
    map#id# = L.map('map_' + #id#, {center: [51.5, -0.09],zoom: 15});
    new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
    fg#id# = L.featureGroup();
@@ -59,6 +55,7 @@
       shadowAnchor: [25, 55],  
       popupAnchor: [-3, -76]
     })}).addTo(fg#id#);
+    L.circle(data#id#[i].coordinated.split(','), {radius: data#id#[i].accuracy}).addTo(fg#id#);
     marker._icon.style['background-color'] =  data#id#[i].color;
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});

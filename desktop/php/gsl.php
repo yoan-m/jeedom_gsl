@@ -8,20 +8,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 ?>
 
 <div class="row row-overflow">
-    <div class="col-lg-2">
-        <div class="bs-sidebar">
-            <ul id="ul_eqLogic" class="nav nav-list bs-sidenav">
-                <a class="btn btn-default eqLogicAction" style="width : 100%;margin-top : 5px;margin-bottom: 5px;" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter un Google Location Sharing}}</a>
-                <li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
-                <?php
-foreach ($eqLogics as $eqLogic) {
-	echo '<li class="cursor li_eqLogic" data-eqLogic_id="' . $eqLogic->getId() . '"><a>' . $eqLogic->getHumanName(true) . '</a></li>';
-}
-?>
-           </ul>
-       </div>
-   </div>
-   <div class="col-lg-10 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
+   <div class="col-lg-12 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
     <legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
     <div class="eqLogicThumbnailContainer">
         <div class="cursor eqLogicAction" data-action="add" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
@@ -45,7 +32,7 @@ foreach ($eqLogics as $eqLogic) {
 	$imageCmd = $eqLogic->getCmd(null, 'image');
 	if(is_object($imageCmd)){
 		$image = $imageCmd->execCmd();
-		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px; height: 65px;left: 47px; top: 20px;" />';
+		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 65px !important;left: 32px; top: 20px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
 	}
 	echo '<img src="' . $plugin->getPathImgIcon() . '"  height="105" width="95" />';
 	echo "<br>";
@@ -83,8 +70,8 @@ foreach ($eqLogics as $eqLogic) {
                             <select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
                                 <option value="">{{Aucun}}</option>
                                 <?php
-foreach (object::all() as $object) {
-	echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+foreach (jeeObject::all() as $obj) {
+	echo '<option value="' . $obj->getId() . '">' . $obj->getName() . '</option>';
 }
 ?>
                            </select>
