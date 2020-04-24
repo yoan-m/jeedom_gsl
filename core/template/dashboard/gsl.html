@@ -54,7 +54,10 @@
       shadowAnchor: [25, 55],  
       popupAnchor: [-3, -76]
     })}).addTo(fg#id#);
-    L.circle(data#id#[i].coordinated.split(','), {radius: data#id#[i].accuracy}).addTo(fg#id#);
+	
+	if(!isNaN(data#id#[i].accuracy)){
+      L.circle(data#id#[i].coordinated.split(','), {radius: data#id#[i].accuracy}).addTo(fg#id#);
+	}
     marker._icon.style['background-color'] =  data#id#[i].color;
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
