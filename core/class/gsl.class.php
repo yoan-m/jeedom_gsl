@@ -64,7 +64,13 @@ class gsl extends eqLogic {
       	log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) .json_encode($result));
 		
 		if (!isset($result[0])) {
-			throw new Exception(__('Erreur données de localisation invalide ou vide : ', __FILE__) . json_encode($result));
+			if (!isset($result[9])) {
+				throw new Exception(__('Erreur données de localisation invalide ou vide : ', __FILE__) . json_encode($result));
+			}
+          	$result[9][0] = array(1,null,null,'Mon compte');
+          	$result[9][13] = array(null,null);
+      		log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) .json_encode(array(array($result[9]))));
+			return array(array($result[9]));
 		}
 		return $result;
 	}
@@ -420,7 +426,9 @@ class gsl extends eqLogic {
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
 				$data[$eqLogic->getId()]['color'] = $color;
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
-				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+              	if($data[$eqLogic->getId()]['image']){
+                  $replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+                }
         if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
             $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;">'.($data[$eqLogic->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
         }
@@ -428,7 +436,9 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$eqLogic->getId()]['accuracy'] . 'm</span>';
+              	if($data[$eqLogic->getId()]['accuracy']){
+					$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$eqLogic->getId()]['accuracy'] . 'm</span>';
+                }
 				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
@@ -447,7 +457,9 @@ class gsl extends eqLogic {
                 $replace['#adresses#'] .= '<span style="font-size:0.7em;">'.($data[$this->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span> - ';
             }
 			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span><br/>';
+          	if($data[$this->getId()]['accuracy']){
 				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$this->getId()]['accuracy'] . 'm</span>';
+          	}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));

@@ -10,19 +10,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
 <div class="row row-overflow">
    <div class="col-lg-12 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
     <legend><i class="fa fa-cog"></i> {{Gestion}}</legend>
-    <div class="eqLogicThumbnailContainer">
-        <div class="cursor eqLogicAction" data-action="add" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-            <center>
-                <i class="fa fa-plus-circle" style="font-size : 6em;color:#94ca02;"></i>
-            </center>
-            <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>Ajouter</center></span>
-        </div>
-        <div class="cursor eqLogicAction" data-action="gotoPluginConf" style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
-            <i class="fa fa-wrench" style="font-size : 6em;color:#767676;"></i>
-            <br>
-            <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676">{{Configuration}}</span>
-        </div>
+     <div class="eqLogicThumbnailContainer">
+      <div class="cursor eqLogicAction logoPrimary" data-action="add">
+        <i class="fas fa-plus-circle"></i>
+        <br>
+        <span>{{Ajouter}}</span>
     </div>
+      <div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf">
+      <i class="fas fa-wrench"></i>
+    <br>
+    <span>{{Configuration}}</span>
+  </div>
+  </div>
     <legend><i class="fa fa-table"></i> {{Mes contacts}}</legend>
     <div class="eqLogicThumbnailContainer">
      <?php
@@ -32,7 +31,9 @@ foreach ($eqLogics as $eqLogic) {
 	$imageCmd = $eqLogic->getCmd(null, 'image');
 	if(is_object($imageCmd)){
 		$image = $imageCmd->execCmd();
-		echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 65px !important;left: 32px; top: 20px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
+      	if($image){
+          echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 65px !important;left: 32px; top: 20px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
+        }
 	}
 	echo '<img src="' . $plugin->getPathImgIcon() . '"  height="105" width="95" />';
 	echo "<br>";
