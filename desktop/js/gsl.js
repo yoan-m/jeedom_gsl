@@ -36,7 +36,7 @@
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
     }
-    tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i>';
+    //tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i>';
     tr += '</td>';
     tr += '</tr>';
     $('#table_cmd tbody').append(tr);
@@ -57,11 +57,14 @@ function printEqLogic(_eqLogic) {
     if (_eqLogic.logicalId == 'global') {
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').hide();
-   $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').hide();
+   	  $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').hide();
+   	  $('.eqLogicAction[data-action=remove]').hide();
+       
   } else {
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').show();
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').show();
+   	  $('.eqLogicAction[data-action=remove]').show();
  }
  if(isset(_eqLogic.configuration.type) && _eqLogic.configuration.type == 'fix'){
   $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
