@@ -34,7 +34,7 @@
   var map#id#, fg#id#,  data#id#;
   setTimeout(function(){
    data#id#=JSON.parse('#json#')
-   map#id# = L.map('map_#id#', {center: [51.5, -0.09],zoom: 15});
+   map#id# = L.map('map_#id#', {center: [51.5, -0.09],zoom: 15,attributionControl: false, zoomControl: false});
    new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
    fg#id# = L.featureGroup();
    fg#id#.addTo(map#id#);

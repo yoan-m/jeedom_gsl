@@ -420,7 +420,7 @@ class gsl extends eqLogic {
 				if (!$eqLogic->getConfiguration('isVisibleGlobal', 0)) {
 					continue;
 				}
-				if ($eqLogic->getConfiguration('type') == 'fix') {
+				if ($eqLogic->getConfiguration('color')) {
 					$color = $eqLogic->getConfiguration('color');
 				}
 				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
@@ -447,7 +447,7 @@ class gsl extends eqLogic {
 			return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl_global', 'gsl')));
 		} else {
 			$color = '#ffffff';
-			if ($this->getConfiguration('type') == 'fix') {
+			if ($this->getConfiguration('color')) {
 				$color = $this->getConfiguration('color');
 			}
 			$data = array($this->getId() => $this->buildLocation());

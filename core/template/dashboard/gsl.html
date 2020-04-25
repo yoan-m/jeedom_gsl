@@ -56,7 +56,12 @@
     })}).addTo(fg#id#);
 	
 	if(!isNaN(data#id#[i].accuracy)){
-      L.circle(data#id#[i].coordinated.split(','), {radius: data#id#[i].accuracy}).addTo(fg#id#);
+      L.circle(data#id#[i].coordinated.split(','), {
+               radius: data#id#[i].accuracy,
+                color: data#id#[i].color,
+                fillColor: data#id#[i].color,
+                fillOpacity: 0.5
+               }).addTo(fg#id#);
 	}
     marker._icon.style['background-color'] =  data#id#[i].color;
   }
