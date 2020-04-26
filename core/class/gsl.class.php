@@ -450,6 +450,8 @@ class gsl extends eqLogic {
 		$data = array('points'=>array());
 		$data['light-theme'] = self::getMapLayers()[config::byKey('light-theme', 'gsl', array_keys(self::getMapLayers())[0])];
 		$data['dark-theme'] = self::getMapLayers()[config::byKey('dark-theme', 'gsl', array_keys(self::getMapLayers())[0])];
+		$data['control-zoom'] = (bool)config::byKey('control-zoom', 'gsl', true);
+		$data['control-attributions'] = (bool)config::byKey('control-attributions', 'gsl', true);
 		if ($this->getLogicalId() == 'global') {
 			$replace['#adresses#'] = '';
 			$eqLogics = self::byType('gsl', true);

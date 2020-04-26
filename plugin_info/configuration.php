@@ -75,6 +75,18 @@ $themes = gsl::getMapLayers();
 				</select>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Afficher le contrôle du zoom}}</label>
+            <div class="col-lg-4">
+                <input type="checkbox" class="configKey form-control" data-l1key="control-zoom" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Afficher les attributions}}</label>
+            <div class="col-lg-4">
+                <input type="checkbox" class="configKey form-control" data-l1key="control-attributions" />
+            </div>
+        </div>
   </fieldset>
 </form>
 <script>

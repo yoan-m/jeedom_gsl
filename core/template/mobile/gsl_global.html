@@ -60,7 +60,7 @@
       layer#id# = new L.TileLayer(theme#id#.url, theme#id#);
    fg#id# = L.featureGroup();
 
-  map#id# = L.map('map_' + #id#, {center: center#id#,zoom: zoom#id#, layers:[layer#id#, fg#id#],attributionControl: false, zoomControl: false});
+  map#id# = L.map('map_' + #id#, {center: center#id#,zoom: zoom#id#, layers:[layer#id#, fg#id#],attributionControl: data#id#['control-attributions'], zoomControl: data#id#['control-zoom']});
   map#id#.on('moveend', function(){
   	center#id# = map#id#.getCenter();
   });
