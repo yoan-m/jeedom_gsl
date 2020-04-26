@@ -21,9 +21,11 @@ if (!isConnect()) {
 	include_file('desktop', '404', 'php');
 	die();
 }
+$themes = gsl::getMapLayers();
 ?>
 <form class="form-horizontal">
     <fieldset>
+		<legend><i class="fa fa-list-alt"></i> {{Général}}</legend>
         <div class="form-group">
             <label class="col-lg-4 control-label">{{Fréquence de rafraichissement}}</label>
             <div class="col-lg-4">
@@ -43,7 +45,34 @@ if (!isConnect()) {
   				<input type="file" name="file_cookieGsl" id="file_cookieGsl">
             </div>
   			<div class="col-lg-2">
-                <a class="btn btn-success" id="bt_saveCookieGsl"><i class='far fa-check-circle icon-white'></i> {{Enregistrer}}</a>
+                <a class="btn btn-success" id="bt_saveCookieGsl"><i class='far fa-check-circle icon-white'></i> {{Envoyer}}</a>
+            </div>
+        </div>
+  </fieldset>
+  <fieldset>
+		<legend><i class="fa fa-map-marked-alt"></i> {{Carte}}</legend>
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Fond cartographique thème light}}</label>
+            <div class="col-lg-4">
+                <select class="configKey form-control" data-l1key="light-theme">
+				<?php
+				foreach ($themes as $key => $value) {
+					echo '<option value="' . $key . '">' . $key . '</option>';
+				}
+				?>
+				</select>
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-lg-4 control-label">{{Fond cartographique thème dark}}</label>
+            <div class="col-lg-4">
+                <select class="configKey form-control" data-l1key="dark-theme">
+				<?php
+				foreach ($themes as $key => $value) {
+					echo '<option value="' . $key . '">' . $key . '</option>';
+				}
+				?>
+				</select>
             </div>
         </div>
   </fieldset>

@@ -38,15 +38,40 @@
     }else{
       $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
     }
-  setTimeout(function(){
-   var data#id#=JSON.parse('#json#')
-   var map#id# = L.map('map_#id#', {center: [51.5, -0.09],zoom: 15});
-   new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map#id#);
-   var fg#id# = L.featureGroup();
-   fg#id#.addTo(map#id#);
-   for (var i in data#id#) {
-    var marker = L.marker(data#id#[i].coordinated.split(','), {icon:  L.icon({
-      iconUrl: (data#id#[i].image ? data#id#[i].image: 'plugins/gsl/3rparty/images/avatar-pin-2x.png'),
+  //setTimeout(function(){
+   var data#id#=JSON.parse('#json#');
+   var map#id#, layer#id#, fg#id#, theme#id#, center#id#=[51.5, -0.09], zoom#id#=15;
+   if (!theme#id#) {
+     theme#id# = data#id#['light-theme'];
+     if($('body')[0].hasAttribute('data-theme')){
+      var currentTheme = $('body').attr('data-theme')
+      if (currentTheme.endsWith('Dark')) {
+        theme#id# = data#id#['dark-theme'];
+      }
+     }
+    $('body').on('changeThemeEvent', function(event,data){
+      if(data == 'Dark'){
+        theme#id# = data#id#['dark-theme'];
+      }else{
+        theme#id# = data#id#['light-theme'];
+      }
+      map#id#.removeLayer(layer#id#);
+      layer#id# = new L.TileLayer(theme#id#.url, theme#id#);
+      map#id#.addLayer(layer#id#);
+    });
+  }
+   layer#id# = new L.TileLayer(theme#id#.url, theme#id#);
+   fg#id# = L.featureGroup();
+   	map#id# = L.map('map_' + #id#, {center: center#id#,zoom: zoom#id#, layers:[layer#id#, fg#id#]});
+    map#id#.on('moveend', function(){
+      center#id# = map#id#.getCenter();
+    });
+    map#id#.on('zoomend', function(){
+      zoom#id# = map#id#.getZoom();
+    });
+   for (var i in data#id#.points) {
+    var marker = L.marker(data#id#.points[i].coordinated.split(','), {icon:  L.icon({
+      iconUrl: (data#id#.points[i].image ? data#id#.points[i].image: 'plugins/gsl/3rparty/images/avatar-pin-2x.png'),
       shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
       iconSize: [36, 36],
       shadowSize: [50, 55], 
@@ -55,21 +80,21 @@
       popupAnchor: [-3, -76]
     })}).addTo(fg#id#);
 	
-	if(!isNaN(data#id#[i].accuracy)){
-      L.circle(data#id#[i].coordinated.split(','), {
-               radius: data#id#[i].accuracy,
-                color: data#id#[i].color,
-                fillColor: data#id#[i].color,
+	if(!isNaN(data#id#.points[i].accuracy)){
+      L.circle(data#id#.points[i].coordinated.split(','), {
+               radius: data#id#.points[i].accuracy,
+                color: data#id#.points[i].color,
+                fillColor: data#id#.points[i].color,
                 fillOpacity: 0.5
                }).addTo(fg#id#);
 	}
-    marker._icon.style['background-color'] =  data#id#[i].color;
+    marker._icon.style['background-color'] =  data#id#.points[i].color;
   }
   map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
   $('body').on('eqLogic::update',function(){
       map#id#.invalidateSize();
       map#id#.fitBounds(fg#id#.getBounds(), {padding: [30, 30]});
   });
-}, 1);
+//}, 1);
 </script>
 </div>

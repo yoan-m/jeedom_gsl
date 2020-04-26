@@ -209,6 +209,44 @@ class gsl extends eqLogic {
             $eqLogic->save();
         }
     }
+	
+	public static function getMapLayers(){
+		return array('OpenStreetMap.Mapnik'=>array('url'=>'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'OpenStreetMap.DE'=>array('url'=>'https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'OpenStreetMap.France'=>array('url'=>'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png','attribution'=>'&copy; Openstreetmap France | &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'OpenStreetMap.HOT'=>array('url'=>'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, Tiles style by <a href=\"https://www.hotosm.org/\" target=\"_blank\">Humanitarian OpenStreetMap Team</a> hosted by <a href=\"https://openstreetmap.fr/\" target=\"_blank\">OpenStreetMap France</a>'),
+			'OpenStreetMap.BZH'=>array('url'=>'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, Tiles courtesy of <a href=\"http://www.openstreetmap.bzh/\" target=\"_blank\">Breton OpenStreetMap Team</a>'),
+			'OpenTopoMap'=>array('url'=>'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png','attribution'=>'Map data: &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, <a href=\"http://viewfinderpanoramas.org\">SRTM</a> | Map style: &copy; <a href=\"https://opentopomap.org\">OpenTopoMap</a> (<a href=\"https://creativecommons.org/licenses/by-sa/3.0/\">CC-BY-SA</a>)'),
+			'Stadia.AlidadeSmooth'=>array('url'=>'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png','attribution'=>'&copy; <a href=\"https://stadiamaps.com/\">Stadia Maps</a>, &copy; <a href=\"https://openmaptiles.org/\">OpenMapTiles</a> &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'),
+			'Stadia.AlidadeSmoothDark'=>array('url'=>'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png','attribution'=>'&copy; <a href=\"https://stadiamaps.com/\">Stadia Maps</a>, &copy; <a href=\"https://openmaptiles.org/\">OpenMapTiles</a> &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'),
+			'Stadia.OSMBright'=>array('url'=>'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png','attribution'=>'&copy; <a href=\"https://stadiamaps.com/\">Stadia Maps</a>, &copy; <a href=\"https://openmaptiles.org/\">OpenMapTiles</a> &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'),
+			'Stadia.Outdoors'=>array('url'=>'https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png','attribution'=>'&copy; <a href=\"https://stadiamaps.com/\">Stadia Maps</a>, &copy; <a href=\"https://openmaptiles.org/\">OpenMapTiles</a> &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'),
+			'Stamen.Toner'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}','subdomains'=>'abcd','ext'=>'png','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'Stamen.TonerBackground'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}{r}.{ext}','subdomains'=>'abcd','ext'=>'png','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			
+			'Stamen.TonerLite'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}','subdomains'=>'abcd','ext'=>'png','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'Stamen.Watercolor'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}','subdomains'=>'abcd','ext'=>'jpg','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'Stamen.Terrain'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}','subdomains'=>'abcd','ext'=>'png','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'Stamen.TerrainBackground'=>array('url'=>'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}{r}.{ext}','subdomains'=>'abcd','ext'=>'png','attribution'=>'Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a> &mdash; Map data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'),
+			'Esri.WorldStreetMap'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'),
+			'Esri.DeLorme'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Copyright: &copy;2012 DeLorme'),
+			'Esri.WorldTopoMap'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'),
+			'Esri.WorldImagery'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'),
+			'Esri.WorldTerrain'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS'),
+			'Esri.WorldShadedRelief'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Source: Esri'),
+			'Esri.WorldPhysical'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Source: US National Park Service'),
+			'Esri.OceanBasemap'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri'),
+			'Esri.NatGeoWorldMap'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'),
+			'Esri.WorldGrayCanvas'=>array('url'=>'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}','attribution'=>'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'),
+			'CartoDB.Positron'=>array('url'=>'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.PositronNoLabels'=>array('url'=>'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.DarkMatter'=>array('url'=>'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.DarkMatterNoLabels'=>array('url'=>'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.Voyager'=>array('url'=>'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.VoyagerNoLabels'=>array('url'=>'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'CartoDB.VoyagerLabelsUnder'=>array('url'=>'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png','subdomains'=>'abcd','attribution'=>'&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>'),
+			'Wikimedia'=>array('url'=>'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png','attribution'=>'<a href=\"https://wikimediafoundation.org/wiki/Maps_Terms_of_Use\">Wikimedia</a'));
+	}
 
 	/*     * *********************Méthodes d'instance************************* */
 
@@ -404,13 +442,16 @@ class gsl extends eqLogic {
 		$replace['#text_color#'] = $this->getConfiguration('text_color');
 		$replace['#version#'] = $_version;
 		$replace['#logicalId#'] = $this->getLogicalId();
+		
 		$refresh = $this->getCmd(null, 'refresh');
 		if (is_object($refresh)) {
 			$replace['#refresh_id#'] = $refresh->getId();
 		}
+		$data = array('points'=>array());
+		$data['light-theme'] = self::getMapLayers()[config::byKey('light-theme', 'gsl', array_keys(self::getMapLayers())[0])];
+		$data['dark-theme'] = self::getMapLayers()[config::byKey('dark-theme', 'gsl', array_keys(self::getMapLayers())[0])];
 		if ($this->getLogicalId() == 'global') {
 			$replace['#adresses#'] = '';
-			$data = array();
 			$eqLogics = self::byType('gsl', true);
 			foreach ($eqLogics as $eqLogic) {
 				$color = '#ffffff';
@@ -423,21 +464,21 @@ class gsl extends eqLogic {
 				if ($eqLogic->getConfiguration('color')) {
 					$color = $eqLogic->getConfiguration('color');
 				}
-				$data[$eqLogic->getId()] = $eqLogic->buildLocation();
-				$data[$eqLogic->getId()]['color'] = $color;
+				$data['points'][$eqLogic->getId()] = $eqLogic->buildLocation();
+				$data['points'][$eqLogic->getId()]['color'] = $color;
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
-              	if($data[$eqLogic->getId()]['image']){
-                  $replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data[$eqLogic->getId()]['image'] . '" />';
+              	if($data['points'][$eqLogic->getId()]['image']){
+                  $replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image'] . '" />';
                 }
-        if(isset($data[$eqLogic->getId()]['battery']) && $data[$eqLogic->getId()]['battery'] != '') {
-            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;">'.($data[$eqLogic->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data[$eqLogic->getId()]['battery'] . '%</span>';
+        if(isset($data['points'][$eqLogic->getId()]['battery']) && $data['points'][$eqLogic->getId()]['battery'] != '') {
+            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;">'.($data['points'][$eqLogic->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data['points'][$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data['points'][$eqLogic->getId()]['battery'] . '%</span>';
         }
         $replace['#adresses#'] .= '</span>';
-				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data[$eqLogic->getId()]['name'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span>' . $data[$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$eqLogic->getId()]['horodatage'] . '</span><br/>';
-              	if($data[$eqLogic->getId()]['accuracy']){
-					$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$eqLogic->getId()]['accuracy'] . 'm</span>';
+				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data['points'][$eqLogic->getId()]['name'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span>' . $data['points'][$eqLogic->getId()]['address'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data['points'][$eqLogic->getId()]['horodatage'] . '</span><br/>';
+              	if($data['points'][$eqLogic->getId()]['accuracy']){
+					$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data['points'][$eqLogic->getId()]['accuracy'] . 'm</span>';
                 }
 				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
@@ -450,15 +491,15 @@ class gsl extends eqLogic {
 			if ($this->getConfiguration('color')) {
 				$color = $this->getConfiguration('color');
 			}
-			$data = array($this->getId() => $this->buildLocation());
-			$data[$this->getId()]['color'] = $color;
-			$replace['#adresses#'] = '<span>' . $data[$this->getId()]['address'] . '</span><br/>';
-			if(isset($data[$this->getId()]['battery']) && $data[$this->getId()]['battery'] != '') {
-                $replace['#adresses#'] .= '<span style="font-size:0.7em;">'.($data[$this->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data[$this->getId()]['battery_icon'] . '"></i> ' . $data[$this->getId()]['battery'] . '%</span> - ';
+			$data['points'][$this->getId()] = $this->buildLocation();
+			$data['points'][$this->getId()]['color'] = $color;
+			$replace['#adresses#'] = '<span>' . $data['points'][$this->getId()]['address'] . '</span><br/>';
+			if(isset($data['points'][$this->getId()]['battery']) && $data['points'][$this->getId()]['battery'] != '') {
+                $replace['#adresses#'] .= '<span style="font-size:0.7em;">'.($data['points'][$this->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data['points'][$this->getId()]['battery_icon'] . '"></i> ' . $data['points'][$this->getId()]['battery'] . '%</span> - ';
             }
-			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data[$this->getId()]['horodatage'] . '</span><br/>';
-          	if($data[$this->getId()]['accuracy']){
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data[$this->getId()]['accuracy'] . 'm</span>';
+			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data['points'][$this->getId()]['horodatage'] . '</span><br/>';
+          	if($data['points'][$this->getId()]['accuracy']){
+				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data['points'][$this->getId()]['accuracy'] . 'm</span>';
           	}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;

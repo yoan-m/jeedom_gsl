@@ -1,3 +1,6 @@
+# 26/04/2020
+- Choix du fond de carte dans la configuration
+
 # 25/04/2020
 - Ajout d'une option de couleur par utilisateur (cercle de précision)
 

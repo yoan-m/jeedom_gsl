@@ -6,8 +6,7 @@ Les coordonnées peuvent être envoyées à d'autres plugins Geoloc, Geotrav, Je
 
 # Configuration
 
-La configuration du plugin nécessite une adresse gmail et son mot de passe. 
-Je vous conseille de créer un compte gmail dédié. 
+Il faut créer un compte gmail dédié et partager votre géolocalisation avec celui-ci. 
 
 ## Récupération du cookie
 
@@ -26,14 +25,15 @@ Je vous conseille de créer un compte gmail dédié.
 * Avant de pouvoir utiliser le plugin il faut s'être authentifié au moins une fois depuis votre adresse IP au compte Google configuré.
 * Vérifiez que Google ne vous demande pas de confirmation (mail ou sms) de connection
 * Activez l'option suivante dans votre compte Google : Connexion et sécurité / Autoriser les applications moins sécurisées
-> Il n'est pas recommandé de descendre la fréquence de rafraichissement (10 minutes par défaut) car cela augmente le risque de détection d'une utilisation via automate de votre compte par Google.
-> Il s'est avéré qu'à la suite d'une détection, ce dernier met en place un captcha impossible a résoudre via Jeedom.
-Le plugin devient donc inutilisable pendant plusieurs heures. 
 
 
 Partager votre position depuis l'application Gmaps de votre smartphone avec le compte que vous venez de paramétrer.
 
 Choisissez la fréquence de rafraichissement des données (toutes les 5 minutes par défaut). 
+
+## Affichage
+Il est possible de choisir le fond de carte en fonction des deux thèmes officiels (light/dark).
+[Aperçu des fonds](https://leaflet-extras.github.io/leaflet-providers/preview/)
 
 # Equipement
 
