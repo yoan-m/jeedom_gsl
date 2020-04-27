@@ -1,9 +1,9 @@
 <div class="eqLogic-widget eqLogic allowResize gslWidget" style="height: #height#;width: #width#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#;#style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#">
-  <center class="widget-name">
+  <center class="widget-name" style="padding-right: inherit;">
     <span class="warning" title="#alert_name#">
       <i class='#alert_icon#'></i>
     </span>
-    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+    <span style="position:relative" class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
       <i class="fas fa-sync"></i>
     </span>
     <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
@@ -90,8 +90,10 @@
     const isYesterday = yesterday.toDateString() === date.toDateString();
     const isThisYear = today.getFullYear() === date.getFullYear();
 	var result;
-    if (seconds < 60) {
+    if (seconds < 5) {
       result = 'maintenant';
+    } else if (seconds < 60) {
+      result = `il y a ${ seconds } seconds`;
     } else if (seconds < 90) {
       result = 'il y a une minute';
     } else if (minutes < 60) {
@@ -110,7 +112,7 @@
       if(interval#id#){
          clearTimeout(interval#id#);
       }
-      interval#id# = setTimeout(function(){gslTimeAgo#id#(dateParam, id)}, 60000);
+      interval#id# = setTimeout(function(){gslTimeAgo#id#(dateParam, id)}, (seconds<=60 ? 1000 : 60000));
   }
  function createPoint(point, id){
 
@@ -252,7 +254,7 @@
   
    layer#id# = new L.TileLayer(theme#id#.url, theme#id#);
    fg#id# = L.featureGroup();
-   map#id# = L.map('map_' + #id#, {center: [45.808786, 4.872636],zoom: 15, layers:[layer#id#, fg#id#],attributionControl: data#id#['control-attributions'], zoomControl: data#id#['control-zoom']});
+   map#id# = L.map('map_' + #id#, {center: [51.5, -0.09],zoom: 15, layers:[layer#id#, fg#id#],attributionControl: data#id#['control-attributions'], zoomControl: data#id#['control-zoom']});
 
   for(id in data#id#.points){  
         createMarker(data#id#.points[id], id);

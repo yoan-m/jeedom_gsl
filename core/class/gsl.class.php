@@ -442,6 +442,11 @@ class gsl extends eqLogic {
 		$replace['#text_color#'] = $this->getConfiguration('text_color');
 		$replace['#version#'] = $_version;
 		$replace['#logicalId#'] = $this->getLogicalId();
+      
+		if($_version == 'dview'){
+         	$replace['#width#'] = '100%';
+         	//$replace['#height#'] = '100%';
+        }
 		
 		$refresh = $this->getCmd(null, 'refresh');
 		if (is_object($refresh)) {
