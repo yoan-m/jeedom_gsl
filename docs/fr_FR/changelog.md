@@ -1,3 +1,6 @@
+# 27/04/2020
+- Refonte complète des widgets en v4
+
 # 26/04/2020
 - Choix du fond de carte dans la configuration
 

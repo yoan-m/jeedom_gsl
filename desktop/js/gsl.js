@@ -27,11 +27,6 @@
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
     tr += '</td>';
     tr += '<td>';
-    tr += '<span class="cmdAttr" data-l1key="type"></span>';
-    tr += '<br/>';
-    tr += '<span class="cmdAttr" data-l1key="subType"></span>';
-    tr += '</td>';
-    tr += '<td>';
     if (is_numeric(_cmd.id)) {
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';

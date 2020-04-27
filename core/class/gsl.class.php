@@ -174,18 +174,18 @@ class gsl extends eqLogic {
 			if ($cmdgeoloc !== null) {
 				$cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
 				$cmdUpdate->event($location['coordinated']);
-				$cmdUpdate->getEqLogic()->refreshWidget();
+				//$cmdUpdate->getEqLogic()->refreshWidget();
 			}
 			if ($changed) {
 				$gChange = true;
-				$eqLogic->refreshWidget();
+				//$eqLogic->refreshWidget();
 			}
 		}
 		if ($gChange) {
 			$eqLogic = eqLogic::byLogicalId('global', 'gsl');
 			if (is_object($eqLogic)) {
 				$eqLogic->updateDistance();
-				$eqLogic->refreshWidget();
+				//$eqLogic->refreshWidget();
 			}
 		}
 	}
@@ -469,19 +469,19 @@ class gsl extends eqLogic {
 				$data['points'][$eqLogic->getId()] = $eqLogic->buildLocation();
 				$data['points'][$eqLogic->getId()]['color'] = $color;
 				$replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
-              	if($data['points'][$eqLogic->getId()]['image']){
-                  $replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image'] . '" />';
-                }
-        if(isset($data['points'][$eqLogic->getId()]['battery']) && $data['points'][$eqLogic->getId()]['battery'] != '') {
-            $replace['#adresses#'] .= '<br/><span style="font-size:0.7em;">'.($data['points'][$eqLogic->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data['points'][$eqLogic->getId()]['battery_icon'] . '"></i> ' . $data['points'][$eqLogic->getId()]['battery'] . '%</span>';
+              	if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value'])){
+                  $replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;"><img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
+                
+        if($data['points'][$eqLogic->getId()]['charging'] && $data['points'][$eqLogic->getId()]['charging']['value'] && $data['points'][$eqLogic->getId()]['battery'] && $data['points'][$eqLogic->getId()]['battery']['value']){
+            $replace['#adresses#'] .= '<br/><span class="gsl-battery"><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['charging']['id'].'"><i></i></span><span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"><i></i></span><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"></span>%</span>';
         }
+                        
         $replace['#adresses#'] .= '</span>';
-				$replace['#adresses#'] .= '<span style="font-size:0.8em;">' . $data['points'][$eqLogic->getId()]['name'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span>' . $data['points'][$eqLogic->getId()]['address'] . '</span><br/>';
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data['points'][$eqLogic->getId()]['horodatage'] . '</span><br/>';
-              	if($data['points'][$eqLogic->getId()]['accuracy']){
-					$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data['points'][$eqLogic->getId()]['accuracy'] . 'm</span>';
                 }
+				$replace['#adresses#'] .= '<span class="gsl-name">' . $data['points'][$eqLogic->getId()]['name']['value'] . '</span><br/>';
+				$replace['#adresses#'] .= '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
+				$replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
+				$replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$eqLogic->getId()]['accuracy']['id'].'"></span>';
 				$replace['#adresses#'] .= '</div>';
 				$replace['#adresses#'] .= '<hr/>';
 			}
@@ -495,13 +495,13 @@ class gsl extends eqLogic {
 			}
 			$data['points'][$this->getId()] = $this->buildLocation();
 			$data['points'][$this->getId()]['color'] = $color;
-			$replace['#adresses#'] = '<span>' . $data['points'][$this->getId()]['address'] . '</span><br/>';
-			if(isset($data['points'][$this->getId()]['battery']) && $data['points'][$this->getId()]['battery'] != '') {
-                $replace['#adresses#'] .= '<span style="font-size:0.7em;">'.($data['points'][$this->getId()]['charging'] ? '<i class="fas fa-bolt"></i> ' : '' ).'<i class="fa ' . $data['points'][$this->getId()]['battery_icon'] . '"></i> ' . $data['points'][$this->getId()]['battery'] . '%</span> - ';
+          $replace['#adresses#'] = '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
+			if(isset($data['points'][$this->getId()]['battery']) && $data['points'][$this->getId()]['battery']['value'] != '') {
+                $replace['#adresses#'] .= '<span class="gsl-battery"><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['charging']['id'].'"><i></i></span><span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"><i></i></span><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"></span>%</span> - ';
             }
-			$replace['#adresses#'] .= '<span style="font-size:0.7em;">' . $data['points'][$this->getId()]['horodatage'] . '</span><br/>';
-          	if($data['points'][$this->getId()]['accuracy']){
-				$replace['#adresses#'] .= '<span style="font-size:0.7em;">Précision : ' . $data['points'][$this->getId()]['accuracy'] . 'm</span>';
+			$replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
+          	if($data['points'][$this->getId()]['accuracy'] && $data['points'][$this->getId()]['accuracy']['value']){
+				$replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$this->getId()]['accuracy']['id'].'"></span>';
           	}
 			$replace['#json#'] = str_replace("'", "\'", json_encode($data));
 			$replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
@@ -515,12 +515,12 @@ class gsl extends eqLogic {
 		}
 		$return = array(
 			'id' => $this->getLogicalId(),
-			'image' => 'plugins/gsl/3rparty/images/avatar.png',
-			'name' => $this->getName(),
+			'image' => array('value'=>'plugins/gsl/3rparty/images/avatar.png'),
+			'name' => array('value'=>$this->getName())
 		);
 		$cmds = $this->getCmd('info');
 		foreach ($cmds as $cmd) {
-			$return[$cmd->getLogicalId()] = $cmd->execCmd();
+			$return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmd->execCmd());
 			if ($cmd->getLogicalId() == 'battery') {
 				$icon = 'fa-battery-0';
 				$battery = $return[$cmd->getLogicalId()];
@@ -533,7 +533,7 @@ class gsl extends eqLogic {
 				}else if($battery > 20){
 					$icon = 'fa-battery-1';
 				}
-				$return['battery_icon'] = $icon;
+             	$return[$cmd->getLogicalId()]['icon'] = $icon;
 			}
 			if ($cmd->getLogicalId() != 'address') {
 				continue;
@@ -542,10 +542,12 @@ class gsl extends eqLogic {
 			if (!$timestamp) {
 				continue;
 			}
-			$return['horodatage'] = "le " . date("d/m/Y à H:i", strtotime($timestamp));
+          	$return[$cmd->getLogicalId()]['collectDate']=$timestamp;
 		}
 		return $return;
 	}
+  
+ 
   
 	public function postUpdate() {
 		if (file_exists(jeedom::getTmpFolder('gsl') . '/cookies.txt') && !file_exists(self::$_cookiePath)) {
