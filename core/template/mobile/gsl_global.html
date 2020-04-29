@@ -118,15 +118,15 @@
                 jeedom.cmd.update[point.battery.id] = function(_options) {
                     var cmd = $('.cmd.gsl-battery[data-cmd_id='+point.battery.id+']');
                     cmd.empty().append(_options.display_value);
-                    var icon = 'fa-battery-0';
+                    var icon = 'fa-battery-empty';
                     if(_options.display_value > 80){
-                        icon = 'fa-battery-4';
+                        icon = 'fa-battery-full';
                     }else if(_options.display_value > 60){
-                        icon = 'fa-battery-3';
+                        icon = 'fa-battery-three-quarters';
                     }else if(_options.display_value > 40){
-                        icon = 'fa-battery-2';
+                        icon = 'fa-battery-half';
                     }else if(_options.display_value > 20){
-                        icon = 'fa-battery-1';
+                        icon = 'fa-battery-quarter';
                     }
                     cmd = $('.cmd.gsl-battery-icon[data-cmd_id='+point.battery.id+']');
                     cmd.find('i').attr('class', 'fa ' + icon);
