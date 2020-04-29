@@ -458,7 +458,7 @@ class gsl extends eqLogic {
         $data['control-zoom'] = (bool)config::byKey('control-zoom', 'gsl', true);
         $data['control-attributions'] = (bool)config::byKey('control-attributions', 'gsl', true);
         if ($this->getLogicalId() == 'global') {
-            $replace['#adresses#'] = '';
+            $replace['#adresses#'] = '<div id="gsl-address-global-'.$this->getId().'">';
             $eqLogics = self::byType('gsl', true);
             foreach ($eqLogics as $eqLogic) {
                 $color = '#ffffff';
@@ -480,9 +480,9 @@ class gsl extends eqLogic {
                     if(isset($data['points'][$eqLogic->getId()]['battery']) && isset($data['points'][$eqLogic->getId()]['battery']['value'])){
                         $replace['#adresses#'] .= '<br/><span class="gsl-battery">';
                         if(isset($data['points'][$eqLogic->getId()]['charging']) && isset($data['points'][$eqLogic->getId()]['charging']['value'])){
-                            $replace['#adresses#'] .= '<span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['charging']['id'].'"><i></i></span>';
+                            $replace['#adresses#'] .= '<span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['charging']['id'].'"><i></i></span> ';
                         }
-                        $replace['#adresses#'] .= '<span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"><i></i></span><br/><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"></span>%</span>';
+                        $replace['#adresses#'] .= '<span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"><i></i></span> <span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"></span>%</span>';
                     }
 
                     $replace['#adresses#'] .= '</span>';
@@ -494,6 +494,7 @@ class gsl extends eqLogic {
                 $replace['#adresses#'] .= '</div>';
                 $replace['#adresses#'] .= '<hr/>';
             }
+            $replace['#adresses#'] .= '</div>';
             $replace['#json#'] = str_replace("'", "\'", json_encode($data));
             $replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 60 : 170;
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl_global', 'gsl')));
@@ -504,14 +505,19 @@ class gsl extends eqLogic {
             }
             $data['points'][$this->getId()] = $this->buildLocation();
             $data['points'][$this->getId()]['color'] = $color;
-            $replace['#adresses#'] = '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
-            if(isset($data['points'][$this->getId()]['battery']) && $data['points'][$this->getId()]['battery']['value'] != '') {
-                $replace['#adresses#'] .= '<span class="gsl-battery"><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['charging']['id'].'"><i></i></span><span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"><i></i></span><span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"></span>%</span> - ';
+            $replace['#adresses#'] = '<div id="gsl-address-'.$this->getId().'"><span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
+            if(isset($data['points'][$this->getId()]['battery']) && isset($data['points'][$this->getId()]['battery']['value'])) {
+                $replace['#adresses#'] .= '<span class="gsl-battery">';
+                if(isset($data['points'][$this->getId()]['charging']) && isset($data['points'][$this->getId()]['charging']['value'])){
+                    $replace['#adresses#'] .= '<span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['charging']['id'].'"><i></i></span> ';
+                }
+                $replace['#adresses#'] .= '<span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"><i></i></span> <span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"></span>%</span> - ';
             }
             $replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
             if($data['points'][$this->getId()]['accuracy'] && $data['points'][$this->getId()]['accuracy']['value']){
                 $replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$this->getId()]['accuracy']['id'].'"></span>';
             }
+            $replace['#adresses#'] .= '</div>';
             $replace['#json#'] = str_replace("'", "\'", json_encode($data));
             $replace['#height-map#'] = ($version == 'dashboard') ? $replace['#height#'] - 100 : 170;
             return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'gsl', 'gsl')));

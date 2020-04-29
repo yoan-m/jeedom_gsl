@@ -25,16 +25,16 @@
             border-radius: 50% !important;
         }
 
-        #gsl-address-global-#id# .gsl-precision{
-            font-size:10px !important;
-        }
-        #gsl-address-global-#id# .gsl-horodatage{
-            font-size:10px !important;
-        }
+        #gsl-address-global-#id# .gsl-precision,
+        #gsl-address-global-#id# .gsl-horodatage,
         #gsl-address-global-#id# .gsl-battery{
             font-size:10px !important;
         }
         #gsl-address-global-#id# .gsl-name{
+            font-size:12px !important;
+            font-weight: bold;
+        }
+        #gsl-address-global-#id# .gsl-address{
             font-size:12px !important;
         }
     </style>
@@ -110,7 +110,6 @@
             intervals#id#[id] = setTimeout(function(){gslTimeAgo(dateParam, id)}, 60000);
         }
         function createPoint(point, id){
-            debugger;
             if(point.battery){
                 jeedom.cmd.update[point.battery.id] = function(_options) {
                     var cmd = $('.cmd.gsl-battery[data-cmd_id='+point.battery.id+']');
