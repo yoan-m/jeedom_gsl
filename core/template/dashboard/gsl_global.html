@@ -207,7 +207,7 @@
         function createMarker(point, id){
             markers#id#[id] = {};
             var marker = L.marker(point.coordinated.value.split(','), {icon:  L.icon({
-                    iconUrl: (point.image && point.image.value ? point.image.value: 'plugins/gsl/3rparty/images/avatar-pin-2x.png'),
+                    iconUrl: (point.image && point.image.value ? point.image.value : 'plugins/gsl/3rparty/images/blank.png'),
                     shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
                     iconSize: [36, 36],
                     shadowSize: [50, 55],
