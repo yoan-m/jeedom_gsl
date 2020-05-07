@@ -95,8 +95,8 @@ class gsl extends eqLogic {
                 'address' => $user[1][4],
                 'timestamp' => $user[1][2],
                 'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
-                'battery' => $user[13][1],
-                'charging' => $user[13][0],
+                'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
+                'charging' => (isset($user[13]) && isset($user[13][0]) ? $user[13][0] : null),
                 'accuracy' => $user[1][3]
             );
         }
