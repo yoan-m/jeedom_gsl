@@ -62,17 +62,28 @@ function printEqLogic(_eqLogic) {
    	  $('.eqLogicAction[data-action=remove]').show();
  }
  if(isset(_eqLogic.configuration.type) && _eqLogic.configuration.type == 'fix'){
-  $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
-  $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
-  $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
-}else{
-   $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
-   $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').show();
-}
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').closest('.form-group').show();
+  }else{
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+    $('.form-control[data-l1key=configuration][data-l2key=coordinatesJeedom]').closest('.form-group').hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').closest('.form-group').hide();
+  }
 }
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').next().on('click', function () {
     jeedom.cmd.getSelectModal({cmd: {type: 'info', subType: 'string'}}, function (result) {
         $('.eqLogicAttr[data-l2key=cmdgeoloc]').value(result.human);
     });
+});
+
+
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').on('change', function (event) {
+    if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'jeedom'){
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+    }else{
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+    }
 });

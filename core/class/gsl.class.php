@@ -297,8 +297,13 @@ class gsl extends eqLogic {
         }
 
         if ($this->getConfiguration('type') == 'fix') {
-            $cmd = $this->getCmd(null, 'coordinated');
-            $cmd->event($this->getConfiguration('coordinated'));
+            if($this->getConfiguration('coordinatesType') == 'jeedom'){
+                $cmd = $this->getCmd(null, 'coordinated');
+                $cmd->event(config::byKey('info::latitude').','.config::byKey('info::longitude'));
+            }else{
+                $cmd = $this->getCmd(null, 'coordinated');
+                $cmd->event($this->getConfiguration('coordinated'));
+            }
         } else {
             $cmd = $this->getCmd(null, 'image');
             if (!is_object($cmd)) {
@@ -383,6 +388,14 @@ class gsl extends eqLogic {
                     }
                     if (!is_object($eqLogic1->getCmd(null, 'coordinated')) || !is_object($eqLogic2->getCmd(null, 'coordinated'))) {
                         continue;
+                    }
+                    if($eqLogic2->getConfiguration('type') == 'fix' && $eqLogic2->getConfiguration('coordinatesType') == 'jeedom'){
+                        $cmd = $eqLogic2->getCmd(null, 'coordinated');
+                        $cmd->event(config::byKey('info::latitude').','.config::byKey('info::longitude'));
+                    }
+                    if($eqLogic1->getConfiguration('type') == 'fix' && $eqLogic1->getConfiguration('coordinatesType') == 'jeedom'){
+                        $cmd = $eqLogic1->getCmd(null, 'coordinated');
+                        $cmd->event(config::byKey('info::latitude').','.config::byKey('info::longitude'));
                     }
                     $distances[$eqLogic1->getId() . '-' . $eqLogic2->getId()] = array('eq1' => $eqLogic1, 'eq2' => $eqLogic2);
                 }
@@ -545,6 +558,14 @@ class gsl extends eqLogic {
         $cmds = $this->getCmd('info');
         foreach ($cmds as $cmd) {
 			if ($cmd->getLogicalId() == 'name') {
+                continue;
+            }
+            if ($cmd->getLogicalId() == 'coordinated') {
+                if($this->getConfiguration('coordinatesType') == 'jeedom'){
+                    $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>config::byKey('info::latitude').','.config::byKey('info::longitude'));
+                }else{
+                    $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmd->execCmd());
+                }
                 continue;
             }
             $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmd->execCmd());

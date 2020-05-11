@@ -103,8 +103,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <div class="input-group">
                                         <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdgeoloc">
                                         <span class="input-group-btn">
-                            <a class="btn btn-default cursor listEquipementAction" data-input="cmdgeoloc"><i class="fa fa-list-alt "></i></a>
-                        </span>
+                                             <a class="btn btn-default cursor listEquipementAction" data-input="cmdgeoloc"><i class="fa fa-list-alt "></i></a>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +121,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Coordonnées fixe}}</label>
+                                <label class="col-sm-3 control-label">{{Type de coordonnées}}</label>
+                                <div class="col-sm-3">
+                                    <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinatesType">
+                                        <option value="">{{Fixe}}</option>
+                                        <option value="jeedom">{{Jeedom}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Coordonnées}}<sup><i class="fas fa-question-circle tooltipstered" title="Latitude,longitude"></i></sup></label>
                                 <div class="col-sm-3">
                                     <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
                                 </div>
