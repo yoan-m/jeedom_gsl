@@ -1,3 +1,6 @@
+# 11/05/2020
+- Possibilité d'utilisation des coordonnées paramétrées dans Jeedom
+
 # 27/04/2020
 - Refonte complète des widgets en v4
 
