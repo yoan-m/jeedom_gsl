@@ -41,8 +41,9 @@ class gsl extends eqLogic {
     }
 
     public static function google_callLocationUrl() {
-        log::add('gsl', 'debug', __('google_callLocationUrl ', __FILE__));
-        $ch = curl_init('https://www.google.com/maps/preview/locationsharing/read?authuser=0&pb=');
+        $url = 'https://www.google.com/maps/preview/locationsharing/read?authuser='.config::byKey('authuser', 'gsl', '0').'&pb=';
+        log::add('gsl', 'debug', __('google_callLocationUrl '.$url, __FILE__));
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_COOKIEJAR, self::$_cookiePath);
         curl_setopt($ch, CURLOPT_COOKIEFILE,self::$_cookiePath);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

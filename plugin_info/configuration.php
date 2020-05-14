@@ -39,7 +39,6 @@ $themes = gsl::getMapLayers();
                 <a class="btn btn-danger" id="bt_logoutGsl"><i class='fas fa-sign-out-alt icon-white'></i> {{Déconnexion}}</a>
             </div>
         </div>
-
         <div class="form-group">
             <label class="col-lg-4 control-label">{{Cookie}}</label>
             <div class="col-lg-3">
@@ -47,6 +46,12 @@ $themes = gsl::getMapLayers();
             </div>
             <div class="col-lg-1">
                 <a class="btn btn-success" id="bt_saveCookieGsl"><i class='far fa-check-circle icon-white'></i> {{Envoyer}}</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-4 control-label">{{Authuser}}<sup><i class="fas fa-question-circle" title="{{Ne pas modifier.  Sauf si le authuser lié au cookie est différent de 0.}}"></i></sup></label>
+            <div class="col-lg-4">
+                <input type="number" class="configKey input-sm form-control " data-l1key="authuser" />
             </div>
         </div>
     </fieldset>

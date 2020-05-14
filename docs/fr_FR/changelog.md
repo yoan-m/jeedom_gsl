@@ -1,3 +1,6 @@
+# 14/05/2020
+- Configuration de l'authuser (utilisateur avertis)
+
 # 11/05/2020
 - Possibilité d'utilisation des coordonnées paramétrées dans Jeedom
 
