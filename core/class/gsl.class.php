@@ -512,6 +512,7 @@ class gsl extends eqLogic {
 				$replace['#adresses#'] .= '</span>';
                 $replace['#adresses#'] .= '<span class="gsl-name">' . $data['points'][$eqLogic->getId()]['name']['value'] . '</span><br/>';
                 $replace['#adresses#'] .= '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
+                $replace['#adresses#'] .= '<span class="cmd" data-cmd_id="'.$data['points'][$eqLogic->getId()]['coordinated']['id'].'"></span>';
                 $replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
                 $replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$eqLogic->getId()]['accuracy']['id'].'"></span>';
                 $replace['#adresses#'] .= '</div>';
@@ -528,7 +529,7 @@ class gsl extends eqLogic {
             }
             $data['points'][$this->getId()] = $this->buildLocation();
             $data['points'][$this->getId()]['color'] = $color;
-            $replace['#adresses#'] = '<div id="gsl-address-'.$this->getId().'"><span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
+            $replace['#adresses#'] = '<div id="gsl-address-'.$this->getId().'"><span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><span class="cmd" data-cmd_id="'.$data['points'][$this->getId()]['coordinated']['id'].'"></span><br/>';
             if(isset($data['points'][$this->getId()]['battery']) && isset($data['points'][$this->getId()]['battery']['value']) && $data['points'][$this->getId()]['battery']['value'] != '') {
                 $replace['#adresses#'] .= '<span class="gsl-battery">';
                 if(isset($data['points'][$this->getId()]['charging']) && isset($data['points'][$this->getId()]['charging']['value']) && $data['points'][$this->getId()]['charging']['value'] != ''){
