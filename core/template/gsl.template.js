@@ -135,11 +135,12 @@ function gslSetTheme(light, dark){
             }else{
                 gslObjects.theme = light;
             }
-            gslObjects.maps.forEach(map => {
+            for (const key in gslObjects.maps){
+                var map = gslObjects.maps[key];
                 map.map.removeLayer(map.layer);
                 map.layer = new L.TileLayer(gslObjects.theme.url, gslObjects.theme);
                 map.map.addLayer(map.layer);
-            });
+            }
         });
     }
 }
