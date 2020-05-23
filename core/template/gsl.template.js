@@ -168,7 +168,9 @@ function gslCreateMarker(eqId, point, id){
             iconAnchor: [18, 47],
             shadowAnchor: [25, 55],
             popupAnchor: [-3, -76]
-        })}).addTo(gslObjects.maps[eqId].featureGroup);
+        }),
+      		zIndexOffset: (point.type == 'fix' ?  -1000 : 1000)
+         }).addTo(gslObjects.maps[eqId].featureGroup);
     marker._icon.style['background-color'] =  point.color;
     gslObjects.maps[eqId].markers[id] = marker;
     gslCreateCircle(eqId, point, id);
