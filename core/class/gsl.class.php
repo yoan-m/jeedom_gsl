@@ -556,7 +556,8 @@ class gsl extends eqLogic {
         $return = array(
             'id' => $this->getLogicalId(),
             'image' => array('value'=>'plugins/gsl/3rparty/images/avatar.png'),
-            'name' => array('value'=>$this->getName())
+            'name' => array('value'=>$this->getName()),
+            'fix'=>  $this->getConfiguration('type') == 'fix'
         );
         $cmds = $this->getCmd('info');
         foreach ($cmds as $cmd) {
