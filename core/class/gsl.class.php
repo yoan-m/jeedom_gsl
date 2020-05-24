@@ -305,7 +305,10 @@ class gsl extends eqLogic {
                 $cmd = $this->getCmd(null, 'coordinated');
                 $cmd->event($this->getConfiguration('coordinated'));
             }
-            $this->buildDistanceCmd();
+            $eqLogic = eqLogic::byLogicalId('global', 'gsl');
+            if (is_object($eqLogic)) {
+              $eqLogic->buildDistanceCmd();
+            }
         } else {
             $cmd = $this->getCmd(null, 'image');
             if (!is_object($cmd)) {
