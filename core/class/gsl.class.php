@@ -593,6 +593,26 @@ class gsl extends eqLogic {
             unlink(jeedom::getTmpFolder('gsl') . '/cookies.txt');
         }
     }
+	
+    public function preRemove() {
+        $eqLogic = eqLogic::byLogicalId('global', 'gsl');
+        if (!is_object($eqLogic)) {
+          return;
+        }
+        $eqLogicId = $this->getId();
+        foreach ($eqLogic->getCmd('info') as $cmd) {
+            if ($cmd->getConfiguration('type') != 'distances') {
+                continue;
+            }
+          	$cmdLogicalIds = explode('-', $cmd->getLogicalId());
+          	if(count($cmdLogicalIds) != 2){
+              continue;
+            }
+          	if($eqLogicId == $cmdLogicalIds[0] || $eqLogicId == $cmdLogicalIds[1]){
+              	$cmd->remove();
+            }
+        }
+    }
 
     /*     * **********************Getteur Setteur*************************** */
 }
