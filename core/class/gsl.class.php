@@ -512,10 +512,10 @@ class gsl extends eqLogic {
 				}
 				$replace['#adresses#'] .= '</span>';
                 $replace['#adresses#'] .= '<span class="gsl-name">' . $data['points'][$eqLogic->getId()]['name']['value'] . '</span><br/>';
-                $replace['#adresses#'] .= '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
+                if(isset($data['points'][$eqLogic->getId()]['address'])) $replace['#adresses#'] .= '<span class="cmd gsl-address" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
                 $replace['#adresses#'] .= '<span class="cmd" data-cmd_id="'.$data['points'][$eqLogic->getId()]['coordinated']['id'].'"></span>';
-                $replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
-                $replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$eqLogic->getId()]['accuracy']['id'].'"></span>';
+                if(isset($data['points'][$eqLogic->getId()]['address'])) $replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$eqLogic->getId()]['address']['id'].'"></span><br/>';
+                if(isset($data['points'][$eqLogic->getId()]['accuracy'])) $replace['#adresses#'] .= '<span class="cmd gsl-precision" data-cmd_id="'.$data['points'][$eqLogic->getId()]['accuracy']['id'].'"></span>';
                 $replace['#adresses#'] .= '</div>';
                 $replace['#adresses#'] .= '<hr/>';
             }
