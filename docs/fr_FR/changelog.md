@@ -1,3 +1,8 @@
+# 25/05/2020
+- Création des commandes de distance à la sauvegarde d'un point fixe
+- Suppression des commandes de distance à la suppression d'un point fixe
+- Niveau de gris sur l'avatar en fonction de l'horodatage de la géolocalisation (<10min | >=10min && <20min | >=20min)
+
 # 14/05/2020
 - Configuration de l'authuser (utilisateur avertis)
 
