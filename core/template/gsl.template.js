@@ -67,12 +67,12 @@ function gslTimeAgo(dateParam, id, eqId) {
         result = gslGetFormattedDate(date); // 10. January 2017. at 10:20
     }
 
-  	if(minutes<10){
-  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(0)');
-    }else if(minutes>20 && minutes<20){
-  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(0.5)');
+    if(minutes<10){
+        $('.gsl-avatar-'+eqId).css('filter', 'grayscale(0)');
+    }else if(minutes>=10 && minutes<20){
+        $('.gsl-avatar-'+eqId).css('filter', 'grayscale(0.5)');
     }else{
-  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(1)');
+        $('.gsl-avatar-'+eqId).css('filter', 'grayscale(1)');
     }
     cmd = $('.cmd.gsl-horodatage[data-cmd_id='+id+']');
     cmd.empty().append(result);
