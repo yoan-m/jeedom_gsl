@@ -167,7 +167,8 @@ function gslCreateMarker(eqId, point, id){
             shadowSize: [50, 55],
             iconAnchor: [18, 47],
             shadowAnchor: [25, 55],
-            popupAnchor: [-3, -76]
+            popupAnchor: [-3, -76],
+      		className: 'gsl-avatar-'+id
         }),
       		zIndexOffset: (point.type == 'fix' ?  -1000 : 1000)
          }).addTo(gslObjects.maps[eqId].featureGroup);
