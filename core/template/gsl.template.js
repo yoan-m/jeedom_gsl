@@ -36,7 +36,7 @@ function gslGetFormattedDate(date, prefomattedDate = false, hideYear = false) {
     // 10. January 2017. at 10:20
     return `${ day }. ${ month } ${ year }. à ${ hours }:${ minutes }`;
 }
-function gslTimeAgo(dateParam, id) {
+function gslTimeAgo(dateParam, id, eqId) {
     if (!dateParam) {
         return null;
     }
@@ -67,6 +67,13 @@ function gslTimeAgo(dateParam, id) {
         result = gslGetFormattedDate(date); // 10. January 2017. at 10:20
     }
 
+  	if(minutes<10){
+  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(0)');
+    }else if(minutes>20 && minutes<20){
+  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(0.5)');
+    }else{
+  		$('.gsl-avatar-'+eqId).css('filter', 'grayscale(1)');
+    }
     cmd = $('.cmd.gsl-horodatage[data-cmd_id='+id+']');
     cmd.empty().append(result);
     if(gslObjects.intervals[id]){
@@ -103,12 +110,12 @@ function gslUpdateAccuracy(id, _options){
     }
 }
 
-function gslUpdateAddress(id, _options){
+function gslUpdateAddress(id, _options, eqId){
     var cmd = $('.cmd[data-cmd_id='+id+']');
     cmd.empty().append(_options.display_value);
     cmd.attr('title','Date : '+_options.collectDate);
 
-    gslTimeAgo(_options.collectDate, id);
+    gslTimeAgo(_options.collectDate, id, eqId);
 }
 
 function gslUpdateCharging(id, _options){
@@ -231,7 +238,7 @@ function gslCreatePoint(eqId, point, id){
 
     if(point.address){
         jeedom.cmd.update[point.address.id] = function(_options) {
-            gslUpdateAddress(point.address.id, _options);
+            gslUpdateAddress(point.address.id, _options, id);
         }
         jeedom.cmd.update[point.address.id]({display_value:point.address.value, collectDate:point.address.collectDate});
     }
