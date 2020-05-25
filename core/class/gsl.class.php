@@ -502,7 +502,7 @@ class gsl extends eqLogic {
                 $replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;">';
 				if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value']) && $data['points'][$eqLogic->getId()]['image']['value'] != ''){
-					$replace['#adresses#'] .= '<img style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
+					$replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
 				}else{
 					$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
 				}
