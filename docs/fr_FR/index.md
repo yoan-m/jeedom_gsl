@@ -1,4 +1,7 @@
-# Description 
+Google Shared Locations
+=====
+
+# Description
 
 Plugin qui récupère les geolocalisations partagées avec Google.
 L'affichage est paramétrable au sein du plugin.
@@ -6,36 +9,30 @@ Les coordonnées peuvent être envoyées à d'autres plugins Geoloc, Geotrav, Je
 
 # Configuration
 
-La configuration du plugin nécessite une adresse gmail et son mot de passe. 
-Je vous conseille de créer un compte gmail dédié. 
+Il faut créer un compte gmail dédié et partager votre géolocalisation avec celui-ci. 
 
 ## Récupération du cookie
 
-* Depuis Chrome, installer l'extension cookies.txt. Cette extension permet d'extraire un cookie à partir d'un site.
-* Déconnectez vous de tout compte Google sur ce poste
-* Connectez vous au compte que vous souhaitez configurer
-* Rendez-vous sur le site https://www.google.com/maps **(j'insiste sur le .com)**
+* Depuis Chrome, créez une nouvelle session dédiée.
+* Installez l'extension [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg). Cette extension permet d'extraire un cookie à partir d'un site.
+* Connectez vous au compte Google dédié que vous souhaitez configurer
+* Rendez-vous sur le site [https://www.google.com/maps](https://www.google.com/maps) **(j'insiste sur le .com)**
 * Extrayez le cookie du site en vous aidant de l'extension installée précedemment
+* Fermez la fenêtre sans vous déconnecter
 * Dans la configuration du plugin, parcourez votre disque dur afin de récupérer le cookie téléchargé
-* Cliquez sur "Enregistrer le cookie"
+* Cliquez sur "Envoyer" pour enregistrer le cookie
 > **NE PAS VOUS DECONNECTEZ DU COMPTE GOOGLE** sinon le cookie sera invalidé.
+* Vous pouvez rebasculer sur la session principale de Chrome
 
+# Affichage
+Il est possible de choisir le fond de carte en fonction des deux thèmes officiels (light/dark).
+[Aperçu des fonds](https://leaflet-extras.github.io/leaflet-providers/preview/)
 
-## Configuration du compte Google
-* La double authentification ne doit pas être activée.
-* Avant de pouvoir utiliser le plugin il faut s'être authentifié au moins une fois depuis votre adresse IP au compte Google configuré.
-* Vérifiez que Google ne vous demande pas de confirmation (mail ou sms) de connection
-* Activez l'option suivante dans votre compte Google : Connexion et sécurité / Autoriser les applications moins sécurisées
-> Il n'est pas recommandé de descendre la fréquence de rafraichissement (10 minutes par défaut) car cela augmente le risque de détection d'une utilisation via automate de votre compte par Google.
-> Il s'est avéré qu'à la suite d'une détection, ce dernier met en place un captcha impossible a résoudre via Jeedom.
-Le plugin devient donc inutilisable pendant plusieurs heures. 
-
-
+# Utilisation
 Partager votre position depuis l'application Gmaps de votre smartphone avec le compte que vous venez de paramétrer.
 
 Choisissez la fréquence de rafraichissement des données (toutes les 5 minutes par défaut). 
-
-# Equipement
+## Equipement
 
 Chaque contact créé automatiquement un équipement.
 Sur chaque contact, il est possible de mettre à jour une commande afin d'alimenter d'autres plugins.
@@ -48,7 +45,7 @@ Des équipements *fixes* peuvent être créés (ex: domicile, travail, etc...)
 Il suffit d'indiquer les coordonnées gps dans le champs correspondant.
 Il est possible d'attribuer une couleur à un équipement fixe et de choissir de l'afficher ou non sur le widget global.
 
-# Affichage
+## Affichage
 
 Deux modes d'affichage sont disponibles.
 - Contact par contact
