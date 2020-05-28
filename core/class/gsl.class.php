@@ -471,15 +471,15 @@ class gsl extends eqLogic {
             $replace['#refresh_id#'] = $refresh->getId();
         }
         $data = array('points'=>array());
-        if(array_key_exists(config::byKey('light-theme', 'gsl', ''), self::getMapLayers())){
+        if(array_key_exists(config::byKey('light-theme', 'gsl', 'OpenStreetMap.Mapnik'), self::getMapLayers())){
             $data['light-theme'] = self::getMapLayers()[config::byKey('light-theme', 'gsl', 'OpenStreetMap.Mapnik')];
         }else{
-            $data['light-theme'] = 'OpenStreetMap.Mapnik';
+            $data['light-theme'] = self::getMapLayers()['OpenStreetMap.Mapnik'];
         }
-        if(array_key_exists(config::byKey('dark-theme', 'gsl', ''), self::getMapLayers())){
+        if(array_key_exists(config::byKey('dark-theme', 'gsl', 'OpenStreetMap.Mapnik'), self::getMapLayers())){
             $data['dark-theme'] = self::getMapLayers()[config::byKey('dark-theme', 'gsl', 'OpenStreetMap.Mapnik')];
         }else{
-            $data['dark-theme'] = 'OpenStreetMap.Mapnik';
+            $data['dark-theme'] = self::getMapLayers()['OpenStreetMap.Mapnik'];
         }
         $data['control-zoom'] = (bool)config::byKey('control-zoom', 'gsl', true);
         $data['control-attributions'] = (bool)config::byKey('control-attributions', 'gsl', true);
