@@ -82,6 +82,41 @@ function gslTimeAgo(dateParam, id, eqId) {
     gslObjects.intervals[id] = setTimeout(function(){gslTimeAgo(dateParam, id)}, 60000);
 }
 
+function gslLetterAvatar (name, size, color) {
+    name  = name || '';
+    size  = size || 60;
+
+    var nameSplit = String(name).toUpperCase().split(' '),
+        initials, canvas, context, dataURI;
+
+
+    if (nameSplit.length == 1) {
+        initials = nameSplit[0] ? nameSplit[0].charAt(0):'?';
+    } else {
+        initials = nameSplit[0].charAt(0) + nameSplit[1].charAt(0);
+    }
+
+    if (window.devicePixelRatio) {
+        size = (size * window.devicePixelRatio);
+    }
+    
+    canvas        = document.createElement('canvas');
+    canvas.width  = size;
+    canvas.height = size;
+    context       = canvas.getContext("2d");
+     
+    context.fillStyle = color;
+    context.fillRect (0, 0, canvas.width, canvas.height);
+    context.font = Math.round(canvas.width/2)+"px Arial";
+    context.textAlign = "center";
+    context.fillStyle = "#FFF";
+    context.fillText(initials, size / 2, size / 1.5);
+
+    dataURI = canvas.toDataURL();
+    canvas  = null;
+
+    return dataURI;
+}
 
 function gslUpdateBattery(id, _options){
     var cmd = $('.cmd.gsl-battery[data-cmd_id='+id+']');
@@ -167,8 +202,9 @@ function gslCreateMap(eqId, attribution, zoom){
 }
 
 function gslCreateMarker(eqId, point, id){
+    var avatar = (point.image && point.image.value ? point.image.value : gslLetterAvatar(point.name.value, 36, point.color));
     var marker = L.marker(point.coordinated.value.split(','), {icon:  L.icon({
-            iconUrl: (point.image && point.image.value ? point.image.value : 'plugins/gsl/3rparty/images/blank.png'),
+            iconUrl: avatar,
             shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
             iconSize: [36, 36],
             shadowSize: [50, 55],
@@ -180,6 +216,7 @@ function gslCreateMarker(eqId, point, id){
       		zIndexOffset: (point.type == 'fix' ?  -1000 : 1000)
          }).addTo(gslObjects.maps[eqId].featureGroup);
     marker._icon.style['background-color'] =  point.color;
+    $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
     gslObjects.maps[eqId].markers[id] = marker;
     gslCreateCircle(eqId, point, id);
 }

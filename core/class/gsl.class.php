@@ -507,11 +507,13 @@ class gsl extends eqLogic {
                 $data['points'][$eqLogic->getId()]['color'] = $color;
                 $replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;">';
-				if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value']) && $data['points'][$eqLogic->getId()]['image']['value'] != ''){
+				/*if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value']) && $data['points'][$eqLogic->getId()]['image']['value'] != ''){
 					$replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
-				}else{
-					$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
-				}
+				}else{*/
+                    //$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
+                    $replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="" />';
+				
+				//}
 				if(isset($data['points'][$eqLogic->getId()]['battery']) && isset($data['points'][$eqLogic->getId()]['battery']['value']) && $data['points'][$eqLogic->getId()]['battery']['value'] != ''){
 					$replace['#adresses#'] .= '<br/><span class="gsl-battery">';
 					if(isset($data['points'][$eqLogic->getId()]['charging']) && isset($data['points'][$eqLogic->getId()]['charging']['value']) && $data['points'][$eqLogic->getId()]['charging']['value'] != ''){
@@ -564,7 +566,7 @@ class gsl extends eqLogic {
         }
         $return = array(
             'id' => $this->getLogicalId(),
-            'image' => array('value'=>'plugins/gsl/3rparty/images/avatar.png'),
+            'image' => array('value'=>null),//'plugins/gsl/3rparty/images/avatar.png'),
             'name' => array('value'=>$this->getName()),
             'type'=>  $this->getConfiguration('type')
         );

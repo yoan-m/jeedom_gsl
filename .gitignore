@@ -10,3 +10,4 @@ Thumbs.db
 resources/node_modules/
 .idea
 jeedom_gsl.iml
+.vscode/sftp.json
