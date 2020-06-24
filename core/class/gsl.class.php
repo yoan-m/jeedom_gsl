@@ -511,7 +511,7 @@ class gsl extends eqLogic {
 					$replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
 				}else{*/
                     //$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
-                    $replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="" />';
+                    $replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important; padding:3px;" src="" />';
 				
 				//}
 				if(isset($data['points'][$eqLogic->getId()]['battery']) && isset($data['points'][$eqLogic->getId()]['battery']['value']) && $data['points'][$eqLogic->getId()]['battery']['value'] != ''){
