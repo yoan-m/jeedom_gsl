@@ -89,7 +89,7 @@ class gsl extends eqLogic {
         } catch (Exception $e) {
             $result = self::google_callLocationUrl();
         }
-      	if(result == null){
+      	if($result == null){
          	return null; 
         }
         $result = $result[0];
