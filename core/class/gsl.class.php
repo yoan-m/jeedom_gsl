@@ -95,17 +95,19 @@ class gsl extends eqLogic {
         $result = $result[0];
         $return = array();
         foreach ($result as $user) {
-            $return[] = array(
-                'id' => $user[0][0],
-                'name' => $user[0][3],
-                'image' => $user[0][1],
-                'address' => $user[1][4],
-                'timestamp' => $user[1][2],
-                'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
-                'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
-                'charging' => (isset($user[13]) && isset($user[13][0]) ? $user[13][0] : null),
-                'accuracy' => $user[1][3]
-            );
+	    if($user[0] != null && $user[1] != null){
+                $return[] = array(
+                    'id' => $user[0][0],
+                    'name' => $user[0][3],
+                    'image' => $user[0][1],
+                    'address' => $user[1][4],
+                    'timestamp' => $user[1][2],
+                    'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
+                    'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
+                    'charging' => (isset($user[13]) && isset($user[13][0]) ? $user[13][0] : null),
+                    'accuracy' => $user[1][3]
+                );
+	    }
         }
         return $return;
     }
