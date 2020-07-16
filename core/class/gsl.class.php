@@ -49,6 +49,8 @@ class gsl extends eqLogic {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PROXY_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
         curl_close($ch);
