@@ -140,6 +140,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <div class="col-sm-3">
                                     <input type="color" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="color">
                                 </div>
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Filtrer la précision}}</label>
+                                <div class="col-sm-3">
+                                    <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="precisionFiltre"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Précision (m)}}</label>
+                                <div class="col-sm-3">
+                                    <input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="precision">
+                                </div>
                             </div>
                         </fieldset>
                     </form>

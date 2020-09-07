@@ -1,3 +1,6 @@
+# 07/09/2020
+- Ajout d'un paramètre de précision afin de filtrer les remontées trop imprécises de Google
+
 # 24/06/2020
 - Passage des erreurs de connexion Google en warning
 - Avatar avec initiales pour les points fixes

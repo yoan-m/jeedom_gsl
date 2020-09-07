@@ -14,7 +14,7 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
  
- function addCmdToTable(_cmd) {
+function addCmdToTable(_cmd) {
     if (!isset(_cmd)) {
         var _cmd = {configuration: {}};
     }
@@ -53,18 +53,24 @@ function printEqLogic(_eqLogic) {
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').hide();
    	  $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').hide();
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=precision]').closest('.form-group').hide();
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').hide();
    	  $('.eqLogicAction[data-action=remove]').hide();
        
   } else {
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').show();
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').show();
-   	  $('.eqLogicAction[data-action=remove]').show();
+     $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').show();
+     checkPrecisionFilter();
+   	 $('.eqLogicAction[data-action=remove]').show();
  }
  if(isset(_eqLogic.configuration.type) && _eqLogic.configuration.type == 'fix'){
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').hide();
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').closest('.form-group').show();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=precision]').closest('.form-group').hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').hide();
   }else{
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
     $('.form-control[data-l1key=configuration][data-l2key=coordinatesJeedom]').closest('.form-group').hide();
@@ -87,3 +93,13 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').on('chan
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
     }
 });
+
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').on('change', checkPrecisionFilter);
+
+function checkPrecisionFilter(){
+   if($('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').is(':checked') ){
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=precision]').closest('.form-group').show();
+    }else{
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=precision]').closest('.form-group').hide();
+    }
+}

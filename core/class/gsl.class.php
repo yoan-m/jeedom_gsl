@@ -178,17 +178,24 @@ class gsl extends eqLogic {
             }
             $changed = false;
             $timestamp = date("Y-m-d H:i:s", $location['timestamp'] / 1000);
-            $changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('charging', $location['charging'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
-            $cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
-            if ($cmdgeoloc !== null) {
-                $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
-                $cmdUpdate->event($location['coordinated']);
+            $precisionFiltre = $eqLogic->getConfiguration('precisionFiltre', false);
+            $precision = $eqLogic->getConfiguration('precision', 100);
+          	$accuracy = $location['accuracy'];
+            if(!$precisionFiltre || ($precisionFiltre && $accuracy <= $precision)){
+              $changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('charging', $location['charging'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
+              $cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
+              if ($cmdgeoloc !== null) {
+                  $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
+                  $cmdUpdate->event($location['coordinated']);
+              }
+            }else{
+            	log::add('gsl', 'debug', __("Update ignoré, trop imprécis : $accuracy > $precision", __FILE__));
             }
             if ($changed) {
                 $gChange = true;
