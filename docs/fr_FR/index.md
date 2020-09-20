@@ -45,6 +45,8 @@ Des équipements *fixes* peuvent être créés (ex: domicile, travail, etc...)
 Il suffit d'indiquer les coordonnées gps dans le champs correspondant.
 Il est possible d'attribuer une couleur à un équipement fixe et de choissir de l'afficher ou non sur le widget global.
 
+Un paramètre de filtrage des remontées avec un niveau de précision trop faible peut être activé. Il suffit de cocher la case et de renseigner un seuil de précision minimum en mètre.
+
 ## Affichage
 
 Deux modes d'affichage sont disponibles.

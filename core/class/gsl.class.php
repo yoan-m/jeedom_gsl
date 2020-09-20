@@ -49,13 +49,16 @@ class gsl extends eqLogic {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PROXY_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
         curl_close($ch);
         $headers = self::get_headers_from_curl_response($response);
         log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) . $info['http_code']);
         if (empty($info['http_code']) || $info['http_code'] != 200) {
-            throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
+            log::add('gsl', 'warning', __('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
+          	return null;
         }
         $result = substr($response, $info['header_size'] + 4);
         if (!is_json($result)) {
@@ -82,24 +85,31 @@ class gsl extends eqLogic {
         }
         try {
             $result = self::google_callLocationUrl();
+          	if($result == null){
+              $result = self::google_callLocationUrl();
+            }
         } catch (Exception $e) {
-            //self::google_connect();
             $result = self::google_callLocationUrl();
+        }
+      	if($result == null){
+         	return null; 
         }
         $result = $result[0];
         $return = array();
         foreach ($result as $user) {
-            $return[] = array(
-                'id' => $user[0][0],
-                'name' => $user[0][3],
-                'image' => $user[0][1],
-                'address' => $user[1][4],
-                'timestamp' => $user[1][2],
-                'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
-                'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
-                'charging' => (isset($user[13]) && isset($user[13][0]) ? $user[13][0] : null),
-                'accuracy' => $user[1][3]
-            );
+	    if($user[0] != null && $user[1] != null){
+                $return[] = array(
+                    'id' => $user[0][0],
+                    'name' => $user[0][3],
+                    'image' => $user[0][1],
+                    'address' => $user[1][4],
+                    'timestamp' => $user[1][2],
+                    'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
+                    'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
+                    'charging' => (isset($user[13]) && isset($user[13][0]) ? $user[13][0] : null),
+                    'accuracy' => $user[1][3]
+                );
+	    }
         }
         return $return;
     }
@@ -147,7 +157,11 @@ class gsl extends eqLogic {
             sleep(rand(0, 90));
         }
         $gChange = false;
-        foreach (self::google_locationData() as $location) {
+      	$locations = self::google_locationData();
+      	if($locations == null){
+         	return; 
+        }
+        foreach ($locations as $location) {
             $eqLogic = eqLogic::byLogicalId($location['id'], 'gsl');
             if (!is_object($eqLogic)) {
                 $eqLogic = new gsl();
@@ -164,29 +178,33 @@ class gsl extends eqLogic {
             }
             $changed = false;
             $timestamp = date("Y-m-d H:i:s", $location['timestamp'] / 1000);
-            $changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('charging', $location['charging'], $timestamp) || $changed;
-            $changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
-            $cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
-            if ($cmdgeoloc !== null) {
-                $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
-                $cmdUpdate->event($location['coordinated']);
-                //$cmdUpdate->getEqLogic()->refreshWidget();
+            $precisionFiltre = $eqLogic->getConfiguration('precisionFiltre', false);
+            $precision = $eqLogic->getConfiguration('precision', 100);
+          	$accuracy = $location['accuracy'];
+            if(!$precisionFiltre || ($precisionFiltre && $accuracy <= $precision)){
+              $changed = $eqLogic->checkAndUpdateCmd('name', $location['name']) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('coordinated', $location['coordinated'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('image', $location['image']) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('address', $location['address'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('battery', $location['battery'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('charging', $location['charging'], $timestamp) || $changed;
+              $changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
+              $cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
+              if ($cmdgeoloc !== null) {
+                  $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
+                  $cmdUpdate->event($location['coordinated']);
+              }
+            }else{
+            	log::add('gsl', 'debug', __("Update ignoré, trop imprécis : $accuracy > $precision", __FILE__));
             }
             if ($changed) {
                 $gChange = true;
-                //$eqLogic->refreshWidget();
             }
         }
         if ($gChange) {
             $eqLogic = eqLogic::byLogicalId('global', 'gsl');
             if (is_object($eqLogic)) {
                 $eqLogic->updateDistance();
-                //$eqLogic->refreshWidget();
             }
         }
     }
@@ -463,7 +481,6 @@ class gsl extends eqLogic {
 
         if($_version == 'dview'){
             $replace['#width#'] = '100%';
-            //$replace['#height#'] = '100%';
         }
 
         $refresh = $this->getCmd(null, 'refresh');
@@ -501,11 +518,13 @@ class gsl extends eqLogic {
                 $data['points'][$eqLogic->getId()]['color'] = $color;
                 $replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;">';
-				if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value']) && $data['points'][$eqLogic->getId()]['image']['value'] != ''){
+				/*if(isset($data['points'][$eqLogic->getId()]['image']) && isset($data['points'][$eqLogic->getId()]['image']['value']) && $data['points'][$eqLogic->getId()]['image']['value'] != ''){
 					$replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;" src="' . $data['points'][$eqLogic->getId()]['image']['value'] . '" />';
-				}else{
-					$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
-				}
+				}else{*/
+                    //$replace['#adresses#'] .= '<div style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important;"></div>';
+                    $replace['#adresses#'] .= '<img class="gsl-avatar-'.$eqLogic->getId().'" style="border: 2px solid white; background-color:' . $color . ';cursor:pointer; margin-top:5px;width:50px; height:50px;border-radius: 50% !important; padding:3px;" src="" />';
+				
+				//}
 				if(isset($data['points'][$eqLogic->getId()]['battery']) && isset($data['points'][$eqLogic->getId()]['battery']['value']) && $data['points'][$eqLogic->getId()]['battery']['value'] != ''){
 					$replace['#adresses#'] .= '<br/><span class="gsl-battery">';
 					if(isset($data['points'][$eqLogic->getId()]['charging']) && isset($data['points'][$eqLogic->getId()]['charging']['value']) && $data['points'][$eqLogic->getId()]['charging']['value'] != ''){
@@ -558,7 +577,7 @@ class gsl extends eqLogic {
         }
         $return = array(
             'id' => $this->getLogicalId(),
-            'image' => array('value'=>'plugins/gsl/3rparty/images/avatar.png'),
+            'image' => array('value'=>null),//'plugins/gsl/3rparty/images/avatar.png'),
             'name' => array('value'=>$this->getName()),
             'type'=>  $this->getConfiguration('type')
         );
