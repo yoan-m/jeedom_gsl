@@ -54,14 +54,15 @@ class gsl extends eqLogic {
 		$headers = self::get_headers_from_curl_response($response);
 		log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) . $info['http_code']);
 		if (empty($info['http_code']) || $info['http_code'] != 200) {
-			throw new Exception(__('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
+			log::add('gsl', 'warning', __('Erreur données de localisation code retour invalide : ', __FILE__) . $info['http_code'] . ' => ' . json_encode($headers));
+          		return null;
 		}
 		$result = substr($response, $info['header_size'] + 4);
 		if (!is_json($result)) {
 			throw new Exception(__('Erreur données de localisation n\'est pas un json valide : ', __FILE__) . $result);
 		}
 		$result = json_decode($result, true);
-      	log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) .json_encode($result));
+      		log::add('gsl', 'debug', __('Location data : Connection réussie, reponse : ', __FILE__) .json_encode($result));
 
 		if (!isset($result[0])) {
 			throw new Exception(__('Erreur données de localisation invalide ou vide : ', __FILE__) . json_encode($result));
@@ -75,10 +76,16 @@ class gsl extends eqLogic {
 		}
 		try {
 			$result = self::google_callLocationUrl();
+			if($result == null){
+				$result = self::google_callLocationUrl();
+			}
 		} catch (Exception $e) {
 			//self::google_connect();
 			$result = self::google_callLocationUrl();
 		}
+		if(result == null){
+         		return null; 
+        	}
 		$result = $result[0];
 		$return = array();
 		foreach ($result as $user) {
@@ -140,7 +147,11 @@ class gsl extends eqLogic {
 			sleep(rand(0, 90));
 		}
 		$gChange = false;
-		foreach (self::google_locationData() as $location) {
+		$locations = self::google_locationData();
+		if($locations == null){
+			return; 
+		}
+		foreach ($locations as $location) {
 			$eqLogic = eqLogic::byLogicalId($location['id'], 'gsl');
 			if (!is_object($eqLogic)) {
 				$eqLogic = new gsl();
