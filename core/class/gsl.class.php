@@ -29,10 +29,10 @@ class gsl extends eqLogic {
         $a = explode(',', $_a);
         $b = explode(',', $_b);
         $earth_radius = 6378.137;
-        $rlo1 = deg2rad($a[0]);
-        $rla1 = deg2rad($a[1]);
-        $rlo2 = deg2rad($b[0]);
-        $rla2 = deg2rad($b[1]);
+        $rlo1 = deg2rad($a[1]);
+        $rla1 = deg2rad($a[0]);
+        $rlo2 = deg2rad($b[1]);
+        $rla2 = deg2rad($b[0]);
         $dlo = ($rlo2 - $rlo1) / 2;
         $dla = ($rla2 - $rla1) / 2;
         $a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
