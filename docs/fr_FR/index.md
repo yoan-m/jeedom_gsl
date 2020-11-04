@@ -14,7 +14,7 @@ Il faut créer un compte gmail dédié et partager votre géolocalisation avec c
 ## Récupération du cookie
 
 * Depuis Chrome, créez une nouvelle session dédiée.
-* Installez l'extension [cookies.txt](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg). Cette extension permet d'extraire un cookie à partir d'un site.
+* Installez l'extension [Get cookies.txt](https://chrome.google.com/webstore/detail/get-cookiestxt/bgaddhkoddajcdgocldbbfleckgcbcid). Cette extension permet d'extraire un cookie à partir d'un site.
 * Connectez vous au compte Google dédié que vous souhaitez configurer
 * Rendez-vous sur le site [https://www.google.com/maps](https://www.google.com/maps) **(j'insiste sur le .com)**
 * Extrayez le cookie du site en vous aidant de l'extension installée précedemment
