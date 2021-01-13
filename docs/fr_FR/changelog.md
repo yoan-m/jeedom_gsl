@@ -1,3 +1,7 @@
+# 13/01/2021
+- Migration API Google
+- Correction du calcul de distance
+
 # 07/09/2020
 - Ajout d'un paramètre de précision afin de filtrer les remontées trop imprécises de Google
 
