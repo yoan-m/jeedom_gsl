@@ -102,7 +102,7 @@ class gsl extends eqLogic {
                     'id' => $user[0][0],
                     'name' => $user[0][3],
                     'image' => $user[0][1],
-                    'address' => $user[1][4],
+                    'address' => htmlspecialchars($user[1][4]),
                     'timestamp' => $user[1][2],
                     'coordinated' => $user[1][1][2] . ',' . $user[1][1][1],
                     'battery' => (isset($user[13]) && isset($user[13][1]) ? $user[13][1] : null),
