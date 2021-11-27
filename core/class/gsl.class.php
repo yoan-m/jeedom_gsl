@@ -527,9 +527,9 @@ class gsl extends eqLogic {
 				//}
 				if(isset($data['points'][$eqLogic->getId()]['battery']) && isset($data['points'][$eqLogic->getId()]['battery']['value']) && $data['points'][$eqLogic->getId()]['battery']['value'] != ''){
 					$replace['#adresses#'] .= '<br/><span class="gsl-battery">';
-					if(isset($data['points'][$eqLogic->getId()]['charging']) && isset($data['points'][$eqLogic->getId()]['charging']['value']) && $data['points'][$eqLogic->getId()]['charging']['value'] != ''){
+					//if(isset($data['points'][$eqLogic->getId()]['charging']) && isset($data['points'][$eqLogic->getId()]['charging']['value']) && $data['points'][$eqLogic->getId()]['charging']['value'] != ''){
 						$replace['#adresses#'] .= '<span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['charging']['id'].'"><i></i></span> ';
-					}
+					//}
 					$replace['#adresses#'] .= '<span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"><i></i></span> <span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$eqLogic->getId()]['battery']['id'].'"></span>%</span>';
 				}
 				$replace['#adresses#'] .= '</span>';
@@ -555,9 +555,9 @@ class gsl extends eqLogic {
             $replace['#adresses#'] = '<div id="gsl-address-'.$this->getId().'"><span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><span class="cmd" data-cmd_id="'.$data['points'][$this->getId()]['coordinated']['id'].'"></span><br/>';
             if(isset($data['points'][$this->getId()]['battery']) && isset($data['points'][$this->getId()]['battery']['value']) && $data['points'][$this->getId()]['battery']['value'] != '') {
                 $replace['#adresses#'] .= '<span class="gsl-battery">';
-                if(isset($data['points'][$this->getId()]['charging']) && isset($data['points'][$this->getId()]['charging']['value']) && $data['points'][$this->getId()]['charging']['value'] != ''){
+                //if(isset($data['points'][$this->getId()]['charging']) && isset($data['points'][$this->getId()]['charging']['value']) && $data['points'][$this->getId()]['charging']['value'] != ''){
                     $replace['#adresses#'] .= '<span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['charging']['id'].'"><i></i></span> ';
-                }
+                //}
                 $replace['#adresses#'] .= '<span class="cmd gsl-battery-icon" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"><i></i></span> <span class="cmd gsl-battery" data-cmd_id="'.$data['points'][$this->getId()]['battery']['id'].'"></span>%</span> - ';
             }
             $replace['#adresses#'] .= '<span class="cmd gsl-horodatage" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><br/>';
