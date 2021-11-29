@@ -282,7 +282,7 @@ function gslCreatePoint(eqId, point, id){
 
     if(point.charging){
         jeedom.cmd.update[point.charging.id] = function(_options) {
-            gslUpdateCharging(point.accuracy.id, _options);
+            gslUpdateCharging(point.charging.id, _options);
         }
         jeedom.cmd.update[point.charging.id]({display_value:point.charging.value});
     }

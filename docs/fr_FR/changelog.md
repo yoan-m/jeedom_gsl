@@ -1,3 +1,6 @@
+# 26/11/2021
+- Correction sur l'affichage de l'état de charge du téléphone
+
 # 13/01/2021
 - Migration API Google
 - Correction du calcul de distance
