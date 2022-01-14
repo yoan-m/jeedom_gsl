@@ -1,3 +1,6 @@
+# 14/01/2022
+- Utilisation d'un proxy pour afficher les tuiles avec les nouvelles règles de sécurité apache_security
+
 # 26/11/2021
 - Correction sur l'affichage de l'état de charge du téléphone
 
