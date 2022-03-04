@@ -125,6 +125,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <div class="col-sm-3">
                                     <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinatesType">
                                         <option value="">{{Fixe}}</option>
+                                        <option value="cmd">{{Commande Localisation}}</option>
                                         <option value="jeedom">{{Jeedom}}</option>
                                     </select>
                                 </div>
@@ -132,7 +133,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Coordonnées}}<sup><i class="fas fa-question-circle tooltipstered" title="Latitude,longitude"></i></sup></label>
                                 <div class="col-sm-3">
-                                    <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
+                                    <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated" style="width: 92%;display: inline-block;"/>
+                                    <span class="input-group-btn" style="display:inline-block; width:auto"> 
+													<button type="button" class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="sendCmd"><i class="fas fa-list-alt"></i></button> 
+												</span> 
                                 </div>
                             </div>
                             <div class="form-group">
