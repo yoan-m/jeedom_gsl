@@ -84,13 +84,28 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').next().on('cli
         $('.eqLogicAttr[data-l2key=cmdgeoloc]').value(result.human);
     });
 });
+$(".cmdSendSel").on('click', function () {
+    var el = $(this);
+  jeedom.cmd.getSelectModal({cmd:{type:'info'}}, function(result) {
+       var calcul = el.closest('div').find('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]');
+       calcul.val('');
+       calcul.atCaret('insert', result.human);
+     });
+});
 
 
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').on('change', function (event) {
     if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'jeedom'){
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+    }else if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'cmd'){
+      	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').css('width','92%');
+      	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').show();
+      
     }else{
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').css('width','100%');
+       $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').hide();
     }
 });
 
