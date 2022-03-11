@@ -52,6 +52,7 @@
         var data#id#=JSON.parse('#json#');
         gslSetTheme(data#id#['light-theme'], data#id#['dark-theme']);
         gslCreateMap(#id#, data#id#['control-attributions'], data#id#['control-zoom']);
+	    gslObjects.maps[#id#].customZoom = #zoom#;
         for(id in data#id#.points){
             gslCreateMarker(#id#, data#id#.points[id], id);
             gslCreatePoint(#id#, data#id#.points[id], id);
