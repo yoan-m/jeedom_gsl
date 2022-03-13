@@ -32,7 +32,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     if(is_object($imageCmd)){
                         $image = $imageCmd->execCmd();
                         if($image){
-                            echo '<img src="' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 71px !important;left: 32px; top: 19px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
+                            echo '<img src="/plugins/gsl/core/ajax/gsl.proxy.php?url=' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 71px !important;left: 32px; top: 19px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
                         }
                     }
                     echo '<img src="' . $plugin->getPathImgIcon() . '"   />';
