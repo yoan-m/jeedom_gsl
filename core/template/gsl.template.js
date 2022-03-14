@@ -188,7 +188,7 @@ function gslSetTheme(light, dark){
 }
 
 function gslCreateMap(eqId, attribution, zoom){
-    var map = {markers:{}, circles:{}};
+    var map = {markers:{}, circles:{}, histories:{}};
     map.layer = new L.TileLayer('/plugins/gsl/core/ajax/gsl.proxy.php?url='+gslObjects.theme.url, gslObjects.theme);
     map.featureGroup = L.featureGroup();
     map.map = L.map('map_' + eqId, {
@@ -219,6 +219,19 @@ function gslCreateMarker(eqId, point, id){
     $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
     gslObjects.maps[eqId].markers[id] = marker;
     gslCreateCircle(eqId, point, id);
+  	if(point.history){
+    	gslCreateHistory(eqId, point, id);
+    }
+}
+
+function gslCreateHistory(eqId, point, id){
+        var history = L.polyline([], {
+            color: point.color,
+            fillColor: point.color,
+            fillOpacity: 0.1,
+            weight: 1.5
+        }).addTo(gslObjects.maps[eqId].featureGroup);
+        gslObjects.maps[eqId].histories[id] = {hours: point.history, feature: history};
 }
 
 function gslCreateCircle(eqId, point, id){
@@ -234,13 +247,31 @@ function gslCreateCircle(eqId, point, id){
     }
 }
 
-function gslUpdateMarker(id, coords){
+function gslUpdateMarker(eqId, coords, cmdId){
     for (const key in gslObjects.maps){
         var map = gslObjects.maps[key];
-        if(map.markers[id]){
-            map.markers[id].setLatLng(coords.split(','));
-            if(map.circles[id]){
-                map.circles[id].setLatLng(coords.split(','));
+        if(map.markers[eqId]){
+            map.markers[eqId].setLatLng(coords.split(','));
+            if(map.circles[eqId]){
+                map.circles[eqId].setLatLng(coords.split(','));
+            }
+          if(map.histories[eqId] && map.histories[eqId].feature){
+          
+              var dateStart = moment().subtract(map.histories[eqId].hours, 'hours').format('YYYY-MM-DD HH:mm:ss')
+              var dateEnd = moment().format('YYYY-MM-DD HH:mm:ss')
+              jeedom.history.get({
+                  global: false,
+                  cmd_id: cmdId,
+                  dateStart: dateStart,
+                  dateEnd: dateEnd,
+                  context: {map: key, eqId: eqId},
+                  success: function(result) {
+                    if (result.data.length == 0) return false
+                    var values = result.data.map(function(elt) {
+                      return elt[1].split(',').map(function(coord) { return parseFloat(coord)}) });
+                    gslObjects.maps[this.context.map].histories[result.eqLogic.id].feature.setLatLngs(values);
+                  }
+              });
             }
         }
         gslFocusFeatureGroup(key);
@@ -289,7 +320,7 @@ function gslCreatePoint(eqId, point, id){
 
     if(point.coordinated){
         jeedom.cmd.update[point.coordinated.id] = function(_options) {
-            gslUpdateMarker(id, _options.display_value);
+            gslUpdateMarker(id, _options.display_value, point.coordinated.id);
         }
         jeedom.cmd.update[point.coordinated.id]({display_value:point.coordinated.value});
     }
