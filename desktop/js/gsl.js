@@ -56,12 +56,13 @@ function printEqLogic(_eqLogic) {
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=precision]').closest('.form-group').hide();
       $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').hide();
    	  $('.eqLogicAction[data-action=remove]').hide();
-       
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=history]').closest('.form-group').hide();
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=historyGlobal]').closest('.form-group').hide();
   } else {
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').closest('.form-group').show();
      $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisibleGlobal]').closest('.form-group').show();
-     $('.eqLogicAttr[data-l1key=configuration][data-l2key=color]').closest('.form-group').show();
-     $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').show();
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=history]').closest('.form-group').show();
+      $('.eqLogicAttr[data-l1key=configuration][data-l2key=historyGlobal]').closest('.form-group').show();
      checkPrecisionFilter();
    	 $('.eqLogicAction[data-action=remove]').show();
  }
@@ -99,12 +100,12 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').on('chan
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
     }else if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'cmd'){
       	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
-      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').css('width','92%');
+      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').parent().addClass('input-group');
       	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').show();
       
     }else{
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
-      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').css('width','100%');
+      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').parent().removeClass('input-group');
        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').hide();
     }
 });
