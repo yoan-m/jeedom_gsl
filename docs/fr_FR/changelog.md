@@ -1,3 +1,6 @@
+# 14/03/2022
+- Ajout de l'affichage de l'historique sur la carte. La commande "coordonnees" doit être historisée. Il est possible de définir la durée de l'historique en heures affichée sur le global ou sur le widget.
+
 # 14/01/2022
 - Utilisation d'un proxy pour afficher les tuiles avec les nouvelles règles de sécurité apache_security
 
