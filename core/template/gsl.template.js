@@ -328,6 +328,9 @@ function gslCreatePoint(eqId, point, id){
 
 function gslFocusFeatureGroup(eqId){
     gslObjects.maps[eqId].map.fitBounds(gslObjects.maps[eqId].featureGroup.getBounds(), {padding: [30, 30]});
+    if(gslObjects.maps[eqId].customZoom){
+        gslObjects.maps[eqId].map.setZoom(gslObjects.maps[eqId].customZoom);
+    }
 }
 
 function gslMapLoaded(eqId){
