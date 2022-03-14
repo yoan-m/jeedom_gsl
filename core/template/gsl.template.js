@@ -189,7 +189,7 @@ function gslSetTheme(light, dark){
 
 function gslCreateMap(eqId, attribution, zoom){
     var map = {markers:{}, circles:{}};
-    map.layer = new L.TileLayer(gslObjects.theme.url, gslObjects.theme);
+    map.layer = new L.TileLayer('/plugins/gsl/core/ajax/gsl.proxy.php?url='+gslObjects.theme.url, gslObjects.theme);
     map.featureGroup = L.featureGroup();
     map.map = L.map('map_' + eqId, {
         center: [51.5, -0.09],
@@ -202,7 +202,7 @@ function gslCreateMap(eqId, attribution, zoom){
 }
 
 function gslCreateMarker(eqId, point, id){
-    var avatar = (point.image && point.image.value ? point.image.value : gslLetterAvatar(point.name.value, 36, point.color));
+    var avatar = (point.image && point.image.value ? ('/plugins/gsl/core/ajax/gsl.proxy.php?url='+point.image.value) : gslLetterAvatar(point.name.value, 36, point.color));
     var marker = L.marker(point.coordinated.value.split(','), {icon:  L.icon({
             iconUrl: avatar,
             shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',

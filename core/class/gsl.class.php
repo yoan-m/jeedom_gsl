@@ -156,6 +156,39 @@ class gsl extends eqLogic {
             }
             sleep(rand(0, 90));
         }
+      $gChange = false;
+      	$gChange = self::pullGoogleLoc() || $gChange;
+      	$gChange = self::pullInternalLoc() || $gChange;
+      
+      if ($gChange) {
+            $eqLogic = eqLogic::byLogicalId('global', 'gsl');
+            if (is_object($eqLogic)) {
+                $eqLogic->updateDistance();
+            }
+        }
+    }
+  // update internal location
+  public static function pullInternalLoc(){
+    	$gChange = false;
+    	$eqLogics = self::byType('gsl');
+        foreach ($eqLogics as $eqLogic) {
+            if($eqLogic->getConfiguration('type') == 'fix' && $eqLogic->getConfiguration('coordinatesType') == 'cmd'){
+              if (is_object($eqLogic) && $eqLogic->getIsEnable() == 1) {
+
+                      $cmdLoc = cmd::byId(str_replace('#','',$eqLogic->getConfiguration('coordinated')));
+                    if(!is_object($cmdLoc)){
+                          log::add(__CLASS__, 'debug', 'cmd coordianted error : cmd not found');
+                    }else{
+                      $change = $eqLogic->checkAndUpdateCmd('coordinated', $cmdLoc->execCmd());
+                    }
+                 $gChange = $gChange || $change;
+              }	
+            }
+        }
+    	return $gChange;    
+  }
+  // update google location
+  public static function pullGoogleLoc(){
         $gChange = false;
       	$locations = self::google_locationData();
       	if($locations == null){
@@ -201,12 +234,7 @@ class gsl extends eqLogic {
                 $gChange = true;
             }
         }
-        if ($gChange) {
-            $eqLogic = eqLogic::byLogicalId('global', 'gsl');
-            if (is_object($eqLogic)) {
-                $eqLogic->updateDistance();
-            }
-        }
+       return $gChange;
     }
 
     public static function createGlobalEqLogic() {
@@ -319,6 +347,15 @@ class gsl extends eqLogic {
             if($this->getConfiguration('coordinatesType') == 'jeedom'){
                 $cmd = $this->getCmd(null, 'coordinated');
                 $cmd->event(config::byKey('info::latitude').','.config::byKey('info::longitude'));
+            }else if ($this->getConfiguration('coordinatesType') == 'cmd'){
+              	$cmd = $this->getCmd(null, 'coordinated');
+              	$cmdLoc = cmd::byId(str_replace('#','',$this->getConfiguration('coordinated')));
+              if(!is_object($cmdLoc)){
+                	log::add(__CLASS__, 'debug', 'cmd coordianted error : cmd not found');
+              }else{
+                $cmd->event($cmdLoc->execCmd());
+              }
+              
             }else{
                 $cmd = $this->getCmd(null, 'coordinated');
                 $cmd->event($this->getConfiguration('coordinated'));
@@ -390,6 +427,7 @@ class gsl extends eqLogic {
             }
         }
     }
+   
 
     public function buildDistanceCmd() {
         $distances = array();
@@ -589,6 +627,15 @@ class gsl extends eqLogic {
             if ($cmd->getLogicalId() == 'coordinated') {
                 if($this->getConfiguration('coordinatesType') == 'jeedom'){
                     $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>config::byKey('info::latitude').','.config::byKey('info::longitude'));
+                }elseif($this->getConfiguration('coordinatesType') == 'cmd'){
+                  $cmdLoc = cmd::byId(str_replace('#','',$this->getConfiguration('coordinated')));
+                  if(!is_object($cmdLoc)){
+                        log::add(__CLASS__, 'debug', 'cmd coordianted error : cmd not found');
+                    	$return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>'');
+                  }else{
+                     $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmdLoc->execCmd());
+                  }
+                  
                 }else{
                     $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmd->execCmd());
                 }
