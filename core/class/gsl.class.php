@@ -553,6 +553,9 @@ class gsl extends eqLogic {
                     $color = $eqLogic->getConfiguration('color');
                 }
                 $data['points'][$eqLogic->getId()] = $eqLogic->buildLocation();
+		if ($eqLogic->getConfiguration('historyGlobal')) {
+                   $data['points'][$eqLogic->getId()]['history'] = $eqLogic->getConfiguration('historyGlobal');
+                }
                 $data['points'][$eqLogic->getId()]['color'] = $color;
                 $replace['#adresses#'] .= '<div class="gsl-address" id="gsl-address-' . $this->getLogicalId() . '-' . $eqLogic->getId() . '">';
 				$replace['#adresses#'] .= '<span class="pull-right" style="text-align: center;">';
@@ -589,6 +592,9 @@ class gsl extends eqLogic {
                 $color = $this->getConfiguration('color');
             }
             $data['points'][$this->getId()] = $this->buildLocation();
+            if ($this->getConfiguration('history')) {
+               $data['points'][$this->getId()]['history'] = $this->getConfiguration('history');
+            }
             $data['points'][$this->getId()]['color'] = $color;
             $replace['#adresses#'] = '<div id="gsl-address-'.$this->getId().'"><span class="cmd gsl-address" data-cmd_id="'.$data['points'][$this->getId()]['address']['id'].'"></span><span class="cmd" data-cmd_id="'.$data['points'][$this->getId()]['coordinated']['id'].'"></span><br/>';
             if(isset($data['points'][$this->getId()]['battery']) && isset($data['points'][$this->getId()]['battery']['value']) && $data['points'][$this->getId()]['battery']['value'] != '') {
