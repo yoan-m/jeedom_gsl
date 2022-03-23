@@ -255,7 +255,7 @@ function gslUpdateMarker(eqId, coords, cmdId){
             if(map.circles[eqId]){
                 map.circles[eqId].setLatLng(coords.split(','));
             }
-          if(map.histories[eqId] && map.histories[eqId].feature){
+          if(map.histories[eqId] && map.histories[eqId].feature && map.histories[eqId].hours){
           
               var dateStart = moment().subtract(map.histories[eqId].hours, 'hours').format('YYYY-MM-DD HH:mm:ss')
               var dateEnd = moment().format('YYYY-MM-DD HH:mm:ss')
