@@ -203,6 +203,10 @@ function gslCreateMap(eqId, attribution, zoom){
 
 function gslCreateMarker(eqId, point, id){
     var avatar = (point.image && point.image.value ? ('/plugins/gsl/core/ajax/gsl.proxy.php?url='+point.image.value) : gslLetterAvatar(point.name.value, 36, point.color));
+    $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
+  	if(!point.coordinated.value){
+    	return;
+    }
     var marker = L.marker(point.coordinated.value.split(','), {icon:  L.icon({
             iconUrl: avatar,
             shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
@@ -216,7 +220,6 @@ function gslCreateMarker(eqId, point, id){
       		zIndexOffset: (point.type == 'fix' ?  -1000 : 1000)
          }).addTo(gslObjects.maps[eqId].featureGroup);
     marker._icon.style['background-color'] =  point.color;
-    $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
     gslObjects.maps[eqId].markers[id] = marker;
     gslCreateCircle(eqId, point, id);
   	if(point.history){
@@ -327,6 +330,9 @@ function gslCreatePoint(eqId, point, id){
 }
 
 function gslFocusFeatureGroup(eqId){
+    if(!Object.keys(gslObjects.maps[eqId].markers).length){
+  	    return;
+    }
     gslObjects.maps[eqId].map.fitBounds(gslObjects.maps[eqId].featureGroup.getBounds(), {padding: [30, 30]});
     if(gslObjects.maps[eqId].customZoom){
         gslObjects.maps[eqId].map.setZoom(gslObjects.maps[eqId].customZoom);
