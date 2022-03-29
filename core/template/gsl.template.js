@@ -82,6 +82,30 @@ function gslTimeAgo(dateParam, id, eqId) {
     gslObjects.intervals[id] = setTimeout(function(){gslTimeAgo(dateParam, id)}, 60000);
 }
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = '' + d.getHours(),
+        minute = '' + d.getMinutes(),
+        sec = '' + d.getSeconds();
+  
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    if (hour.length < 2) 
+        hour = '0' + hour;
+    if (minute.length < 2) 
+        minute = '0' + minute;
+    if (sec.length < 2) 
+        sec = '0' + sec;
+
+    return [year, month, day].join('-') + ' ' + [hour, minute, sec].join(':');
+}
+
 function gslLetterAvatar (name, size, color) {
     name  = name || '';
     size  = size || 60;
@@ -259,9 +283,9 @@ function gslUpdateMarker(eqId, coords, cmdId){
                 map.circles[eqId].setLatLng(coords.split(','));
             }
           if(map.histories[eqId] && map.histories[eqId].feature && map.histories[eqId].hours){
-          
-              var dateStart = moment().subtract(map.histories[eqId].hours, 'hours').format('YYYY-MM-DD HH:mm:ss')
-              var dateEnd = moment().format('YYYY-MM-DD HH:mm:ss')
+          	  var date = new Date();
+              var dateEnd = formatDate(date);
+              var dateStart = formatDate(new Date(date.setHours(date.getHours()-map.histories[eqId].hours)));
               jeedom.history.get({
                   global: false,
                   cmd_id: cmdId,
