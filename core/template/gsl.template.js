@@ -82,6 +82,30 @@ function gslTimeAgo(dateParam, id, eqId) {
     gslObjects.intervals[id] = setTimeout(function(){gslTimeAgo(dateParam, id)}, 60000);
 }
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = '' + d.getHours(),
+        minute = '' + d.getMinutes(),
+        sec = '' + d.getSeconds();
+  
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    if (hour.length < 2) 
+        hour = '0' + hour;
+    if (minute.length < 2) 
+        minute = '0' + minute;
+    if (sec.length < 2) 
+        sec = '0' + sec;
+
+    return [year, month, day].join('-') + ' ' + [hour, minute, sec].join(':');
+}
+
 function gslLetterAvatar (name, size, color) {
     name  = name || '';
     size  = size || 60;
@@ -188,7 +212,7 @@ function gslSetTheme(light, dark){
 }
 
 function gslCreateMap(eqId, attribution, zoom){
-    var map = {markers:{}, circles:{}};
+    var map = {markers:{}, circles:{}, histories:{}};
     map.layer = new L.TileLayer('/plugins/gsl/core/ajax/gsl.proxy.php?url='+gslObjects.theme.url, gslObjects.theme);
     map.featureGroup = L.featureGroup();
     map.map = L.map('map_' + eqId, {
@@ -203,6 +227,10 @@ function gslCreateMap(eqId, attribution, zoom){
 
 function gslCreateMarker(eqId, point, id){
     var avatar = (point.image && point.image.value ? ('/plugins/gsl/core/ajax/gsl.proxy.php?url='+point.image.value) : gslLetterAvatar(point.name.value, 36, point.color));
+    $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
+  	if(!point.coordinated.value){
+    	return;
+    }
     var marker = L.marker(point.coordinated.value.split(','), {icon:  L.icon({
             iconUrl: avatar,
             shadowUrl: 'plugins/gsl/3rparty/images/avatar-pin-2x.png',
@@ -216,9 +244,21 @@ function gslCreateMarker(eqId, point, id){
       		zIndexOffset: (point.type == 'fix' ?  -1000 : 1000)
          }).addTo(gslObjects.maps[eqId].featureGroup);
     marker._icon.style['background-color'] =  point.color;
-    $('.gsl-address img.gsl-avatar-'+id).attr('src', avatar);
     gslObjects.maps[eqId].markers[id] = marker;
     gslCreateCircle(eqId, point, id);
+  	if(point.history){
+    	gslCreateHistory(eqId, point, id);
+    }
+}
+
+function gslCreateHistory(eqId, point, id){
+        var history = L.polyline([], {
+            color: point.color,
+            fillColor: point.color,
+            fillOpacity: 0.1,
+            weight: 1.5
+        }).addTo(gslObjects.maps[eqId].featureGroup);
+        gslObjects.maps[eqId].histories[id] = {hours: point.history, feature: history};
 }
 
 function gslCreateCircle(eqId, point, id){
@@ -234,13 +274,31 @@ function gslCreateCircle(eqId, point, id){
     }
 }
 
-function gslUpdateMarker(id, coords){
+function gslUpdateMarker(eqId, coords, cmdId){
     for (const key in gslObjects.maps){
         var map = gslObjects.maps[key];
-        if(map.markers[id]){
-            map.markers[id].setLatLng(coords.split(','));
-            if(map.circles[id]){
-                map.circles[id].setLatLng(coords.split(','));
+        if(map.markers[eqId]){
+            map.markers[eqId].setLatLng(coords.split(','));
+            if(map.circles[eqId]){
+                map.circles[eqId].setLatLng(coords.split(','));
+            }
+          if(map.histories[eqId] && map.histories[eqId].feature && map.histories[eqId].hours){
+          	  var date = new Date();
+              var dateEnd = formatDate(date);
+              var dateStart = formatDate(new Date(date.setHours(date.getHours()-map.histories[eqId].hours)));
+              jeedom.history.get({
+                  global: false,
+                  cmd_id: cmdId,
+                  dateStart: dateStart,
+                  dateEnd: dateEnd,
+                  context: {map: key, eqId: eqId},
+                  success: function(result) {
+                    if (result.data.length == 0) return false
+                    var values = result.data.map(function(elt) {
+                      return elt[1].split(',').map(function(coord) { return parseFloat(coord)}) });
+                    gslObjects.maps[this.context.map].histories[result.eqLogic.id].feature.setLatLngs(values);
+                  }
+              });
             }
         }
         gslFocusFeatureGroup(key);
@@ -289,14 +347,20 @@ function gslCreatePoint(eqId, point, id){
 
     if(point.coordinated){
         jeedom.cmd.update[point.coordinated.id] = function(_options) {
-            gslUpdateMarker(id, _options.display_value);
+            gslUpdateMarker(id, _options.display_value, point.coordinated.id);
         }
         jeedom.cmd.update[point.coordinated.id]({display_value:point.coordinated.value});
     }
 }
 
 function gslFocusFeatureGroup(eqId){
+    if(!Object.keys(gslObjects.maps[eqId].markers).length){
+  	    return;
+    }
     gslObjects.maps[eqId].map.fitBounds(gslObjects.maps[eqId].featureGroup.getBounds(), {padding: [30, 30]});
+    if(gslObjects.maps[eqId].customZoom){
+        gslObjects.maps[eqId].map.setZoom(gslObjects.maps[eqId].customZoom);
+    }
 }
 
 function gslMapLoaded(eqId){

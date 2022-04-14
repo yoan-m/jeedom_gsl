@@ -120,6 +120,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                     <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="isVisiblePanel"/>
                                 </div>
                             </div>
+			    <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Historique affiché (heures)}}
+                                <sup><i class="fas fa-question-circle tooltipstered" title="Durée en heure de l'historique affiché sur le widget. Nécessite que la commande coordonnees soit historisée. Ne pas renseigner pour désactiver."></i></sup>
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="history">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Historique affiché sur le global (heures)}}<sup><i class="fas fa-question-circle tooltipstered" title="Durée en heure de l'historique affiché sur le widget global. Nécessite que la commande coordonnees soit historisée. Ne pas renseigner pour désactiver."></i></sup></label>
+                                <div class="col-sm-3">
+                                    <input type="number" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="historyGlobal">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Type de coordonnées}}</label>
                                 <div class="col-sm-3">
@@ -133,10 +147,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">{{Coordonnées}}<sup><i class="fas fa-question-circle tooltipstered" title="Latitude,longitude"></i></sup></label>
                                 <div class="col-sm-3">
-                                    <input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated" style="width: 92%;display: inline-block;"/>
-                                    <span class="input-group-btn" style="display:inline-block; width:auto"> 
-													<button type="button" class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="sendCmd"><i class="fas fa-list-alt"></i></button> 
-												</span> 
+                                    <div class="input-group">
+                                    	<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
+                                    	<span class="input-group-btn"> 
+													<a class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="sendCmd"><i class="fas fa-list-alt"></i></a> 
+										</span> 
+                                	</div>
                                 </div>
                             </div>
                             <div class="form-group">
