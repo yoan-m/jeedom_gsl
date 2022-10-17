@@ -32,7 +32,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     if(is_object($imageCmd)){
                         $image = $imageCmd->execCmd();
                         if($image){
-                            echo '<img src="/plugins/gsl/core/ajax/gsl.proxy.php?url=' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 71px !important;left: 32px; top: 19px; padding-top:inherit;min-height:inherit !important; min-width:inherit;" />';
+                            echo '<img src="/plugins/gsl/core/ajax/gsl.proxy.php?url=' . $image . '" style="border-radius:50%; position: absolute; width: 65px !important; height: 65px !important;left: 32px; top: 20px; padding-top:inherit;min-height:inherit !important;" />';
                         }
                     }
                     echo '<img src="' . $plugin->getPathImgIcon() . '"   />';
@@ -180,8 +180,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     <table id="table_cmd" class="table table-bordered table-condensed">
                         <thead>
                         <tr>
-                            <th width="90%">{{Nom}}</th>
-                            <th>{{Action}}</th>
+                            <th width="150px">{{Nom}}</th>
+							<th>{{Etat}}</th>
+                            <th width="100px">{{Action}}</th>
                         </tr>
                         </thead>
                         <tbody>

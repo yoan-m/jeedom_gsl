@@ -26,6 +26,9 @@ function addCmdToTable(_cmd) {
     tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 100%;" placeholder="{{Nom}}">';
     tr += '</td>';
+	tr += '<td>';
+    tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>'; 
+    tr += '</td>';
     tr += '<td>';
     if (is_numeric(_cmd.id)) {
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fa fa-cogs"></i></a> ';
