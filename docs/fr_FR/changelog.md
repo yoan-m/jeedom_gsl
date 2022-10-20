@@ -1,3 +1,6 @@
+# 17/10/2022
+- Affichage de l'état des commandes en 4.3
+
 # 14/03/2022
 - Ajout de l'affichage de l'historique sur la carte. La commande "coordonnees" doit être historisée. Il est possible de définir la durée de l'historique en heures affichée sur le global ou sur le widget.
 - Ajout du parametre #zoom# sur une tuile pour définir un zoom fixe
