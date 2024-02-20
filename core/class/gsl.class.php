@@ -175,11 +175,17 @@ class gsl extends eqLogic {
             if($eqLogic->getConfiguration('type') == 'fix' && $eqLogic->getConfiguration('coordinatesType') == 'cmd'){
               if (is_object($eqLogic) && $eqLogic->getIsEnable() == 1) {
 
-                      $cmdLoc = cmd::byId(str_replace('#','',$eqLogic->getConfiguration('coordinated')));
+                    $cmdLoc = cmd::byId(str_replace('#','',$eqLogic->getConfiguration('coordinated')));
                     if(!is_object($cmdLoc)){
-                          log::add(__CLASS__, 'debug', 'cmd coordianted error : cmd not found');
+                          log::add(__CLASS__, 'debug', 'cmd coordinated error : cmd not found');
                     }else{
                       $change = $eqLogic->checkAndUpdateCmd('coordinated', $cmdLoc->execCmd());
+                    }
+                    $cmdPrec = cmd::byId(str_replace('#','',$eqLogic->getConfiguration('coordinated_precision')));
+                    if(!is_object($cmdPrec)){
+                        log::add(__CLASS__, 'debug', 'cmd coordinated Precision error : cmd not found');
+                    }else{
+                        $change = $eqLogic->checkAndUpdateCmd('accuracy', $cmdLoc->execCmd()) || $change;
                     }
                  $gChange = $gChange || $change;
               }	
@@ -417,7 +423,7 @@ class gsl extends eqLogic {
             }
             $cmd = $this->getCmd(null, 'accuracy');
             if (!is_object($cmd)) {
-                $cmd = new cmd();
+                $cmd = new gslContextualCmd();
                 $cmd->setName('precision');
                 $cmd->setEqLogic_id($this->getId());
                 $cmd->setLogicalId('accuracy');
@@ -425,6 +431,49 @@ class gsl extends eqLogic {
                 $cmd->setSubType('string');
                 $cmd->save();
             }
+        }
+        // if is cmd and has precision
+        if($this->getConfiguration('type') == 'fix' && $this->getConfiguration('coordinatesType') == 'cmd'){
+            $cmdPrecName = $this->getConfiguration('coordinated_precision');
+            $cmd = $this->getCmd(null, 'accuracy');
+            if($cmdPrecName != null && trim($cmdPrecName) != ''){
+                if (!is_object($cmd)) {
+                    $cmd = new gslContextualCmd();
+                    $cmd->setName('precision');
+                    $cmd->setEqLogic_id($this->getId());
+                    $cmd->setLogicalId('accuracy');
+                    $cmd->setType('info');
+                    $cmd->setSubType('string');
+                    $cmd->save();
+                }
+
+                $cmdPrec = cmd::byId(str_replace('#','',$cmdPrecName));
+                if(!is_object($cmdLoc)){
+                	log::add(__CLASS__, 'debug', 'cmd coordianted precision error : cmd not found');
+                }else{
+                    $cmd->event($cmdPrec->execCmd());
+                }
+
+            } elseif (is_object($cmd)){
+                // $cmd->event('');
+                // $cmd = cmd::byEqLogicIdCmdName($this->getId(), 'precision');
+                log::add(__CLASS__, 'debug', 'post save cmd remove :'.$cmd->getId());
+                if (is_object($cmd))$cmd->remove();
+            }
+
+            
+            // if($this->getConfiguration('type') == 'fix' && $this->getConfiguration('coordinatesType') == 'cmd'){
+            //     $cmdPrecName = $this->getConfiguration('coordinated_precision');
+            // //     $cmd = $this->getCmd(null, 'accuracy');
+            //         $cmd = cmd::byEqLogicIdCmdName($this->getId(), 'precision');
+            //         if (is_object($cmd))$cmd->remove();
+            //     if(($cmdPrecName == null || trim($cmdPrecName) == '') && is_object($cmd)){
+            //         $cmd->remove();
+            //     }
+            // }
+
+
+            
         }
     }
    
@@ -639,9 +688,8 @@ class gsl extends eqLogic {
                         log::add(__CLASS__, 'debug', 'cmd coordianted error : cmd not found');
                     	$return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>'');
                   }else{
-                     $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmdLoc->execCmd());
+                    $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmdLoc->execCmd());
                   }
-                  
                 }else{
                     $return[$cmd->getLogicalId()] = array('id'=>$cmd->getId(), 'value'=>$cmd->execCmd());
                 }
@@ -659,7 +707,6 @@ class gsl extends eqLogic {
         }
         return $return;
     }
-
 
 
     public function postUpdate() {
@@ -690,6 +737,42 @@ class gsl extends eqLogic {
     }
 
     /*     * **********************Getteur Setteur*************************** */
+}
+
+
+class gslContextualCmd extends cmd{
+    // class to auto delete if condition are not met in parent EqLogic
+    public function save($_direct = false){
+        log::add('gsl', 'debug', '--->> gslContextualCmd save called');
+        parent::save($_direct);
+    }
+    public function postSave(){
+        log::add('gsl', 'debug', 'gslContextualCmd postSave');
+        if($this->getLogicalId()=='accuracy'){
+            $eqLogic =  $this->getEqLogic();
+            if(!is_object($eqLogic)){
+                log::add('gsl', 'debug', 'Error Checking "accuracy" command, no logicalId found');
+                return;
+            }
+            log::add('gsl', 'debug', '----------------------- CMD TEST -------------------------');
+            log::add('gsl', 'debug', ' - eqlogic type :'.$eqLogic->getConfiguration('type'));
+            log::add('gsl', 'debug', ' - eqlogic coordinatesType :'.$eqLogic->getConfiguration('coordinatesType'));
+            log::add('gsl', 'debug', ' - eqlogic coordinated_precision :'.$eqLogic->getConfiguration('coordinated_precision'));
+
+
+            log::add('gsl', 'debug', '----------------------------------------------------------');
+            if($eqLogic->getConfiguration('type') == 'fix' && $eqLogic->getConfiguration('coordinatesType') == 'cmd'){
+                $cmdPrecName = $eqLogic->getConfiguration('coordinated_precision');
+                if($cmdPrecName == null || trim($cmdPrecName) == ''){
+                    log::add('gsl', 'debug', 'removing cmd : '.$this->getId());
+                   $this->remove();
+    
+                }
+            
+            }
+        }
+
+    }
 }
 
 class gslCmd extends cmd {

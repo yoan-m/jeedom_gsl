@@ -148,9 +148,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                 <label class="col-sm-3 control-label">{{Coordonnées}}<sup><i class="fas fa-question-circle tooltipstered" title="Latitude,longitude"></i></sup></label>
                                 <div class="col-sm-3">
                                     <div class="input-group">
-                                    	<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
+                                    	<input id="coordinated" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated"/>
                                     	<span class="input-group-btn"> 
-													<a class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="sendCmd"><i class="fas fa-list-alt"></i></a> 
+                                            <a class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="#coordinated"><i class="fas fa-list-alt"></i></a> 
+										</span> 
+                                	</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{Commande Précision}}<sup><i class="fas fa-question-circle tooltipstered" title="precision en mètre"></i></sup></label>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                    	<input id="coordinated_precision" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="coordinated_precision"/>
+                                    	<span class="input-group-btn"> 
+                                            <a class="btn btn-default cursor listCmdActionMessage tooltips cmdSendSel" title="{{Rechercher une commande}}" data-input="#coordinated_precision"><i class="fas fa-list-alt"></i></a> 
 										</span> 
                                 	</div>
                                 </div>
