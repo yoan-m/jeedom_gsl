@@ -192,6 +192,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         <thead>
                         <tr>
                             <th width="150px">{{Nom}}</th>
+                            <th style="width:130px">{{Type}}</th>
 							<th>{{Etat}}</th>
                             <th width="100px">{{Action}}</th>
                         </tr>

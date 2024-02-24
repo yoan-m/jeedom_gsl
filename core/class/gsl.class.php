@@ -353,6 +353,8 @@ class gsl extends eqLogic {
             if($this->getConfiguration('coordinatesType') == 'jeedom'){
                 $cmd = $this->getCmd(null, 'coordinated');
                 $cmd->event(config::byKey('info::latitude').','.config::byKey('info::longitude'));
+                $cmd = $this->getCmd(null, 'accuracy');
+                if(is_object($cmd))$cmd->remove();
             }else if ($this->getConfiguration('coordinatesType') == 'cmd'){
               	$cmd = $this->getCmd(null, 'coordinated');
               	$cmdLoc = cmd::byId(str_replace('#','',$this->getConfiguration('coordinated')));
@@ -380,10 +382,14 @@ class gsl extends eqLogic {
                   }else{
                       $cmd->event($cmdPrec->execCmd());
                   }
-              }  
+              } elseif(is_object($cmd)){
+                $cmd->remove();
+              }
             }else{
                 $cmd = $this->getCmd(null, 'coordinated');
                 $cmd->event($this->getConfiguration('coordinated'));
+                $cmd = $this->getCmd(null, 'accuracy');
+                if(is_object($cmd))$cmd->remove();
             }
             $eqLogic = eqLogic::byLogicalId('global', 'gsl');
             if (is_object($eqLogic)) {
@@ -725,27 +731,6 @@ class gslCmd extends cmd {
     public function execute($_options = array()) {
         if ($this->getLogicalId() == 'refresh') {
             gsl::pull(true);
-        }
-    }
-
-    // preUpdate check whether accuracy cmd is needed if not ->remove
-    public function preUpdate(){
-        if($this->getLogicalId()=='accuracy'){
-            $eqLogic =  $this->getEqLogic();
-            if(!is_object($eqLogic)){
-                log::add('gsl', 'debug', 'Error Checking "accuracy" command, no logicalId found');
-                return;
-            }
-            if($eqLogic->getConfiguration('type') == 'fix' && $eqLogic->getConfiguration('coordinatesType') == 'cmd'){
-                $cmdPrecName = $eqLogic->getConfiguration('coordinated_precision');
-                if($cmdPrecName == null || trim($cmdPrecName) == ''){
-                log::add('gsl', 'debug', 'removing cmd : '.$this->getId());
-                   $this->remove();
-                }
-            }else{
-                log::add('gsl', 'debug', 'removing cmd : '.$this->getId());
-                $this->remove();
-            }
         }
     }
     /*     * **********************Getteur Setteur*************************** */
