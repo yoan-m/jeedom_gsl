@@ -24,12 +24,10 @@ function addCmdToTable(_cmd) {
     var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
     tr += '<td>';
     tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
+    tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="display:none">'
+    tr += '<span class="subType" subType="' + init(_cmd.subType) + '" style="display:none;"></span>'
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 100%;" placeholder="{{Nom}}">';
     tr += '</td>';
-    tr += '<td>'
-tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="margin-bottom:5px;">'
-tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>'
-tr += '</td>'
 	tr += '<td>';
     tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>'; 
     tr += '</td>';
