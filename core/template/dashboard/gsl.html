@@ -48,16 +48,17 @@
         }else{
             $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
         }
-
-        var data#id#=JSON.parse('#json#');
-        gslSetTheme(data#id#['light-theme'], data#id#['dark-theme']);
-        gslCreateMap(#id#, data#id#['control-attributions'], data#id#['control-zoom']);
-	    gslObjects.maps[#id#].customZoom = parseInt('#zoom#');
-        for(id in data#id#.points){
-            gslCreateMarker(#id#, data#id#.points[id], id);
-            gslCreatePoint(#id#, data#id#.points[id], id);
-        }
-        gslFocusFeatureGroup(#id#);
-        gslMapLoaded(#id#);
+        domUtils(function(){
+            var data#id#=JSON.parse('#json#');
+            gslSetTheme(data#id#['light-theme'], data#id#['dark-theme']);
+            gslCreateMap(#id#, data#id#['control-attributions'], data#id#['control-zoom']);
+            gslObjects.maps[#id#].customZoom = parseInt('#zoom#');
+            for(id in data#id#.points){
+                gslCreateMarker(#id#, data#id#.points[id], id);
+                gslCreatePoint(#id#, data#id#.points[id], id);
+            }
+            gslFocusFeatureGroup(#id#);
+            gslMapLoaded(#id#);
+	});
     </script>
 </div>
