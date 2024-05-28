@@ -1,3 +1,6 @@
+# 25/05/2024
+- Utilisation de domUtils. Version minimale : 4.4
+
 # 17/10/2022
 - Affichage de l'état des commandes en 4.3
 
