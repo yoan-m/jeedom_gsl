@@ -24,6 +24,8 @@ function addCmdToTable(_cmd) {
     var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
     tr += '<td>';
     tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
+    tr += '<input class="cmdAttr form-control type input-sm" data-l1key="type" value="info" disabled style="display:none">'
+    tr += '<span class="subType" subType="' + init(_cmd.subType) + '" style="display:none;"></span>'
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 100%;" placeholder="{{Nom}}">';
     tr += '</td>';
 	tr += '<td>';
@@ -77,6 +79,7 @@ function printEqLogic(_eqLogic) {
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=precisionFiltre]').closest('.form-group').hide();
   }else{
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+    $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').hide();
     $('.form-control[data-l1key=configuration][data-l2key=coordinatesJeedom]').closest('.form-group').hide();
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=isVisiblePanel]').closest('.form-group').show();
     $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').closest('.form-group').hide();
@@ -91,7 +94,7 @@ $('.eqLogicAttr[data-l1key=configuration][data-l2key=cmdgeoloc]').next().on('cli
 $(".cmdSendSel").on('click', function () {
     var el = $(this);
   jeedom.cmd.getSelectModal({cmd:{type:'info'}}, function(result) {
-       var calcul = el.closest('div').find('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]');
+       var calcul = el.closest('div').find('.eqLogicAttr[data-l1key=configuration]');
        calcul.val('');
        calcul.atCaret('insert', result.human);
      });
@@ -101,15 +104,22 @@ $(".cmdSendSel").on('click', function () {
 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').on('change', function (event) {
     if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'jeedom'){
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').hide();
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').hide();
     }else if($('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinatesType]').val() == 'cmd'){
-      	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').show();
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').parent().addClass('input-group');
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').find('.input-group-btn').show();
       	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').parent().addClass('input-group');
-      	 $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').show();
-      
+        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').show();    
     }else{
         $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').show();
       	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').parent().removeClass('input-group');
        $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated]').closest('.form-group').find('.input-group-btn').hide();
+
+       $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').hide();
+      	$('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').parent().removeClass('input-group');
+       $('.eqLogicAttr[data-l1key=configuration][data-l2key=coordinated_precision]').closest('.form-group').find('.input-group-btn').hide();
     }
 });
 
