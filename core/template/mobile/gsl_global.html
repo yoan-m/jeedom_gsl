@@ -23,9 +23,8 @@
             border-radius: 50% !important;
         }
         .eqLogic[data-eqLogic_uid=#uid#] .ui-content hr, .ui-panel-inner hr{
-                                             margin: 0px !important;
-                                         }
-
+             margin: 0px !important;
+         }
 
         #gsl-address-global-#id# .gsl-precision,
         #gsl-address-global-#id#  .gsl-horodatage,
@@ -40,9 +39,49 @@
             font-size:14px !important;
         }
     </style>
-    <script src="plugins/gsl/3rparty/leaflet.js"></script>
-    <script src="plugins/gsl/core/template/gsl.template.js"></script>
     <script type="text/javascript">
+    /*
+    Function includeJS by noodom 09-05-2024
+    https://community.jeedom.com/t/import-dun-fichier-js-externe-dans-un-widget-sans-timeout-et-sans-jquery/125542
+    */
+    function includeJS(filenames, callback) {
+      if (typeof filenames === 'string') {
+        filenames = [filenames];
+      }
+
+      let loadedCount = 0;
+
+      function loadScript(filename) {
+
+        let sc = document.createElement('script');
+        sc.src = filename;
+        sc.type = 'text/javascript';
+        sc.async = true;
+
+        sc.onerror = function () {
+          loadedCount++;
+          if (loadedCount === filenames.length) {
+            callback();
+          }
+          sc.onerror = null;
+        };
+
+        sc.onload = sc.onreadystatechange = function () {
+          if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+            loadedCount++;
+            if (loadedCount === filenames.length) {
+              callback();
+            }
+            sc.onload = sc.onreadystatechange = null;
+          }
+        };
+
+        document.body.appendChild(sc);
+      }
+
+      filenames.forEach(filename => loadScript(filename));
+    }
+    /*******************************************/
         if ('#refresh_id#' != ''){
             $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
                 jeedom.cmd.execute({id: '#refresh_id#'});
@@ -51,18 +90,20 @@
             $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').remove();
         }
         domUtils(function(){
-            var data#id#=JSON.parse('#json#');
-            gslSetTheme(data#id#['light-theme'], data#id#['dark-theme']);
-            gslCreateMap(#id#, data#id#['control-attributions'], data#id#['control-zoom']);
-            gslObjects.maps[#id#].customZoom = parseInt('#zoom#');
-            for(id in data#id#.points){
-                gslCreateMarker(#id#, data#id#.points[id], id);
-                gslCreatePoint(#id#, data#id#.points[id], id);
-                $('#gsl-address-global-'+id).click({eqLogic: id}, generate_gsl_click_handler);	
-    	    $('#gsl-address-global-'+id).dblclick(generate_gsl_dblclick_handler);
-            }
-            gslFocusFeatureGroup(#id#);
-            gslMapLoaded(#id#);
+            includeJS(['plugins/gsl/3rparty/leaflet.js','plugins/gsl/core/template/gsl.template.js'], function () {
+                var data#id#=JSON.parse('#json#');
+                gslSetTheme(data#id#['light-theme'], data#id#['dark-theme']);
+                gslCreateMap(#id#, data#id#['control-attributions'], data#id#['control-zoom']);
+                gslObjects.maps[#id#].customZoom = parseInt('#zoom#');
+                for(id in data#id#.points){
+                    gslCreateMarker(#id#, data#id#.points[id], id);
+                    gslCreatePoint(#id#, data#id#.points[id], id);
+                    $('#gsl-address-global-'+id).click({eqLogic: id}, generate_gsl_click_handler);	
+        	    $('#gsl-address-global-'+id).dblclick(generate_gsl_dblclick_handler);
+                }
+                gslFocusFeatureGroup(#id#);
+                gslMapLoaded(#id#);
+            });
         });
         function generate_gsl_click_handler(event) {
             gslObjects.maps[#id#].map.flyToBounds([eval(data#id#.points[event.data.eqLogic].coordinated.value.split(','))]);
