@@ -40,6 +40,9 @@ $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 curl_close ($ch);
 
 $header_blocks =  array_filter(preg_split('#\n\s*\n#Uis' , substr($response, 0, $header_size)));
+if (empty($header_blocks)) {
+  exit;
+}
 $header_array = explode("\n", $header_blocks[array_key_last($header_blocks)]);
 
 $body = substr($response, $header_size);
