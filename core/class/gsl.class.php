@@ -224,8 +224,12 @@ class gsl extends eqLogic {
               $changed = $eqLogic->checkAndUpdateCmd('accuracy', $location['accuracy'], $timestamp) || $changed;
               $cmdgeoloc = $eqLogic->getConfiguration('cmdgeoloc', null);
               if ($cmdgeoloc !== null) {
-                  $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
-                  $cmdUpdate->event($location['coordinated']);
+				  if (is_object($cmdgeoloc)) {
+					  $cmdUpdate = cmd::byId(str_replace('#', '', $cmdgeoloc));
+					  $cmdUpdate->event($location['coordinated']);
+				  } else {
+					  message::add('gsl', "Une commande à mettre à jour est spécifiée mais est inexistante sur l'équipement " . $eqLogic->getHumanName());
+				  }
               }
             }else{
             	log::add('gsl', 'debug', __("Update ignoré, trop imprécis : $accuracy > $precision", __FILE__));
