@@ -11,3 +11,4 @@ resources/node_modules/
 .idea
 jeedom_gsl.iml
 .vscode/sftp.json
+*cookies.txt
